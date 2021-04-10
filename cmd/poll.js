@@ -2,10 +2,14 @@ const chalk = require("chalk");
 
 module.exports = {
     name: "poll",
-    description: "Simple poll generator.",
+    description: "一個簡單的投票功能",
     arg: true,
     usage: "/ctlo poll <bool|choice> <duration> <poll_content> <choices...>",
     execute(client, msg, args) {
+        // TODO: end time, count vote, announce result
+
+        if (!msg.member.hasPermission("ADMINISTRATOR")) throw "Permission denied."
+
         const pa = {
             type: args[0], duration: args[1],
             content: args[2], choices: args.slice(3)
@@ -37,7 +41,6 @@ module.exports = {
             })
         } catch (e) {
             msg.channel.send(`Error: ${e.toString()}`)
-            msg.channel.send("Format: `/ctlo poll <bool|choice> <duration> <poll_content> <choices...>`")
             console.log(`${chalk.red.bold("ERROR")} ${e.toString()}`)
         }
     }
