@@ -11,11 +11,13 @@ module.exports = {
     arg: false,
     usage: "/ctlo says",
     execute(client, msg, args) {
+        let cnt = says[
+            args.length > 0 ? parseInt(args[0]) : Math.floor(Math.random() * says.length)
+            ].format({
+            username: msg.member.nickname == null ? msg.author.username : msg.member.nickname
+        })
         msg.channel.send(stripIndents`
-            \`\`\`${
-            says[Math.floor(Math.random() * says.length)].format({
-                username: msg.author.username
-            })}
+            \`\`\`${cnt}
             ——昶昶，2021\`\`\``)
     }
 }
