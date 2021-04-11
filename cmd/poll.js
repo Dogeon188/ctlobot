@@ -1,7 +1,7 @@
 require("chalk");
 module.exports = {
     name: "poll",
-    description: "一個簡單的投票功能",
+    description: "一個簡單的投票功能，只開放管理員使用",
     arg: true,
     usage: "/ctlo poll <bool|choice> <duration> <poll_content> <choices...>",
     execute(client, msg, args) {
