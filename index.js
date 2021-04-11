@@ -31,7 +31,13 @@ client.on("message", msg => {
     try {
         if (msg.author.bot) return
         if (msg.content.startsWith(prefix)) {
-            const args = msg.content.slice(prefix.length).trim().split(" ")
+            const args = msg.content.slice(prefix.length).trim()
+                .match(/((?<!\\)".*?(?<!\\)"|\S+)/g)
+                .forEachC((t, i, a) => {
+                    if (t[0] === '"') a[i] = t.slice(1, -1)
+                    a[i] = a[i].replace('\\"', '"')
+                })
+            // const args = msg.content.slice(prefix.length).trim().split(" ")
             const cmdName = args.shift().toLowerCase()
             if (!client.commands.has(cmdName) || cmdName === "foo") {
                 msg.channel.send(stripIndents`
@@ -45,7 +51,9 @@ client.on("message", msg => {
         } else if (/昶.*[說看]/.test(msg.content))
             client.commands.get("says").execute(client, msg, [])
     } catch (e) {
-        msg.channel.send(`Error: ${e.toString()}`)
+        msg.channel.send(stripIndents`
+        ERROR
+        \`${e.toString()}\``)
         console.log(`${chalk.red.bold("ERROR")} ${e.toString()}`)
     }
 })
