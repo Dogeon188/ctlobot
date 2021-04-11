@@ -8,8 +8,8 @@ module.exports = {
         昶語錄：傾聽昶昶的箴言
         也可以透過包含「昶」和「說|看」先後兩個關鍵字來觸發喔喔
     `,
-    arg: false,
-    usage: "/ctlo says",
+    arg: true,
+    usage: "/ctlo says (<speech_id>)",
     execute(client, msg, args) {
         let cnt = says[
             args.length > 0 ? parseInt(args[0]) : Math.floor(Math.random() * says.length)

@@ -1,4 +1,5 @@
-require("chalk");
+const config = require("../config.json")
+
 module.exports = {
     name: "poll",
     description: "一個簡單的投票功能，只開放管理員使用",
@@ -7,7 +8,7 @@ module.exports = {
     execute(client, msg, args) {
         // TODO: end time, count vote, announce result
 
-        if (!msg.member.hasPermission("ADMINISTRATOR")) throw "Permission denied."
+        if (!msg.member.hasPermission("ADMINISTRATOR")) throw new Error("Permission denied.")
 
         const pa = {
             type: args[0], duration: args[1],
@@ -23,7 +24,7 @@ module.exports = {
                 break
             case "choice":
             case "c":
-                if (pa.choices.length > 9) throw "Too many choices!"
+                if (pa.choices.length > 9) throw new Error("Too many choices!")
                 cnt = pa.content
                 for (let i = 0; i < pa.choices.length; i++) {
                     if (i % 4 === 0) cnt += "\n"
@@ -32,9 +33,9 @@ module.exports = {
                 }
                 break
             default:
-                throw `Unexpected type of poll ${pa.type}!`
+                throw new Error(`Unexpected type of poll ${pa.type}!`)
         }
-        client.channels.fetch(process.env.CHANNEL_ID).then(c => {
+        client.channels.fetch(config.voteChannel[msg.guild.id]).then(c => {
             c.send(cnt).then(m => {
                 for (let e of emj) m.react(e)
             })

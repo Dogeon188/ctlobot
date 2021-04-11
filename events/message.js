@@ -1,11 +1,12 @@
+const chalk = require("chalk")
 const {stripIndents} = require("common-tags")
 
-const prefix = "/ctlo"
+const prefix = require("../config.json").prefix
 
 parseArgs = (msg) => {
     let args = msg.content.slice(prefix.length).trim()
         .match(/((?<!\\)".*?(?<!\\)"|\S+)/g)
-    if (args === null) throw "No command provided!"
+    if (args === null) throw new Error("No command provided!")
     args.forEachC((t, i, a) => {
             if (t[0] === '"') a[i] = t.slice(1, -1)
             a[i] = a[i].replace('\\"', '"')
@@ -36,9 +37,9 @@ module.exports = {
         } catch (e) {
             msg.channel.send(stripIndents`
                 ERROR
-                \`${e}\`
+                \`${e.message}\`
             `)
-            client.logger.log("error", e)
+            client.logger.log("error", `${e.message}\n${chalk.gray(e.stack)}`)
         }
     }
 }
