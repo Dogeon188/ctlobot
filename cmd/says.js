@@ -11,8 +11,14 @@ module.exports = {
     arg: true,
     usage: "/ctlo says (<speech_id>)",
     execute(client, msg, args) {
-        let cnt = says[
-            args.length > 0 ? parseInt(args[0]) : Math.floor(Math.random() * says.length)
+        let cnt = says[(() => {
+            if (args.length > 0) {
+                let i = parseInt(args[0])
+                if (isNaN(i)) throw new Error(`Invalid speech id ${args[0]}!`)
+                return i
+            }
+            return Math.floor(Math.random() * says.length)
+        })()
             ].format({
             username: msg.member.nickname == null ? msg.author.username : msg.member.nickname
         })
