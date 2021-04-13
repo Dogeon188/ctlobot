@@ -8,7 +8,7 @@ parseArgs = (msg) => {
     let args = msg.content.slice(prefix.length).trim()
         .match(/((?<!\\)".*?(?<!\\)"|\S+)/g)
     if (args === null) throw new Error("No command provided!")
-    args.forEachC((t, i, a) => {
+    args.forEach((t, i, a) => {
             if (t[0] === '"') a[i] = t.slice(1, -1)
             a[i] = a[i].replace('\\"', '"')
         })

@@ -13,7 +13,7 @@ module.exports = {
     execute(client, msg, args) {
         let cnt = says[(() => {
             if (args.length > 0) {
-                let i = parseInt(args[0])
+                let i = +args[0]
                 if (isNaN(i)) throw new Error(`Invalid speech id ${args[0]}!`)
                 if (i >= says.length) throw new Error(`Index ${i} is too big for size ${says.length}!`)
                 return i

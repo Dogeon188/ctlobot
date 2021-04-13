@@ -1,5 +1,3 @@
-// invite: https://discord.com/oauth2/authorize?client_id=779656199033454613&scope=bot
-
 const config = require("./config.json")
 
 const fs = require("fs")
