@@ -4,8 +4,10 @@
   "description": "CTLO Discord bot.",
   "main": "index.js",
   "scripts": {
-    "run": "node index.js",
-    "test": "node test.js"
+    "run": "pm2 start index.js -n ctlobot",
+    "test": "node index.js",
+    "sandbox": "node test.js",
+    "update": "git pull; pm2 restart ctlobot"
   },
   "keywords": [],
   "author": "Dogeon188",
