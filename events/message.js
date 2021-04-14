@@ -1,4 +1,3 @@
-const chalk = require("chalk")
 const config = require("../config.json")
 const {stripIndents} = require("common-tags")
 
@@ -42,7 +41,7 @@ module.exports = {
                 ERROR
                 \`${e.message}\`
             `)
-            client.logger.log("error", `${e.message}\n${chalk.gray(e.stack)}`)
+            throw e
         }
     }
 }
