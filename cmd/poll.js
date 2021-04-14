@@ -4,7 +4,7 @@ module.exports = {
     name: "poll",
     description: "一個簡單的投票功能，只開放管理員使用",
     arg: true,
-    usage: "/ctlo poll <bool(b)|choice(c)> <duration> <poll_content> <choices...>",
+    usage: `${config.prefix} poll <bool(b)|choice(c)> <duration> <poll_content> <choices...>`,
     execute(client, msg, args) {
         // TODO: end time, count vote, announce result
 

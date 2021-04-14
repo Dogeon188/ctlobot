@@ -1,4 +1,5 @@
 const chalk = require("chalk")
+const config = require("../config.json")
 
 module.exports = {
     name: "message",
@@ -6,7 +7,7 @@ module.exports = {
     execute(client) {
         client.user.setPresence({
             activity: {
-                name: "/ctlo help",
+                name: `${config.prefix} help`,
                 type: "LISTENING"
             }
         })
