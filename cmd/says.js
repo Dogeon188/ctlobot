@@ -24,6 +24,13 @@ module.exports = {
             msg.channel.send("已更新昶語錄！")
             return
         }
+        if (args[0] === "greet") {
+            let t = new Date().getHours()
+            if (t >= 18 || t < 4) msg.channel.send("同學們晚安。")
+            else if (t >= 11 && t < 18) msg.channel.send("同學們午安。")
+            else msg.channel.send("同學們早。")
+            return
+        }
         updateSays(client, false).then(() => {
             const cnt = says[(() => {
                 if (args.length > 0) {
