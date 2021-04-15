@@ -33,7 +33,7 @@ module.exports = {
                     `)
                 }
                 else client.commands.get(cmdName).execute(client, msg, args)
-            } else if (/昶.*[說看]/.test(msg.content) && !config.isBeta) {
+            } else if (/昶/.test(msg.content) && /[說看講]/.test(msg.content) && !config.isBeta) {
                 client.commands.get("says").execute(client, msg, [])
             }
         } catch (e) {
