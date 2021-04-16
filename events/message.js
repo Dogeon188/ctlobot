@@ -35,7 +35,8 @@ module.exports = {
                 else client.commands.get(cmdName).execute(client, msg, args)
             } else if (/昶/.test(msg.content) && !config.isBeta) {
                 if (/[早午晚]安/.test(msg.content)) client.commands.get("says").execute(client, msg, ["greet"])
-                else if (/[說看講]/.test(msg.content)) client.commands.get("says").execute(client, msg, [])
+                else if (/[說講話]/.test(msg.content)) client.commands.get("says").execute(client, msg, [])
+                else if (/[看想]|覺得/.test(msg.content)) client.commands.get("tarot").execute(client, msg, [])
             }
         } catch (e) {
             msg.channel.send(stripIndents`

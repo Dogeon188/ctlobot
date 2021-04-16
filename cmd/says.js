@@ -2,11 +2,13 @@ const bent = require("bent")
 const {stripIndents} = require("common-tags")
 
 const config = require("../config.json")
-let says, saysLastUpdated = 0;
+let says, lastUpdated = 0;
 const updateSays = async (client, forceUpdate) => {
-    if (!forceUpdate && new Date().getTime() - saysLastUpdated < 600000) return
-    says = (await bent(config.saysSrc, "json")()).feed.entry.map(e => e.gsx$says.$t)
-    saysLastUpdated = new Date().getTime()
+    if (!forceUpdate && new Date().getTime() - lastUpdated < 600000) return
+    says = (await bent(
+        `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.says}/public/values?alt=json`,
+        "json")()).feed.entry.map(e => e.gsx$says.$t)
+    lastUpdated = new Date().getTime()
     client.logger.log("info", "Updated ctlo says entries!")
 }
 
@@ -14,14 +16,14 @@ module.exports = {
     name: "says",
     description: stripIndents`
         昶語錄：傾聽昶昶的箴言
-        也可以透過同時包含「昶」和「說|看|講」兩組關鍵字來觸發喔喔
+        也可以透過同時包含「昶」和「說|講|話」兩組關鍵字來觸發喔喔
     `,
     arg: true,
     usage: `${config.prefix} says (<speech_id>)`,
     execute(client, msg, args) {
         if (msg.author.id === config.dogeon.id && args[0] === "update") {
-            updateSays(client, true)
-            msg.channel.send("已更新昶語錄！")
+            updateSays(client, true).then(() =>
+            msg.channel.send(`已更新昶語錄！（目前共有 ${says.length} 個條目）`))
             return
         }
         if (args[0] === "greet") {
