@@ -54,7 +54,6 @@ module.exports = {
             roundRect(ctx, 25, 25, 200, 200, 10, false, false)
             ctx.clip()
             ctx.drawImage(await Canvas.loadImage(`assets/tarot/tier${tarot.tier}.jpg`), 25, 25, 200, 200)
-            ctx.clip()
 
             await msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'tarot.png'))
         })
