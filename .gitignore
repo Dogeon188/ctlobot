@@ -1,5 +1,5 @@
 /node_modules/
 /.idea/
-/test.js
 /config.json
 /memo.txt
+/test/
