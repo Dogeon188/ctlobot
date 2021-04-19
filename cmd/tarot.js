@@ -66,9 +66,9 @@ module.exports = {
             client.tarotLimit.set(msg.author.id, count - 1)
         } else client.tarotLimit.set(msg.author.id, this.useLimit - 1)
 
-        updateSays(client, false).then(async () => {
+        updateSays(client, false).then(() => {
             const tarot = tarots[Math.floor(Math.random() * tarots.length)]
-            await msg.channel.send(new Discord.MessageEmbed()
+            msg.channel.send(new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setAuthor("昶羅牌")
                 .setTitle(tarot.phrase.format({
