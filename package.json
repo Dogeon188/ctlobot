@@ -1,6 +1,6 @@
 {
   "name": "ctlobot",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "CTLO Discord bot.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,6 @@
   "license": "none",
   "dependencies": {
     "bent": "^7.3.12",
-    "canvas": "^2.7.0",
     "chalk": "^4.1.0",
     "common-tags": "^1.8.0",
     "discord.js": "^12.5.3",

@@ -1,4 +1,3 @@
-const Canvas = require("canvas")
 const Discord = require("discord.js")
 const bent = require("bent")
 const config = require("../config.json")
@@ -28,34 +27,59 @@ module.exports = {
     description: stripIndents`
         昶羅牌：讓昶昶告訴你今天的運勢
         也可以透過同時包含「昶」和「看|想|覺得」兩組關鍵字來觸發喔喔
+        *感謝 @佳節 提供素材*
     `,
     arg: false,
+    useLimit: 3,
+    cooldown: 10,
     usage: `${config.prefix} tarot`,
-    execute(client, msg, args) {
-        // TODO: html2canvas
-        if (msg.author.id === config.dogeon.id && args[0] === "update") {
-            updateSays(client, true).then(() =>
-                msg.channel.send(`已更新昶羅牌！（目前共有 ${tarots.length} 個條目）`))
-            return
+    async execute(client, msg, args) {
+        if (msg.author.id === config.dogeon.id) {
+            if (args[0] === "update") {
+                updateSays(client, true).then(() =>
+                    msg.channel.send(`已更新昶羅牌！（目前共有 ${tarots.length} 個條目）`))
+                return
+            } else if (args[0] === "refresh") {
+                if (args[1] === "all") {
+                    client.tarotLimit = new Discord.Collection()
+                    msg.channel.send("已重置所有使用者的昶羅牌使用次數！")
+                    return
+                }
+                client.tarotLimit.set(args[1], this.useLimit)
+                msg.channel.send(`已重置 **${args[1]}** 的昶羅牌使用次數！`)
+                client.logger.log("info", `Reset user ${args[1]}'s ctlo tarot limit.`)
+                return
+            }
         }
+
+        if (client.tarotLimit.has(msg.author.id)) {
+            let count = client.tarotLimit.get(msg.author.id)
+            if (count <= 0) {
+                msg.channel.send(stripIndents`
+                昶羅牌每 **${this.cooldown}分鐘** 只能使用 **${this.useLimit}** 次！
+                使用次數將於 **${
+                    this.cooldown * 60 + Math.floor((client.tarotRefreshTime.getTime() - new Date().getTime()) / 1000)
+                }** 秒後刷新。
+                `)
+                return
+            }
+            client.tarotLimit.set(msg.author.id, count - 1)
+        } else client.tarotLimit.set(msg.author.id, this.useLimit - 1)
+
         updateSays(client, false).then(async () => {
             const tarot = tarots[Math.floor(Math.random() * tarots.length)]
-            const canvas = Canvas.createCanvas(700, 250)
-            const ctx = canvas.getContext('2d')
-
-            ctx.drawImage(await Canvas.loadImage('assets/tarot/bg.png'), 0, 0, canvas.width, canvas.height)
-
-            ctx.font = '60px "Microsoft Jhenghei"'
-            ctx.fillStyle = '#ffffff'
-            ctx.fillText(tarot.title, 275, 100)
-            ctx.font = '30px "Microsoft Jhenghei"'
-            ctx.fillText(tarot.desc, 275, 160)
-
-            roundRect(ctx, 25, 25, 200, 200, 10, false, false)
-            ctx.clip()
-            ctx.drawImage(await Canvas.loadImage(`assets/tarot/tier${tarot.tier}.jpg`), 25, 25, 200, 200)
-
-            await msg.channel.send(new Discord.MessageAttachment(canvas.toBuffer(), 'tarot.png'))
+            await msg.channel.send(new Discord.MessageEmbed()
+                .setColor('#0099ff')
+                .setAuthor("昶羅牌")
+                .setTitle(tarot.phrase.format({
+                    username: msg.member.nickname == null ? msg.author.username : msg.member.nickname
+                }))
+                .setDescription(`*${tarot.desc}*`)
+                .setThumbnail(`https://raw.githubusercontent.com/Dogeon188/ctlobot/master/assets/tarot/tier${tarot.tier}.jpg`)
+                .addField("\u200b", "\u200b")
+                .addField("可能會發生的事情", "> " + tarot.forecast)
+                .addField("應對方式", "> " + tarot.response)
+            )
         })
     }
 }
