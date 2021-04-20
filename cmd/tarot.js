@@ -26,12 +26,11 @@ module.exports = {
     name: "tarot",
     useLimit: 3,
     cooldown: 10,
-    description: (() => stripIndents`
+    description: mdl => stripIndents`
         昶羅牌：讓昶昶告訴你今天的運勢
         也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測** 兩組關鍵字來觸發喔喔
-        ||感謝 @佳節 提供素材||
-    `)(),
-    // 每 **${this.cooldown}** 分鐘只能使用 **${this.useLimit}** 次
+        每 **${mdl.cooldown}** 分鐘只能使用 **${mdl.useLimit}** 次
+        ||感謝 @佳節 提供素材||`,
     arg: false,
     usage: `${config.prefix} tarot`,
     async execute(client, msg, args) {
@@ -54,7 +53,7 @@ module.exports = {
                     }
                     client.tarotLimit.set(args[1], this.useLimit)
                     msg.channel.send(`已重置 **${args[1]}** 的昶羅牌使用次數！`)
-                    client.logger.log("info", `Reset user ${args[1]}'s ctlo tarot limit.`)
+                    client.logger.log("info", `Reset user ${args[1]}'s tarot limit.`)
                     return
                 case "limit":
                     args[1] = +args[1]
@@ -63,6 +62,7 @@ module.exports = {
                     } else {
                         this.useLimit = args[1]
                         msg.channel.send(`成功將每 **${this.cooldown}** 分鐘的昶羅牌使用次數設為 **${args[1]}** 次！`)
+                        client.logger.log("info", `Set tarot use limit to ${args[1]}.`)
                     } return
                 case "cooldown":
                     args[1] = +args[1]
@@ -71,6 +71,7 @@ module.exports = {
                     } else {
                         this.cooldown = +args[1]
                         msg.channel.send(`成功將冷卻時間設為 **${args[1]}** 分鐘！`)
+                        client.logger.log("info", `Set tarot cooldown to ${args[1]}.`)
                     } return
             }
         }

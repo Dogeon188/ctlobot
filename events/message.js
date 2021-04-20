@@ -28,11 +28,10 @@ module.exports = {
                 else if (!client.commands.has(cmdName)) {
                     msg.channel.send(stripIndents`
                         我不知道你想表達什麼喔
-                        可用操作：${[client.commands.keyArray()].join(" ")}
+                        可用操作：\`${client.commands.keyArray().join(" ")}\`
                         使用 \`${config.prefix} help\` 以獲得更多訊息
                     `)
-                }
-                else client.commands.get(cmdName).execute(client, msg, args)
+                } else client.commands.get(cmdName).execute(client, msg, args)
             } else if (/昶/.test(msg.content) && !config.isBeta) {
                 if (/[早午晚]安/.test(msg.content)) client.commands.get("says").execute(client, msg, ["greet"])
                 else if (/[說講話看想]|覺得/.test(msg.content)) client.commands.get("says").execute(client, msg, [])
@@ -40,8 +39,9 @@ module.exports = {
             }
         } catch (e) {
             msg.channel.send(stripIndents`
-                ERROR
-                \`${e.message}\`
+                哎呀，看來我這裡出了一點小問題
+                麻煩把下面這一串鬼東西發給 <@706352093052665887> 方便他處理
+                \`\`\`${e.stack}\`\`\`
             `)
             throw e
         }
