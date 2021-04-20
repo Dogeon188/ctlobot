@@ -16,14 +16,14 @@ module.exports = {
     name: "says",
     description: stripIndents`
         昶語錄：傾聽昶昶的箴言
-        也可以透過同時包含「昶」和「說|講|話」兩組關鍵字來觸發喔喔
+        也可以透過同時包含 **昶** 和 **說 講 話 看 想 覺得** 兩組關鍵字來觸發喔喔
     `,
     arg: true,
     usage: `${config.prefix} says (<speech_id>)`,
     execute(client, msg, args) {
         if (msg.author.id === config.dogeon.id && args[0] === "update") {
             updateSays(client, true).then(() =>
-            msg.channel.send(`已更新昶語錄！（目前共有 ${says.length} 個條目）`))
+            msg.channel.send(`已更新昶語錄！（目前共有 **${says.length}** 個條目）`))
             return
         }
         if (args[0] === "greet") {
