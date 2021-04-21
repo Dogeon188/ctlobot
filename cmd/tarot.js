@@ -3,13 +3,9 @@ const bent = require("bent")
 const config = require("../config.json")
 const {stripIndents} = require("common-tags")
 
-parseTarot = (ctx) => {
-    let tarot = {}
-    for (let arg of ctx.split(", ")) {
-        arg = arg.split(": ")
-        tarot[arg[0]] = arg[1]
-    }
-    return tarot
+const parseTarot = (ctx) => {
+    const ks = ["tier", "phrase", "desc", "forecast", "response", "author"]
+    return Object.fromEntries(ks.map(k => [k, ctx[`gsx$${k}`].$t]))
 }
 
 let tarots, lastUpdated = 0
@@ -17,7 +13,7 @@ const updateSays = async (client, forceUpdate) => {
     if (!forceUpdate && new Date().getTime() - lastUpdated < 1200000) return
     tarots = (await bent(
         `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.tarot}/public/values?alt=json`,
-        "json")()).feed.entry.map(e => parseTarot(e.content.$t))
+        "json")()).feed.entry.map(parseTarot)
     lastUpdated = new Date().getTime()
     client.logger.log("info", "Updated ctlo tarot entries!")
 }

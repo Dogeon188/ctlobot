@@ -1,13 +1,19 @@
 const bent = require("bent")
 const {stripIndents} = require("common-tags")
 
+const parseSays = ctx => {
+    const ks = ["says", "author"]
+    return Object.fromEntries(ks.map(k => [k, ctx[`gsx$${k}`].$t]))
+}
+
 const config = require("../config.json")
-let says, lastUpdated = 0;
+let says, lastUpdated = 0
+
 const updateSays = async (client, forceUpdate) => {
     if (!forceUpdate && new Date().getTime() - lastUpdated < 600000) return
     says = (await bent(
         `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.says}/public/values?alt=json`,
-        "json")()).feed.entry.map(e => e.gsx$says.$t)
+        "json")()).feed.entry.map(parseSays)
     lastUpdated = new Date().getTime()
     client.logger.log("info", "Updated ctlo says entries!")
 }
@@ -51,7 +57,7 @@ module.exports = {
         }).catch(e => {
             msg.channel.send(stripIndents`
                 ERROR
-                \`${e.message}\`
+                \`${e.stack}\`
             `)
             throw e
         })
