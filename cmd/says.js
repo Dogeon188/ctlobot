@@ -25,6 +25,8 @@ const greet = msg => {
     else msg.channel.send("同學們早。")
 }
 
+class SaysIndexError extends Error {}
+
 module.exports = {
     name: "says",
     description: stripIndents`
@@ -44,8 +46,8 @@ module.exports = {
             const s = says[(() => {
                 if (args.length > 0) {
                     let i = +args[0]
-                    if (isNaN(i)) throw new Error(`Invalid speech id ${args[0]}!`)
-                    if (i >= says.length) throw new Error(`Index ${i} is too big for size ${says.length}!`)
+                    if (isNaN(i)) throw new SaysIndexError(`Invalid speech id \"${args[0]}\"!`)
+                    if (i >= says.length) throw new SaysIndexError(`Index ${i} is too big for size ${says.length}!`)
                     if (-says.length <= i < 0) return says.length + i
                     return i
                 }
@@ -57,8 +59,15 @@ module.exports = {
             })}
             ——${s.author}，2021\`\`\``)
         }).catch(e => {
-            msg.channel.send(`ERROR: \`${e.message}\``)
-            throw e
+            if (e instanceof SaysIndexError) msg.channel.send(`ERROR: \`${e.message}\``)
+            else {
+                msg.channel.send(stripIndents`
+                哎呀，看來我這裡出了一點小問題
+                麻煩把下面這一串鬼東西發給 <@706352093052665887> 方便他處理
+                \`\`\`${e.stack}\`\`\`
+                `)
+                throw e
+            }
         })
     }
 }

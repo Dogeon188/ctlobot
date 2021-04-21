@@ -2,20 +2,52 @@ const Discord = require("discord.js")
 const bent = require("bent")
 const config = require("../config.json")
 const {stripIndents} = require("common-tags")
+let tarots, lastUpdated = 0
 
-const parseTarot = (ctx) => {
+const parseTarot = ctx => {
     const ks = ["tier", "phrase", "desc", "forecast", "response", "author"]
     return Object.fromEntries(ks.map(k => [k, ctx[`gsx$${k}`].$t]))
 }
 
-let tarots, lastUpdated = 0
 const updateSays = async (client, forceUpdate) => {
     if (!forceUpdate && new Date().getTime() - lastUpdated < 1200000) return
     tarots = (await bent(
         `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.tarot}/public/values?alt=json`,
         "json")()).feed.entry.map(parseTarot)
     lastUpdated = new Date().getTime()
-    client.logger.log("info", "Updated ctlo tarot entries!")
+    client.logger.log("info", `Updated ctlo tarot entries! (Now have ${tarots.length} entries)`)
+}
+
+const opCommands = {
+    refresh: (c, m, a) => {
+        if (a[1] === undefined) return m.channel.send("沒有提供使用者ID！")
+        if (a[1] === "all") {
+            c.tarotLimit = new Discord.Collection()
+            m.channel.send("已重置所有使用者的昶羅牌使用次數！")
+            return
+        }
+        c.tarotLimit.set(a[1], this.useLimit)
+        m.channel.send(`已重置 **${a[1]}** 的昶羅牌使用次數！`)
+        c.logger.log("info", `Reset user ${a[1]}'s tarot limit.`)
+    },
+    limit: (c, m, a) => {
+        a[1] = +a[1]
+        if (isNaN(a[1])) m.channel.send(`每 **${this.cooldown}** 分鐘的昶羅牌使用次數為 **${this.useLimit}** 次。`)
+        else {
+            this.useLimit = a[1]
+            m.channel.send(`成功將每 **${module.exports.cooldown}** 分鐘的昶羅牌使用次數設為 **${a[1]}** 次！`)
+            c.logger.log("info", `Set tarot use limit to ${a[1]} times.`)
+        }
+    },
+    cooldown: (c, m, a) => {
+        a[1] = +a[1]
+        if (isNaN(a[1])) m.channel.send(`冷卻時間為 **${module.exports.cooldown}** 分鐘。`)
+        else {
+            this.cooldown = +a[1]
+            m.channel.send(`成功將冷卻時間設為 **${a[1]}** 分鐘！`)
+            c.logger.log("info", `Set tarot cooldown to ${a[1]} minutes.`)
+        }
+    }
 }
 
 module.exports = {
@@ -30,45 +62,13 @@ module.exports = {
     arg: false,
     usage: `${config.prefix} tarot`,
     async execute(client, msg, args) {
-        console.log(this)
         if (msg.author.id === config.dogeon.id) {
             switch (args[0]) {
-                case "update":
-                    updateSays(client, true).then(() =>
-                        msg.channel.send(`已更新昶羅牌！（目前共有 ${tarots.length} 個條目）`))
-                    return
-                case "refresh":
-                    if (args[1] === undefined) {
-                        msg.channel.send("沒有提供使用者ID！")
-                        return
-                    }
-                    if (args[1] === "all") {
-                        client.tarotLimit = new Discord.Collection()
-                        msg.channel.send("已重置所有使用者的昶羅牌使用次數！")
-                        return
-                    }
-                    client.tarotLimit.set(args[1], this.useLimit)
-                    msg.channel.send(`已重置 **${args[1]}** 的昶羅牌使用次數！`)
-                    client.logger.log("info", `Reset user ${args[1]}'s tarot limit.`)
-                    return
-                case "limit":
-                    args[1] = +args[1]
-                    if (isNaN(args[1])) {
-                        msg.channel.send(`每 **${this.cooldown}** 分鐘的昶羅牌使用次數為 **${this.useLimit}** 次。`)
-                    } else {
-                        this.useLimit = args[1]
-                        msg.channel.send(`成功將每 **${this.cooldown}** 分鐘的昶羅牌使用次數設為 **${args[1]}** 次！`)
-                        client.logger.log("info", `Set tarot use limit to ${args[1]}.`)
-                    } return
-                case "cooldown":
-                    args[1] = +args[1]
-                    if (isNaN(args[1])) {
-                        msg.channel.send(`冷卻時間為 **${this.cooldown}** 分鐘。`)
-                    } else {
-                        this.cooldown = +args[1]
-                        msg.channel.send(`成功將冷卻時間設為 **${args[1]}** 分鐘！`)
-                        client.logger.log("info", `Set tarot cooldown to ${args[1]}.`)
-                    } return
+                case "update": return updateSays(client, true).then(() =>
+                    msg.channel.send(`已更新昶羅牌！（目前共有 ${tarots.length} 個條目）`))
+                case "refresh": return opCommands.refresh(client, msg, args)
+                case "limit": return opCommands.limit(client, msg, args)
+                case "cooldown": return opCommands.cooldown(client, msg, args)
             }
         }
 
