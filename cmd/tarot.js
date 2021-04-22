@@ -50,6 +50,8 @@ const opCommands = {
     }
 }
 
+const tierColor = ["#0772b4", "#0a9c35", "#88cb03", "#ffbf00", "#bb2705"]
+
 module.exports = {
     name: "tarot",
     useLimit: 3,
@@ -92,7 +94,7 @@ module.exports = {
         updateSays(client, false).then(() => {
             const tarot = tarots[Math.floor(Math.random() * tarots.length)]
             const embed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
+                .setColor(tierColor[tarot.tier])
                 .setAuthor("昶羅牌")
                 .setTitle(tarot.phrase.format({
                     username: msg.member.displayName
