@@ -76,8 +76,7 @@ module.exports = {
             let count = client.tarotLimit.get(msg.author.id)
             if (count >= this.useLimit) {
                 msg.channel.send(stripIndents`
-                **${msg.member.nickname == null ? msg.author.username : msg.member.nickname
-                }**，昶羅牌每 **${this.cooldown}分鐘** 只能使用 **${this.useLimit}** 次！
+                **${msg.member.displayName}**，昶羅牌每 **${this.cooldown}分鐘** 只能使用 **${this.useLimit}** 次！
                 使用次數將於 **${
                     this.cooldown * 60 + Math.floor((client.tarotRefreshTime.getTime() - new Date().getTime()) / 1000)
                 }** 秒後刷新。
@@ -93,7 +92,7 @@ module.exports = {
                 .setColor('#0099ff')
                 .setAuthor("昶羅牌")
                 .setTitle(tarot.phrase.format({
-                    username: msg.member.nickname == null ? msg.author.username : msg.member.nickname
+                    username: msg.member.displayName
                 }))
                 .setDescription(`*${tarot.desc}*`)
                 .setThumbnail(`https://raw.githubusercontent.com/Dogeon188/ctlobot/master/assets/tarot/tier${tarot.tier}.jpg`)

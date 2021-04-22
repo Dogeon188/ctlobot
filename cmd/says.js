@@ -55,7 +55,7 @@ module.exports = {
             })()]
             msg.channel.send(stripIndents`
             \`\`\`${s.says.format({
-                username: msg.member.nickname == null ? msg.author.username : msg.member.nickname
+                username: msg.member.displayName
             })}
             ——${s.author}，2021\`\`\``)
         }).catch(e => {
