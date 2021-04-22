@@ -32,9 +32,9 @@ const opCommands = {
     },
     limit: (c, m, a) => {
         a[1] = +a[1]
-        if (isNaN(a[1])) m.channel.send(`每 **${this.cooldown}** 分鐘的昶羅牌使用次數為 **${this.useLimit}** 次。`)
+        if (isNaN(a[1])) m.channel.send(`每 **${module.exports.cooldown}** 分鐘的昶羅牌使用次數為 **${module.exports.useLimit}** 次。`)
         else {
-            this.useLimit = a[1]
+            module.exports.useLimit = a[1]
             m.channel.send(`成功將每 **${module.exports.cooldown}** 分鐘的昶羅牌使用次數設為 **${a[1]}** 次！`)
             c.logger.log("info", `Set tarot use limit to ${a[1]} times.`)
         }
@@ -43,7 +43,7 @@ const opCommands = {
         a[1] = +a[1]
         if (isNaN(a[1])) m.channel.send(`冷卻時間為 **${module.exports.cooldown}** 分鐘。`)
         else {
-            this.cooldown = +a[1]
+            module.exports.cooldown = +a[1]
             m.channel.send(`成功將冷卻時間設為 **${a[1]}** 分鐘！`)
             c.logger.log("info", `Set tarot cooldown to ${a[1]} minutes.`)
         }
@@ -57,18 +57,21 @@ module.exports = {
     description: mdl => stripIndents`
         昶羅牌：讓昶昶告訴你今天的運勢
         也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測** 兩組關鍵字來觸發喔喔
-        每 **${mdl.cooldown}** 分鐘只能使用 **${mdl.useLimit}** 次
-        ||感謝 @佳節 提供素材||`,
+        每 **${mdl.cooldown}** 分鐘只能使用 **${mdl.useLimit}** 次`,
     arg: false,
     usage: `${config.prefix} tarot`,
     async execute(client, msg, args) {
         if (msg.author.id === config.dogeon.id) {
             switch (args[0]) {
-                case "update": return updateSays(client, true).then(() =>
-                    msg.channel.send(`已更新昶羅牌！（目前共有 ${tarots.length} 個條目）`))
-                case "refresh": return opCommands.refresh(client, msg, args)
-                case "limit": return opCommands.limit(client, msg, args)
-                case "cooldown": return opCommands.cooldown(client, msg, args)
+                case "update":
+                    return updateSays(client, true).then(() =>
+                        msg.channel.send(`已更新昶羅牌！（目前共有 ${tarots.length} 個條目）`))
+                case "refresh":
+                    return opCommands.refresh(client, msg, args)
+                case "limit":
+                    return opCommands.limit(client, msg, args)
+                case "cooldown":
+                    return opCommands.cooldown(client, msg, args)
             }
         }
 
@@ -88,7 +91,7 @@ module.exports = {
 
         updateSays(client, false).then(() => {
             const tarot = tarots[Math.floor(Math.random() * tarots.length)]
-            msg.channel.send(new Discord.MessageEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setAuthor("昶羅牌")
                 .setTitle(tarot.phrase.format({
@@ -99,7 +102,9 @@ module.exports = {
                 .addField("\u200b", "\u200b")
                 .addField("可能會發生的事情", "> " + tarot.forecast)
                 .addField("應對方式", "> " + tarot.response)
-            )
+            if (tarot.author !== "")
+                embed.setFooter(`素材提供：${tarot.author}`)
+            msg.channel.send(embed)
         })
     }
 }
