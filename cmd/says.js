@@ -1,5 +1,6 @@
 const bent = require("bent")
 const {stripIndents} = require("common-tags")
+const Discord = require("discord.js")
 const config = require("../config.json")
 
 let says, lastUpdated = 0
@@ -53,11 +54,12 @@ module.exports = {
                 }
                 return Math.floor(Math.random() * says.length)
             })()]
-            msg.channel.send(stripIndents`
-            \`\`\`${s.says.format({
-                username: msg.member.displayName
-            })}
-            ——${s.author}，2021\`\`\``)
+            msg.channel.send(new Discord.MessageEmbed()
+                .setTitle(s.says.format({
+                    username: msg.member.displayName
+                }))
+                .setFooter(`——${s.author}，2021`)
+                .setColor("#007799"))
         }).catch(e => {
             if (e instanceof SaysIndexError) msg.channel.send(`ERROR: \`${e.message}\``)
             else {
