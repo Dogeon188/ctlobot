@@ -32,7 +32,7 @@ module.exports = {
                         使用 \`${config.prefix} help\` 以獲得更多訊息
                     `)
                 } else client.commands.get(cmdName).execute(client, msg, args)
-            } else if (/昶/.test(msg.content) && !config.isBeta) {
+            } else if (/昶|林小姐|敦紀|淳華/.test(msg.content) && !config.isBeta) {
                 if (/[早午晚]安/.test(msg.content)) client.commands.get("says").execute(client, msg, ["greet"])
                 else if (/[占卜運勢預測]/.test(msg.content)) client.commands.get("tarot").execute(client, msg, [])
                 else if (/[說講話看想]|覺得/.test(msg.content)) client.commands.get("says").execute(client, msg, [])
