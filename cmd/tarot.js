@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const bent = require("bent")
 const config = require("../config.json")
+const chalk = require("chalk")
 const {stripIndents} = require("common-tags")
 
 let tarots,
@@ -18,7 +19,7 @@ const updateSays = async (client, forceUpdate) => {
     tarots = (await bent(
         `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.tarot}/public/values?alt=json`, "json")()).feed.entry.map(parseTarot)
     lastUpdated = new Date().getTime()
-    client.logger.log("info", `Updated ctlo tarot entries! (Now have ${tarots.length} entries)`)
+    client.logger.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(tarots.length)} entries.`)
 }
 
 const opCommands = {
@@ -31,7 +32,7 @@ const opCommands = {
         }
         c.tarotLimit.delete(a[1])
         m.channel.send(`已重置 **${a[1]}** 的昶羅牌使用次數！`)
-        c.logger.log("info", `Reset user ${a[1]}'s tarot limit.`)
+        c.logger.log("info", `Reset user ${chalk.blue.bold(a[1])}'s tarot limit.`)
     },
     limit: (c, m, a) => {
         a[1] = +a[1]
@@ -43,7 +44,7 @@ const opCommands = {
                 c.logger.log("info", `Turned off tarot use limit.`)
             } else {
                 m.channel.send(`成功將每 **${cooldown}** 分鐘的昶羅牌使用次數設為 **${useLimit}** 次！`)
-                c.logger.log("info", `Set tarot use limit to ${useLimit} times.`)
+                c.logger.log("info", `Set tarot use limit to ${chalk.blue.bold(useLimit)} times.`)
             }
         }
     },
@@ -53,7 +54,7 @@ const opCommands = {
         else {
             cooldown = +a[1]
             m.channel.send(`成功將冷卻時間設為 **${cooldown}** 分鐘！`)
-            c.logger.log("info", `Set tarot cooldown to ${cooldown} minutes.`)
+            c.logger.log("info", `Set tarot cooldown to ${chalk.blue.bold(cooldown)} minutes.`)
         }
     }
 }

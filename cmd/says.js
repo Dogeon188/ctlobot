@@ -1,6 +1,7 @@
 const bent = require("bent")
 const {stripIndents} = require("common-tags")
 const Discord = require("discord.js")
+const chalk = require("chalk")
 const config = require("../config.json")
 
 let says, lastUpdated = 0
@@ -16,7 +17,7 @@ const updateSays = async (client, forceUpdate) => {
         `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.says}/public/values?alt=json`,
         "json")()).feed.entry.map(parseSays)
     lastUpdated = new Date().getTime()
-    client.logger.log("info", `Updated ctlo says entries! (Now have ${says.length} entries.)`)
+    client.logger.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(says.length)} entries.`)
 }
 
 const greet = msg => {
@@ -48,8 +49,9 @@ module.exports = {
             const s = says[(() => {
                 if (args.length > 0) {
                     let i = +args[0]
-                    if (isNaN(i)) throw new SaysIndexError(`Invalid speech id \"${args[0]}\"!`)
-                    if (i >= says.length) throw new SaysIndexError(`Index ${i} is too big for size ${says.length}!`)
+                    if (isNaN(i)) throw new SaysIndexError(`無法將 **${args[0]}** 解析為昶語錄ID！`)
+                    if (i > says.length) throw new SaysIndexError(`昶語錄只有 **${says.length}** 個條目而已，你輸入的 **${i}** 對我來說太大了啊啊啊`)
+                    i -= 1
                     if (-says.length <= i < 0) return says.length + i
                     return i
                 }
@@ -62,7 +64,7 @@ module.exports = {
                 .setFooter(`——${s.author}，2021`)
                 .setColor("#007799"))
         }).catch(e => {
-            if (e instanceof SaysIndexError) msg.channel.send(`ERROR: \`${e.message}\``)
+            if (e instanceof SaysIndexError) msg.channel.send(`${e.message}`)
             else {
                 msg.channel.send(stripIndents`
                 哎呀，看來我這裡出了一點小問題
