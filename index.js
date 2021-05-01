@@ -29,7 +29,7 @@ setInterval(() => {
     client.tarotLimit = new Discord.Collection()
     client.logger.log("info", "Refreshed tarot use limit!")
     client.tarotRefreshTime = new Date()
-}, client.commands.get("tarot").cooldown * 60000)
+}, client.commands.get("tarot").cooldown() * 60000)
 
 client.on("message", msg => require("./events/message").execute(client, msg))
 client.on("ready", () => require("./events/ready").execute(client))
