@@ -6,7 +6,8 @@
   "scripts": {
     "run": "pm2 start index.js -n ctlobot --watch",
     "test": "node .",
-    "update": "git pull & npm i"
+    "update": "git pull & npm i",
+    "pull": "pm2 pull ctlobot"
   },
   "keywords": [],
   "author": "Dogeon188",
