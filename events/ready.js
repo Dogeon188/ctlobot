@@ -1,5 +1,5 @@
-const chalk = require("chalk")
 const config = require("../config.json")
+const chalk = require("chalk")
 
 module.exports = {
     name: "message",

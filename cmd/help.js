@@ -1,5 +1,5 @@
-const {stripIndents} = require("common-tags")
 const config = require("../config.json")
+const {stripIndents} = require("common-tags")
 
 module.exports = {
     name: "help",

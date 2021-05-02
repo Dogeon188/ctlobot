@@ -1,6 +1,7 @@
+const config = require("../config.json")
+
 const Discord = require("discord.js")
 const bent = require("bent")
-const config = require("../config.json")
 const chalk = require("chalk")
 const {stripIndents} = require("common-tags")
 

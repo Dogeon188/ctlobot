@@ -1,10 +1,8 @@
 const config = require("../config.json")
 const {stripIndents} = require("common-tags")
 
-const prefix = config.prefix
-
 parseArgs = (msg) => {
-    let args = msg.content.slice(prefix.length).trim()
+    let args = msg.content.slice(config.prefix.length).trim()
         .match(/((?<!\\)".*?(?<!\\)"|\S+)/g)
     if (args === null) throw new Error("No command provided!")
     args.forEach((t, i, a) => {
@@ -20,7 +18,7 @@ module.exports = {
     execute(client, msg) {
         try {
             if (msg.author.bot) return
-            if (msg.content.startsWith(prefix)) {
+            if (msg.content.startsWith(config.prefix)) {
                 const [cmdName, args] = parseArgs(msg)
                 if (msg.author.id === config.dogeon.id) {
                     if (cmdName === "chat") return require("../special/chat").execute(client, msg, args)

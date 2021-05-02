@@ -1,8 +1,9 @@
+const config = require("../config.json")
+
 const bent = require("bent")
 const {stripIndents} = require("common-tags")
 const Discord = require("discord.js")
 const chalk = require("chalk")
-const config = require("../config.json")
 
 let says, lastUpdated = 0
 
