@@ -19,7 +19,7 @@ const updateSays = async (client, forceUpdate) => {
     tarots = (await bent(
         `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.tarot}/public/values?alt=json`, "json")()).feed.entry.map(parseTarot)
     lastUpdated = new Date().getTime()
-    client.logger.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(tarots.length)} entries.`)
+    client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(tarots.length)} entries.`)
 }
 
 const opCommands = {
@@ -28,11 +28,12 @@ const opCommands = {
         if (a[1] === "all") {
             c.tarotLimit = new Discord.Collection()
             m.channel.send("已重置所有使用者的昶羅牌使用次數！")
+            c.log("info", "Reset everyone's tarot limit.")
             return
         }
         c.tarotLimit.delete(a[1])
         m.channel.send(`已重置 **${a[1]}** 的昶羅牌使用次數！`)
-        c.logger.log("info", `Reset user ${chalk.blue.bold(a[1])}'s tarot limit.`)
+        c.log("info", `Reset user ${chalk.blue.bold(a[1])}'s tarot limit.`)
     },
     limit: (c, m, a) => {
         a[1] = +a[1]
@@ -41,10 +42,10 @@ const opCommands = {
             useLimit = a[1]
             if (a[1] === -1) {
                 m.channel.send(`已成功關閉昶羅牌使用次數限制！`)
-                c.logger.log("info", `Turned off tarot use limit.`)
+                c.log("info", `Turned off tarot use limit.`)
             } else {
                 m.channel.send(`成功將每 **${cooldown}** 分鐘的昶羅牌使用次數設為 **${useLimit}** 次！`)
-                c.logger.log("info", `Set tarot use limit to ${chalk.blue.bold(useLimit)} times.`)
+                c.log("info", `Set tarot use limit to ${chalk.blue.bold(useLimit)} times.`)
             }
         }
     },
@@ -54,7 +55,7 @@ const opCommands = {
         else {
             cooldown = +a[1]
             m.channel.send(`成功將冷卻時間設為 **${cooldown}** 分鐘！`)
-            c.logger.log("info", `Set tarot cooldown to ${chalk.blue.bold(cooldown)} minutes.`)
+            c.log("info", `Set tarot cooldown to ${chalk.blue.bold(cooldown)} minutes.`)
         }
     }
 }

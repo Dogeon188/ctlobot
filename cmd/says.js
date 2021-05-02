@@ -17,7 +17,7 @@ const updateSays = async (client, forceUpdate) => {
         `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.says}/public/values?alt=json`,
         "json")()).feed.entry.map(parseSays)
     lastUpdated = new Date().getTime()
-    client.logger.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(says.length)} entries.`)
+    client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(says.length)} entries.`)
 }
 
 const greet = msg => {

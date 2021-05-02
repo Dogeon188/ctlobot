@@ -11,6 +11,6 @@ module.exports = {
                 type: "LISTENING"
             }
         })
-        client.logger.log("info", `Logged in as ${chalk.blue(client.user.tag)}!`)
+        client.log("info", `Logged in as ${chalk.blue(client.user.tag)}!`)
     }
 }

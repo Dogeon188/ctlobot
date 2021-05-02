@@ -17,6 +17,11 @@ client.logger = winston.createLogger({
     }[log.level]} ${log.message}`)
 })
 
+client.log = (lvl, msg) => {
+    client.channels.fetch(config.consoleChannel).then(c => c.send(stripAnsi(msg)))
+    client.logger.log(lvl, msg)
+}
+
 client.commands = new Discord.Collection()
 for (const file of fs.readdirSync('./cmd').filter(f => f.endsWith('.js') && !f.startsWith("."))) {
     const command = require(`./cmd/${file}`);
@@ -27,7 +32,7 @@ client.tarotLimit = new Discord.Collection()
 client.tarotRefreshTime = new Date()
 setInterval(() => {
     client.tarotLimit = new Discord.Collection()
-    client.logger.log("info", "Refreshed tarot use limit!")
+    client.log("info", "Refreshed tarot use limit!")
     client.tarotRefreshTime = new Date()
 }, client.commands.get("tarot").cooldown() * 60000)
 
@@ -35,7 +40,7 @@ client.on("message", msg => require("./events/message").execute(client, msg))
 client.on("ready", () => require("./events/ready").execute(client))
 
 process.on("uncaughtException", e => {
-    client.logger.log("error", `${e.message}\n${chalk.gray(e.stack)}`)
+    client.log("error", `${e.message}\n${chalk.gray(e.stack)}`)
 })
 
 client.login(config.token)
