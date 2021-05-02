@@ -12,8 +12,8 @@ const updateSays = async (client, forceUpdate) => {
     client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(client.says.entries.length)} entries.`)
 }
 
-const greet = msg => {
-    let t = new Date().getHours(), s = Math.random() < 0.25, i
+const greet = (cli, msg) => {
+    let t = new Date().getHours(), s = Math.random() < cli.says.chineseChance, i
     if (t >= 18 || t < 4) i = 2
     else if (t >= 11 && t < 18) i = 1
     else i = 0
@@ -35,7 +35,7 @@ module.exports = {
             return updateSays(client, true).then(() =>
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.says.entries.length}** 個條目）`))
 
-        if (args[0] === "greet") return greet(msg)
+        if (args[0] === "greet") return greet(client, msg)
 
         updateSays(client, false).then(() => {
             const s = client.says.entries[(() => {

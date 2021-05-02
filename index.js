@@ -4,8 +4,9 @@ const fs = require("fs")
 const Discord = require("discord.js")
 const chalk = require("chalk")
 const winston = require("winston")
-const client = new Discord.Client()
 const utils = require("./utils")
+
+const client = new Discord.Client()
 
 client.logger = winston.createLogger({
     transports: new winston.transports.Console(),
@@ -38,6 +39,7 @@ client.tarot = {
 }
 client.says = {
     entries: [],
+    chineseChance: 0.2,
     lastUpdated: 0,
     updateInterval: 10800000 // 3hrs
 }

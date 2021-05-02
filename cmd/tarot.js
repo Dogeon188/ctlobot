@@ -45,7 +45,7 @@ const ops = {
 
 module.exports = {
     name: "tarot",
-    description: (c) => {
+    description: c => {
         let s = stripIndents`
         昶羅牌：讓昶昶告訴你今天的運勢
         也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測** 兩組關鍵字來觸發喔喔`
