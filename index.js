@@ -5,8 +5,7 @@ const Discord = require("discord.js")
 const chalk = require("chalk")
 const winston = require("winston")
 const client = new Discord.Client()
-
-require("./utils")
+const utils = require("./utils")
 
 client.logger = winston.createLogger({
     transports: new winston.transports.Console(),
@@ -18,7 +17,7 @@ client.logger = winston.createLogger({
 })
 
 client.log = (lvl, msg) => {
-    client.channels.fetch(config.consoleChannel).then(c => c.send(stripAnsi(msg)))
+    client.channels.fetch(config.consoleChannel).then(c => c.send(utils.stripAnsi(msg)))
     client.logger.log(lvl, msg)
 }
 
@@ -29,9 +28,18 @@ for (const file of fs.readdirSync('./cmd').filter(f => f.endsWith('.js') && !f.s
 }
 
 client.tarot = {
+    entries: [],
     limit: new Discord.Collection(),
     refreshTime: new Date(),
-    useLimit: -1
+    useLimit: -1,
+    tierColor: ["#0772b4", "#0a9c35", "#88cb03", "#ffbf00", "#bb2705"],
+    lastUpdated: 0,
+    updateInterval: 10800000 // 3hrs
+}
+client.says = {
+    entries: [],
+    lastUpdated: 0,
+    updateInterval: 10800000 // 3hrs
 }
 
 setInterval(() => {

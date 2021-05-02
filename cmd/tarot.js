@@ -1,27 +1,17 @@
 const config = require("../config.json")
 
 const Discord = require("discord.js")
-const bent = require("bent")
 const chalk = require("chalk")
 const {stripIndents} = require("common-tags")
-
-let tarots, lastUpdated = 0
-
-
-const parseTarot = ctx => {
-    const ks = ["tier", "phrase", "desc", "forecast", "response", "author"]
-    return Object.fromEntries(ks.map(k => [k, ctx[`gsx$${k}`].$t]))
-}
+const utils = require("../utils")
 
 const updateSays = async (client, forceUpdate) => {
-    if (!forceUpdate && new Date().getTime() - lastUpdated < 1200000) return
-    tarots = (await bent(
-        `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.tarot}/public/values?alt=json`, "json")()).feed.entry.map(parseTarot)
-    lastUpdated = new Date().getTime()
-    client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(tarots.length)} entries.`)
+    if (!forceUpdate && new Date().getTime() - client.tarot.lastUpdated < client.tarot.updateInterval) return
+    client.tarot.entries = await utils.getSpreadsheetSource("1686809608")
+    client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(client.tarot.entries.length)} entries.`)
 }
 
-const opCommands = {
+const ops = {
     refresh: (c, m, a) => {
         if (a[1] === undefined) return m.channel.send("沒有提供使用者ID！")
         if (a[1] === "all") {
@@ -53,8 +43,6 @@ const opCommands = {
     }
 }
 
-const tierColor = ["#0772b4", "#0a9c35", "#88cb03", "#ffbf00", "#bb2705"]
-
 module.exports = {
     name: "tarot",
     description: (c) => {
@@ -71,11 +59,11 @@ module.exports = {
             switch (args[0]) {
                 case "update":
                     return updateSays(client, true).then(() =>
-                        msg.channel.send(`已更新昶羅牌！（目前共有 ${tarots.length} 個條目）`))
+                        msg.channel.send(`已更新昶羅牌！（目前共有 ${client.tarot.entries.length} 個條目）`))
                 case "refresh":
-                    return opCommands.refresh(client, msg, args)
+                    return ops.refresh(client, msg, args)
                 case "limit":
-                    return opCommands.limit(client, msg, args)
+                    return ops.limit(client, msg, args)
             }
         }
 
@@ -90,23 +78,21 @@ module.exports = {
             client.tarot.limit.set(msg.author.id, count + 1)
         } else client.tarot.limit.set(msg.author.id, 1)
 
-
-        updateSays(client, false).then(() => {
-            const tarot = tarots[Math.floor(Math.random() * tarots.length)]
-            const embed = new Discord.MessageEmbed()
-                .setColor(tierColor[tarot.tier])
-                .setAuthor("昶羅牌")
-                .setTitle(tarot.phrase.format({
-                    username: msg.member.displayName
-                }))
-                .setDescription(`*${tarot.desc}*`)
-                .setThumbnail(`https://raw.githubusercontent.com/Dogeon188/ctlobot/master/assets/tarot/tier${tarot.tier}.jpg`)
-                .addField("\u200b", "\u200b")
-                .addField("可能會發生的事情", "> " + tarot.forecast)
-                .addField("應對方式", "> " + tarot.response)
-            if (tarot.author !== "")
-                embed.setFooter(`素材提供：${tarot.author}`)
-            msg.channel.send(embed)
-        })
+        await updateSays(client, false)
+        const tarot = client.tarot.entries[Math.floor(Math.random() * client.tarot.entries.length)]
+        const embed = new Discord.MessageEmbed()
+            .setColor(client.tarot.tierColor[tarot.tier])
+            .setAuthor("昶羅牌")
+            .setTitle(tarot.phrase.format({
+                username: msg.member.displayName
+            }))
+            .setDescription(`*${tarot.desc}*`)
+            .setThumbnail(`https://raw.githubusercontent.com/Dogeon188/ctlobot/master/assets/tarot/tier${tarot.tier}.jpg`)
+            .addField("\u200b", "\u200b")
+            .addField("可能會發生的事情", "> " + tarot.forecast)
+            .addField("應對方式", "> " + tarot.response)
+        if (tarot.author !== "")
+            embed.setFooter(`素材提供：${tarot.author}`)
+        await msg.channel.send(embed)
     }
 }

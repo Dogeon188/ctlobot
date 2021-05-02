@@ -1,24 +1,15 @@
 const config = require("../config.json")
 
-const bent = require("bent")
 const {stripIndents} = require("common-tags")
 const Discord = require("discord.js")
 const chalk = require("chalk")
-
-let says, lastUpdated = 0
-
-const parseSays = ctx => {
-    const ks = ["says", "author"]
-    return Object.fromEntries(ks.map(k => [k, ctx[`gsx$${k}`].$t]))
-}
+const utils = require("../utils")
 
 const updateSays = async (client, forceUpdate) => {
-    if (!forceUpdate && new Date().getTime() - lastUpdated < 600000) return
-    says = (await bent(
-        `https://spreadsheets.google.com/feeds/list/${config.sheetSrc.sheetId}/${config.sheetSrc.says}/public/values?alt=json`,
-        "json")()).feed.entry.map(parseSays)
-    lastUpdated = new Date().getTime()
-    client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(says.length)} entries.`)
+    if (!forceUpdate && new Date().getTime() - client.says.lastUpdated < client.says.updateInterval) return
+    client.says.entries = await utils.getSpreadsheetSource("0")
+    client.says.updateInterval = new Date().getTime()
+    client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(client.says.entries.length)} entries.`)
 }
 
 const greet = msg => {
@@ -42,21 +33,22 @@ module.exports = {
     execute(client, msg, args) {
         if (msg.author.id === config.dogeon.id && args[0] === "update")
             return updateSays(client, true).then(() =>
-                msg.channel.send(`已更新昶語錄！（目前共有 **${says.length}** 個條目）`))
+                msg.channel.send(`已更新昶語錄！（目前共有 **${client.says.entries.length}** 個條目）`))
 
         if (args[0] === "greet") return greet(msg)
 
         updateSays(client, false).then(() => {
-            const s = says[(() => {
+            const s = client.says.entries[(() => {
                 if (args.length > 0) {
                     let i = +args[0]
                     if (isNaN(i)) throw new SaysIndexError(`無法將 **${args[0]}** 解析為昶語錄ID！`)
-                    if (i > says.length) throw new SaysIndexError(`昶語錄只有 **${says.length}** 個條目而已，你輸入的 **${i}** 對我來說太大了啊啊啊`)
+                    if (i > client.says.entries.length)
+                        throw new SaysIndexError(`昶語錄只有 **${client.says.entries.length}** 個條目而已，你輸入的 **${i}** 對我來說太大了啊啊啊`)
                     i -= 1
-                    if (-says.length <= i < 0) return says.length + i
+                    if (-client.says.entries.length <= i < 0) return client.says.entries.length + i
                     return i
                 }
-                return Math.floor(Math.random() * says.length)
+                return Math.floor(Math.random() * client.says.entries.length)
             })()]
             msg.channel.send(new Discord.MessageEmbed()
                 .setTitle(s.says.format({
