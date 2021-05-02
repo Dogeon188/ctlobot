@@ -18,7 +18,7 @@ module.exports = {
             else {
                 const desc = client.commands.get(args[0]).description
                 msg.channel.send(stripIndents`
-                    ${typeof desc === "string" ? desc : desc()}
+                    ${typeof desc === "string" ? desc : desc(client)}
                     
                     使用方式：\`${client.commands.get(args[0]).usage}\`
                 `)

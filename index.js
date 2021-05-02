@@ -28,13 +28,17 @@ for (const file of fs.readdirSync('./cmd').filter(f => f.endsWith('.js') && !f.s
     client.commands.set(command.name, command);
 }
 
-client.tarotLimit = new Discord.Collection()
-client.tarotRefreshTime = new Date()
+client.tarot = {
+    limit: new Discord.Collection(),
+    refreshTime: new Date(),
+    useLimit: -1
+}
+
 setInterval(() => {
-    client.tarotLimit = new Discord.Collection()
+    client.tarot.limit = new Discord.Collection()
     client.log("info", "Refreshed tarot use limit!")
-    client.tarotRefreshTime = new Date()
-}, client.commands.get("tarot").cooldown() * 60000)
+    client.tarot.refreshTime = new Date()
+}, 3600000)
 
 client.on("message", msg => require("./events/message").execute(client, msg))
 client.on("ready", () => require("./events/ready").execute(client))
