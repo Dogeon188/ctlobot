@@ -22,7 +22,7 @@ const updateSays = async (client, forceUpdate) => {
 }
 
 const greet = msg => {
-    let t = new Date().getHours(), s = Math.random() < 0.03, i
+    let t = new Date().getHours(), s = Math.random() < 0.25, i
     if (t >= 18 || t < 4) i = 2
     else if (t >= 11 && t < 18) i = 1
     else i = 0
