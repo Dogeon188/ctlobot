@@ -22,10 +22,11 @@ module.exports = {
             if (msg.author.bot) return
             if (msg.content.startsWith(prefix)) {
                 const [cmdName, args] = parseArgs(msg)
-                if (cmdName === "chat" && msg.author.id === config.dogeon.id) {
-                    require("../special/chat").execute(client, msg, args)
+                if (msg.author.id === config.dogeon.id) {
+                    if (cmdName === "chat") return require("../special/chat").execute(client, msg, args)
+                    else if (cmdName === "update") return require("../special/update").execute(client, msg, args)
                 }
-                else if (!client.commands.has(cmdName)) {
+                if (!client.commands.has(cmdName)) {
                     msg.channel.send(stripIndents`
                         我不知道你想表達什麼喔
                         可用操作：\`${client.commands.keyArray().join(" ")}\`
