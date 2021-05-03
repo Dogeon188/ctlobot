@@ -45,8 +45,10 @@ client.says = {
 }
 
 setInterval(() => {
-    client.tarot.limit = new Discord.Collection()
-    client.log("info", "Refreshed tarot use limit!")
+    if (client.tarot.useLimit !== -1) {
+        client.tarot.limit = new Discord.Collection()
+        client.log("info", "Refreshed tarot use limit!")
+    }
     client.tarot.refreshTime = new Date()
 }, 3600000)
 

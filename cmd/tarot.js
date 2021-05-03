@@ -48,7 +48,7 @@ module.exports = {
     description: c => {
         let s = stripIndents`
         昶羅牌：讓昶昶告訴你今天的運勢
-        也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測** 兩組關鍵字來觸發喔喔`
+        也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測 塔 羅** 兩組關鍵字來觸發喔喔`
         if (c.tarot.useLimit !== -1) s += `\n每小時只能使用 **${c.tarot.useLimit}** 次`
         return s
     },

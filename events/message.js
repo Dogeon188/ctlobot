@@ -33,7 +33,7 @@ module.exports = {
                 } else client.commands.get(cmdName).execute(client, msg, args)
             } else if (/昶|林小姐|敦紀|淳華/.test(msg.content) && !config.isBeta) {
                 if (/[早午晚]安/.test(msg.content)) client.commands.get("says").execute(client, msg, ["greet"])
-                else if (/[占卜運勢預測]/.test(msg.content)) client.commands.get("tarot").execute(client, msg, [])
+                else if (/[占卜運勢預測塔羅]/.test(msg.content)) client.commands.get("tarot").execute(client, msg, [])
                 else if (/[說講話看想]|覺得/.test(msg.content)) client.commands.get("says").execute(client, msg, [])
             }
         } catch (e) {
