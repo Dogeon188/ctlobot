@@ -21,8 +21,10 @@ module.exports = {
         const p = parser({columns: true})
         p.write(await bent("string")(
             (await bent("https://docs.google.com", "HEAD", 307)(url)).headers.location))
+        p.end()
         let i
         while (i = p.read()) arr.push(i)
+        p.destroy()
         return arr
     }
 }
