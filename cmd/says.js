@@ -8,7 +8,7 @@ const utils = require("../utils")
 const updateSays = async (client, forceUpdate) => {
     if (!forceUpdate && new Date().getTime() - client.says.lastUpdated < client.says.updateInterval) return
     client.says.entries = await utils.getSpreadsheetSource("0")
-    client.says.updateInterval = new Date().getTime()
+    client.says.lastUpdated = new Date().getTime()
     client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(client.says.entries.length)} entries.`)
 }
 

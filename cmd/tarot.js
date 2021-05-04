@@ -8,6 +8,7 @@ const utils = require("../utils")
 const updateSays = async (client, forceUpdate) => {
     if (!forceUpdate && new Date().getTime() - client.tarot.lastUpdated < client.tarot.updateInterval) return
     client.tarot.entries = await utils.getSpreadsheetSource("1686809608")
+    client.tarot.lastUpdated = new Date().getTime()
     client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(client.tarot.entries.length)} entries.`)
 }
 
