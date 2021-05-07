@@ -11,7 +11,7 @@ module.exports = {
         if (!msg.member.hasPermission("ADMINISTRATOR")) throw new Error("Permission denied.")
 
         const pa = {
-            type: args[0], duration: args[1],
+            type: args[0], server: args[1],
             content: args[2], choices: args.slice(3)
         }
 
@@ -20,7 +20,7 @@ module.exports = {
             case "bool":
             case "b":
                 cnt = `${pa.content}\n贊成按:o: 不贊成按:x:`
-                emj = ["⭕", "❌"]
+                emj = ["✅", "❌"]
                 break
             case "choice":
             case "c":
@@ -35,7 +35,7 @@ module.exports = {
             default:
                 throw new Error(`Unexpected type of poll ${pa.type}!`)
         }
-        client.channels.fetch(config.voteChannel[msg.guild.id]).then(c => {
+        client.channels.fetch(pa.server).then(c => {
             c.send(cnt).then(m => {
                 for (let e of emj) m.react(e)
             })
