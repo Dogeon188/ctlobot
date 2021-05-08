@@ -2,15 +2,6 @@ const config = require("../config.json")
 
 const {stripIndents} = require("common-tags")
 const Discord = require("discord.js")
-const chalk = require("chalk")
-const utils = require("../utils")
-
-const updateSays = async (client, forceUpdate) => {
-    if (!forceUpdate && new Date().getTime() - client.says.lastUpdated < client.says.updateInterval) return
-    client.says.entries = await utils.getSpreadsheetSource("0")
-    client.says.lastUpdated = new Date().getTime()
-    client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(client.says.entries.length)} entries.`)
-}
 
 class SaysIndexError extends Error {}
 
@@ -27,10 +18,10 @@ module.exports = {
     ],
     execute(client, msg, args) {
         if (msg.author.id === config.dogeon.id && args[0] === "update")
-            return updateSays(client, true).then(() =>
+            return client.says.update(client, true).then(() =>
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.says.entries.length}** 個條目）`))
 
-        updateSays(client, false).then(() => {
+        client.says.update(client, false).then(() => {
             const s = client.says.entries[(() => {
                 if (args.length > 0) {
                     let i = +args[0]

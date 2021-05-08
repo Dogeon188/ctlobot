@@ -13,6 +13,6 @@ module.exports = {
             }
         })
         client.log("info", `Logged in as ${chalk.blue(client.user.tag)}!`)
-        client.log("info", `Git hash: \`${utils.getGitHeadHash()}\``)
+        client.log("info", `Git hash: \`${chalk.blue(utils.getGitHeadHash())}\``)
     }
 }

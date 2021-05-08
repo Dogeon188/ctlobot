@@ -29,19 +29,37 @@ for (const file of fs.readdirSync('./cmd').filter(f => f.endsWith('.js') && !f.s
 }
 
 client.tarot = {
-    entries: [],
     limit: new Discord.Collection(),
-    refreshTime: new Date(),
+    refreshTime: new Date().getTime(),
     useLimit: -1,
     tierColor: ["#0772b4", "#0a9c35", "#88cb03", "#ffbf00", "#bb2705"],
-    lastUpdated: 0,
-    updateInterval: 10800000 // 3hrs
+    updateInterval: 10800000, // 3hrs
+    async update(forceUpdate) {
+        if (!forceUpdate && new Date().getTime() - client.tarot.lastUpdated < this.updateInterval) return
+        this.entries = await utils.getSpreadsheetSource("1686809608")
+        this.lastUpdated = new Date().getTime()
+        client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
+    }
 }
 client.says = {
-    entries: [],
-    chineseChance: 0.2,
-    lastUpdated: 0,
-    updateInterval: 10800000 // 3hrs
+    updateInterval: 10800000, // 3hrs
+    async update (client, forceUpdate) {
+        if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
+        this.entries = await utils.getSpreadsheetSource("0")
+        this.lastUpdated = new Date().getTime()
+        client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
+    }
+}
+client.greet = {
+    updateInterval: 10800000, // 3hrs
+    async update(client, forceUpdate) {
+        if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
+        this.entries = await utils.getSpreadsheetSource("663619317")
+        this.lastUpdated = new Date().getTime()
+        this.weightSum = 0
+        this.entries.forEach(e => this.weightSum += +e.weight)
+        client.log("info", `Updated ctlo greet entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
+    }
 }
 
 setInterval(() => {
@@ -49,7 +67,7 @@ setInterval(() => {
         client.tarot.limit = new Discord.Collection()
         client.log("info", "Refreshed tarot use limit!")
     }
-    client.tarot.refreshTime = new Date()
+    client.tarot.refreshTime = new Date().getTime()
 }, 3600000)
 
 client.on("message", msg => require("./events/message").execute(client, msg))

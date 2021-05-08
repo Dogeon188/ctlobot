@@ -3,14 +3,6 @@ const config = require("../config.json")
 const Discord = require("discord.js")
 const chalk = require("chalk")
 const {stripIndents} = require("common-tags")
-const utils = require("../utils")
-
-const updateSays = async (client, forceUpdate) => {
-    if (!forceUpdate && new Date().getTime() - client.tarot.lastUpdated < client.tarot.updateInterval) return
-    client.tarot.entries = await utils.getSpreadsheetSource("1686809608")
-    client.tarot.lastUpdated = new Date().getTime()
-    client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(client.tarot.entries.length)} entries.`)
-}
 
 const ops = {
     refresh: (c, m, a) => {
@@ -46,11 +38,11 @@ const ops = {
 
 module.exports = {
     name: "tarot",
-    description: c => {
+    description(client) {
         let s = stripIndents`
         昶羅牌：讓昶昶告訴你今天的運勢
         也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測 塔 羅** 兩組關鍵字來觸發喔喔`
-        if (c.tarot.useLimit !== -1) s += `\n每小時只能使用 **${c.tarot.useLimit}** 次`
+        if (client.tarot.useLimit !== -1) s += `\n每小時只能使用 **${client.tarot.useLimit}** 次`
         return s
     },
     arg: false,
@@ -59,7 +51,7 @@ module.exports = {
         if (msg.author.id === config.dogeon.id) {
             switch (args[0]) {
                 case "update":
-                    return updateSays(client, true).then(() =>
+                    return client.tarot.update(true).then(() =>
                         msg.channel.send(`已更新昶羅牌！（目前共有 ${client.tarot.entries.length} 個條目）`))
                 case "refresh":
                     return ops.refresh(client, msg, args)
@@ -73,13 +65,13 @@ module.exports = {
             if (client.tarot.useLimit !== -1 && count >= client.tarot.useLimit) return msg.channel.send(stripIndents`
                 **${msg.member.displayName}**，昶羅牌每一小時只能使用 **${client.tarot.useLimit}** 次！
                 使用次數將於 **${
-                    60 + Math.floor((client.tarot.refreshTime.getTime() - new Date().getTime()) / 60000)
+                    60 + Math.floor((client.tarot.refreshTime - new Date().getTime()) / 60000)
                 }** 分鐘後刷新。
                 `)
             client.tarot.limit.set(msg.author.id, count + 1)
         } else client.tarot.limit.set(msg.author.id, 1)
 
-        await updateSays(client, false)
+        await client.tarot.update(false)
         const tarot = client.tarot.entries[Math.floor(Math.random() * client.tarot.entries.length)]
         const embed = new Discord.MessageEmbed()
             .setColor(client.tarot.tierColor[tarot.tier])

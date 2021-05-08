@@ -22,6 +22,7 @@ module.exports = {
                 const desc = client.commands.get(args[0]).description
                 let usg = client.commands.get(args[0]).usage, cnt = stripIndents`
                     ${typeof desc === "string" ? desc : desc(client)}
+                    
                     使用方式：`
                 if (typeof usg === "string") cnt += `\`${usg}\``
                 else cnt += `\n\`${usg.join("\`\n\`")}\``

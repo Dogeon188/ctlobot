@@ -6,7 +6,7 @@ module.exports = {
     arg: false,
     usage: `${config.prefix} greet`,
     execute(client, msg, args) {
-        let t = new Date().getHours(), s = Math.random() < client.says.chineseChance, i
+        let t = new Date().getHours(), s = Math.random() < 0.2, i
         if (t >= 18 || t < 4) i = 2
         else if (t >= 11 && t < 18) i = 1
         else i = 0
