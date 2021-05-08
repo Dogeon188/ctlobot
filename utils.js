@@ -16,7 +16,7 @@ module.exports = {
         if (typeof s !== 'string') throw new TypeError(`Expected a string, got "${typeof s}"`);
         return s.replace(ansiRegex, '');
     },
-    getSpreadsheetSource: async (gid) => {
+    getSpreadsheetSource: async gid => {
         let arr = []
         const url = `/spreadsheets/d/e/2PACX-1vS2TzmX0blE38OLXfUP1Par35qq0D-_bhWpOaAv6fAmGmiap_RKGGMNGyO9dY7oSwFnJ7dGV3OXEacG/pub?gid=${gid}&single=true&output=csv`
         const p = parser({columns: true})

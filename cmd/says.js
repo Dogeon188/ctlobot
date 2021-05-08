@@ -12,14 +12,6 @@ const updateSays = async (client, forceUpdate) => {
     client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(client.says.entries.length)} entries.`)
 }
 
-const greet = (cli, msg) => {
-    let t = new Date().getHours(), s = Math.random() < cli.says.chineseChance, i
-    if (t >= 18 || t < 4) i = 2
-    else if (t >= 11 && t < 18) i = 1
-    else i = 0
-    msg.channel.send((s ? ["早安國文課！", "午安國文課！", "晚安國文課！"] : ["同學們早。", "同學們午安。", "同學們晚安。"])[i])
-}
-
 class SaysIndexError extends Error {}
 
 module.exports = {
@@ -29,13 +21,14 @@ module.exports = {
         也可以透過同時包含 **昶** 和 **說 講 話 看 想 覺得** 兩組關鍵字來觸發喔喔
     `,
     arg: true,
-    usage: `${config.prefix} says (<speech_id>)`,
+    usage: [
+        `${config.prefix} says`,
+        `${config.prefix} says <speech_id>`
+    ],
     execute(client, msg, args) {
         if (msg.author.id === config.dogeon.id && args[0] === "update")
             return updateSays(client, true).then(() =>
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.says.entries.length}** 個條目）`))
-
-        if (args[0] === "greet") return greet(client, msg)
 
         updateSays(client, false).then(() => {
             const s = client.says.entries[(() => {

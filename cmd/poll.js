@@ -1,10 +1,14 @@
 const config = require("../config.json")
+const Discord = require("discord.js")
 
 module.exports = {
     name: "poll",
-    description: "一個簡單的投票功能，只開放管理員使用",
+    description: "一個簡單的投票功能，目前只開放管理員使用",
     arg: true,
-    usage: `${config.prefix} poll <bool(b)|choice(c)> <duration> <poll_content> <choices...>`,
+    usage: [
+        `${config.prefix} poll <bool|b> <server_id> <poll_content>`,
+        `${config.prefix} poll <choice|c> <server_id> <poll_content> <choices...>`
+    ],
     execute(client, msg, args) {
         // TODO: end time, count vote, announce result
 
@@ -28,7 +32,7 @@ module.exports = {
                 cnt = pa.content
                 for (let i = 0; i < pa.choices.length; i++) {
                     if (i % 4 === 0) cnt += "\n"
-                    cnt += `${pa.choices[i]} 按${i}\ufe0f\u20e3    `
+                    cnt += `**${pa.choices[i]}** 按${i}\ufe0f\u20e3    `
                     emj.push(`${i}\ufe0f\u20e3`)
                 }
                 break
@@ -36,6 +40,8 @@ module.exports = {
                 throw new Error(`Unexpected type of poll ${pa.type}!`)
         }
         client.channels.fetch(pa.server).then(c => {
+            if (!(c instanceof Discord.TextChannel))
+                throw new Error(`Provided channel ID \`${pa.server}\` is not a text channel!`)
             c.send(cnt).then(m => {
                 for (let e of emj) m.react(e)
             })
