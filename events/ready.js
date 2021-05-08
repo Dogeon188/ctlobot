@@ -5,8 +5,8 @@ const chalk = require("chalk")
 module.exports = {
     name: "message",
     once: false,
-    execute(client) {
-        client.user.setPresence({
+    async execute(client) {
+        await client.user.setPresence({
             activity: {
                 name: `${config.prefix} help`,
                 type: "LISTENING"
