@@ -3,8 +3,6 @@ const config = require("../config.json")
 const {stripIndents} = require("common-tags")
 const Discord = require("discord.js")
 
-class SaysIndexError extends Error {}
-
 module.exports = {
     name: "says",
     description: stripIndents`
@@ -22,24 +20,13 @@ module.exports = {
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.says.entries.length}** 個條目）`))
         try {
             await client.says.update(false)
-            const i = args.length <= 0
-                ? Math.floor(Math.random() * client.says.entries.length)
-                : (() => {
-                    let i = +args[0]
-                    if (isNaN(i)) throw new SaysIndexError(`無法將 **${args[0]}** 解析為昶語錄編號！`)
-                    if (i > client.says.entries.length)
-                        throw new SaysIndexError(`昶語錄只有 **${client.says.entries.length}** 個條目而已，你輸入的 **${i}** 對我來說太大了啊啊啊`)
-                    i -= 1
-                    if (i < 0) throw new SaysIndexError(`不可以使用小於0的編號！`)
-                    return i
-                })()
-            const s = client.says.entries[i]
+            const s = client.says.random(args[0])
             await msg.channel.send(new Discord.MessageEmbed()
                 .setTitle(s.says.format({
                     username: msg.member.displayName
                 }))
                 .setFooter(`——${s.author}，2021`)
                 .setColor("#007799"))
-        } catch (e) {if (e instanceof SaysIndexError) msg.channel.send(`${e.message}`)}
+        } catch (e) {if (e instanceof client.says.SaysError) msg.channel.send(`${e.message}`)}
     }
 }

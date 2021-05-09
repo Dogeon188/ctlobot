@@ -72,7 +72,7 @@ module.exports = {
         } else client.tarot.limit.set(msg.author.id, 1)
 
         await client.tarot.update(false)
-        const tarot = client.tarot.entries[Math.floor(Math.random() * client.tarot.entries.length)]
+        const tarot = client.tarot.random()
         const embed = new Discord.MessageEmbed()
             .setColor(client.tarot.tierColor[tarot.tier])
             .setAuthor("昶羅牌")
