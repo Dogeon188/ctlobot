@@ -40,16 +40,6 @@ module.exports = {
                 }))
                 .setFooter(`——${s.author}，2021`)
                 .setColor("#007799"))
-        } catch (e) {
-            if (e instanceof SaysIndexError) msg.channel.send(`${e.message}`)
-            else {
-                msg.channel.send(stripIndents`
-                哎呀，看來我這裡出了一點小問題
-                麻煩把下面這一串鬼東西發給 <@706352093052665887> 方便他處理
-                \`\`\`${e.stack}\`\`\`
-                `)
-                throw e
-            }
-        }
+        } catch (e) {if (e instanceof SaysIndexError) msg.channel.send(`${e.message}`)}
     }
 }

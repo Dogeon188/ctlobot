@@ -1,13 +1,13 @@
-const config = require("../config.json")
-const Discord = require("discord.js")
+const {prefix} = require("../config.json")
+const {TextChannel} = require("discord.js")
 
 module.exports = {
     name: "poll",
     description: "一個簡單的投票功能，目前只開放管理員使用",
     arg: true,
     usage: [
-        `${config.prefix} poll <bool|b> <server_id> <poll_content>`,
-        `${config.prefix} poll <choice|c> <server_id> <poll_content> <choices...>`
+        `${prefix} poll <bool|b> <server_id> <poll_content>`,
+        `${prefix} poll <choice|c> <server_id> <poll_content> <choices...>`
     ],
     execute(client, msg, args) {
         // TODO: end time, count vote, announce result
@@ -40,11 +40,9 @@ module.exports = {
                 throw new Error(`Unexpected type of poll ${pa.type}!`)
         }
         client.channels.fetch(pa.server).then(c => {
-            if (!(c instanceof Discord.TextChannel))
+            if (!(c instanceof TextChannel))
                 throw new Error(`Provided channel ID \`${pa.server}\` is not a text channel!`)
-            c.send(cnt).then(m => {
-                for (let e of emj) m.react(e)
-            })
+            c.send(cnt).then(async m => { for (let e of emj) await m.react(e) })
         })
     }
 }

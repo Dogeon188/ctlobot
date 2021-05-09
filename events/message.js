@@ -18,11 +18,10 @@ module.exports = {
     execute(client, msg) {
         try {
             if (msg.author.bot) return
-            if (msg.content.startsWith(config.prefix)) {
+            if (msg.content.startsWith(config.prefix + " ")) {
                 const [cmdName, args] = parseArgs(msg)
                 if (msg.author.id === config.dogeon.id) {
-                    if (cmdName === "chat") return require("../special/chat").execute(client, msg, args)
-                    else if (cmdName === "update") return require("../special/update").execute(client, msg, args)
+                    if (client.op.has(cmdName)) return client.op.get(cmdName).execute(client, msg, args)
                 }
                 if (!client.commands.has(cmdName)) {
                     msg.channel.send(stripIndents`

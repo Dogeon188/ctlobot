@@ -27,6 +27,11 @@ for (const file of fs.readdirSync('./cmd').filter(f => f.endsWith('.js') && !f.s
     const command = require(`./cmd/${file}`);
     client.commands.set(command.name, command);
 }
+client.op = new Discord.Collection()
+for (const file of fs.readdirSync('./op').filter(f => f.endsWith('.js') && !f.startsWith("."))) {
+    const command = require(`./op/${file}`);
+    client.op.set(command.name, command);
+}
 
 client.tarot = {
     limit: new Discord.Collection(),
