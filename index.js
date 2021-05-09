@@ -43,7 +43,7 @@ client.tarot = {
 }
 client.says = {
     updateInterval: 10800000, // 3hrs
-    async update (client, forceUpdate) {
+    async update(forceUpdate) {
         if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
         this.entries = await utils.getSpreadsheetSource("0")
         this.lastUpdated = new Date().getTime()
@@ -52,12 +52,22 @@ client.says = {
 }
 client.greet = {
     updateInterval: 10800000, // 3hrs
-    async update(client, forceUpdate) {
+    random() {
+        let r = Math.random() * this.weightSum
+        for (const e of this.entries) {
+            r -= e.weight
+            if (r < 0) return e
+        }
+    },
+    async update(forceUpdate) {
         if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
         this.entries = await utils.getSpreadsheetSource("663619317")
         this.lastUpdated = new Date().getTime()
         this.weightSum = 0
-        this.entries.forEach(e => this.weightSum += +e.weight)
+        this.entries.forEach((e, i, a) => {
+            a[i].weight = +e.weight
+            this.weightSum += e.weight
+        })
         client.log("info", `Updated ctlo greet entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
     }
 }
