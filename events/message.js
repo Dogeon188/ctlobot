@@ -1,4 +1,5 @@
 const config = require("../config.json")
+const utils = require("../utils")
 const {stripIndents} = require("common-tags")
 
 parseArgs = (msg) => {
@@ -36,6 +37,7 @@ module.exports = {
                 else if (/[說講話看想]|覺得/.test(msg.content)) client.commands.get("says").execute(client, msg, [])
             }
         } catch (e) {
+            if (e instanceof utils.InvalidInputError) msg.channel.send(e.message)
             msg.channel.send(stripIndents`
                 哎呀，看來我這裡出了一點小問題
                 麻煩把下面這一串鬼東西發給 <@706352093052665887> 方便他處理

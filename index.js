@@ -1,9 +1,9 @@
 const config = require("./config.json")
 
-const Discord = require("discord.js")
+const {Client} = require("discord.js")
 const chalk = require("chalk")
 
-const client = new Discord.Client()
+const client = new Client()
 require("./init").initClient(client)
 
 process.on("uncaughtException", e => {

@@ -1,4 +1,5 @@
-const {prefix} = require("../config.json")
+const config = require("../config.json")
+const utils = require("../utils")
 const {TextChannel} = require("discord.js")
 
 module.exports = {
@@ -6,8 +7,8 @@ module.exports = {
     description: "一個簡單的投票功能，目前只開放管理員使用",
     arg: true,
     usage: [
-        `${prefix} poll <bool|b> <server_id> <poll_content>`,
-        `${prefix} poll <choice|c> <server_id> <poll_content> <choices...>`
+        `${config.prefix} poll <bool|b> <server_id> <poll_content>`,
+        `${config.prefix} poll <choice|c> <server_id> <poll_content> <choices...>`
     ],
     execute(client, msg, args) {
         // TODO: end time, count vote, announce result
@@ -41,7 +42,7 @@ module.exports = {
         }
         client.channels.fetch(pa.server).then(c => {
             if (!(c instanceof TextChannel))
-                throw new Error(`Provided channel ID \`${pa.server}\` is not a text channel!`)
+                throw new utils.InvalidInputError(`Provided channel ID \`${pa.server}\` is not a text channel!`)
             c.send(cnt).then(async m => { for (let e of emj) await m.react(e) })
         })
     }
