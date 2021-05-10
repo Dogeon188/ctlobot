@@ -1,8 +1,12 @@
 const config = require("../config.json")
+const {stripIndents} = require("common-tags")
 
 module.exports = {
     name: "greet",
-    description: "被昶昶大聲問早。",
+    description: stripIndents`
+        被昶昶大聲問早。
+        也可以透過同時包含 **昶** 和 **早安 午安 晚安** 兩組關鍵字來觸發喔喔
+    `,
     arg: false,
     usage: `${config.prefix} greet`,
     async execute(client, msg, args) {

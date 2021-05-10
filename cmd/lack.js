@@ -1,8 +1,12 @@
 const config = require("../config.json")
+const {stripIndents} = require("common-tags")
 
 module.exports = {
     name: "lack",
-    description: "昶昶，我缺乏什麼？",
+    description: stripIndents`
+        昶昶，我缺乏什麼？
+        也可以透過同時包含 **昶** 和 **需要 缺乏** 兩組關鍵字來觸發喔喔
+    `,
     arg: false,
     usage: `${config.prefix} lack`,
     async execute(client, msg, args) {
