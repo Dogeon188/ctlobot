@@ -41,7 +41,7 @@ module.exports.initClient = client => {
         updateInterval: 86400000, // 24hrs
         random() { return this.entries[Math.floor(Math.random() * this.entries.length)] },
         async update(forceUpdate) {
-            if (!forceUpdate && new Date().getTime() - client.tarot.lastUpdated < this.updateInterval) return
+            if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
             this.entries = await utils.getSpreadsheetSource("1686809608")
             this.lastUpdated = new Date().getTime()
             client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
@@ -94,7 +94,7 @@ module.exports.initClient = client => {
         updateInterval: 86400000, // 24hrs
         random() { return this.entries[Math.floor(Math.random() * this.entries.length)] },
         async update(forceUpdate) {
-            if (!forceUpdate && new Date().getTime() - client.tarot.lastUpdated < this.updateInterval) return
+            if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
             this.entries = await utils.getSpreadsheetSource("79624142")
             this.lastUpdated = new Date().getTime()
             client.log("info", `Updated ctlo lack entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
