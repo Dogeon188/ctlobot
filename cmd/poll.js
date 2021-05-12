@@ -11,7 +11,7 @@ module.exports = {
         `${config.prefix} poll <choice|c> <server_id> <poll_content> <choices...>`
     ],
     execute(client, msg, args) {
-        // TODO: end time, count vote, announce result
+        // TODO: count vote, announce result
 
         if (!msg.member.hasPermission("ADMINISTRATOR")) throw new Error("Permission denied.")
 
@@ -24,7 +24,7 @@ module.exports = {
         switch (pa.type) {
             case "bool":
             case "b":
-                cnt = `${pa.content}\n贊成按:o: 不贊成按:x:`
+                cnt = `${pa.content}\n贊成按✅ 不贊成按❌`
                 emj = ["✅", "❌"]
                 break
             case "choice":
