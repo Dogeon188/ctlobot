@@ -20,6 +20,7 @@ module.exports = {
             return client.says.update(true).then(() =>
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.says.entries.length}** 個條目）`))
         try {
+            msg.channel.startTyping()
             await client.says.update(false)
             const s = client.says.random(msg, args[0])
             await msg.channel.send(new Discord.MessageEmbed()
@@ -28,6 +29,7 @@ module.exports = {
                 }))
                 .setFooter(`——${s.author}，2021`)
                 .setColor("#007799"))
+            msg.channel.stopTyping()
         } catch (e) {
             if (e instanceof utils.InvalidInputError) msg.channel.send(`${e.message}`)
             else throw e

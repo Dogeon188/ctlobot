@@ -42,6 +42,7 @@ module.exports.initClient = client => {
         random() { return this.entries[Math.floor(Math.random() * this.entries.length)] },
         async update(forceUpdate) {
             if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
+            client.log("info", "Start updating ctlo tarot entries...")
             this.entries = await utils.getSpreadsheetSource("1686809608")
             this.lastUpdated = new Date().getTime()
             client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
@@ -62,6 +63,7 @@ module.exports.initClient = client => {
         },
         async update(forceUpdate) {
             if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
+            client.log("info", "Start updating ctlo says entries...")
             this.entries = await utils.getSpreadsheetSource("0")
             this.lastUpdated = new Date().getTime()
             client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
@@ -79,6 +81,7 @@ module.exports.initClient = client => {
         },
         async update(forceUpdate) {
             if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
+            client.log("info", "Start updating ctlo greet entries...")
             this.entries = await utils.getSpreadsheetSource("663619317")
             this.lastUpdated = new Date().getTime()
             this.weightSum = 0
@@ -95,6 +98,7 @@ module.exports.initClient = client => {
         random() { return this.entries[Math.floor(Math.random() * this.entries.length)] },
         async update(forceUpdate) {
             if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
+            client.log("info", "Start updating ctlo lack entries...")
             this.entries = await utils.getSpreadsheetSource("79624142")
             this.lastUpdated = new Date().getTime()
             client.log("info", `Updated ctlo lack entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
