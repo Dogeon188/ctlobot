@@ -47,6 +47,21 @@ module.exports = {
     },
     arg: false,
     usage: `${config.prefix} tarot`,
+    tarotEmbed(client, msg, tarotEntry) {
+        const embed = new Discord.MessageEmbed()
+            .setColor(client.tarot.tierColor[tarotEntry.tier])
+            .setAuthor("昶羅牌")
+            .setTitle(tarotEntry.phrase.format({
+                username: msg === null ? "{username}" : msg.member.displayName
+            }))
+            .setDescription(`*${tarotEntry.desc}*`)
+            .setThumbnail(`https://raw.githubusercontent.com/Dogeon188/ctlobot/master/assets/tarot/tier${tarotEntry.tier}.jpg`)
+            .addField("\u200b", "\u200b")
+            .addField("可能會發生的事情", "> " + tarotEntry.forecast)
+            .addField("應對方式", "> " + tarotEntry.response)
+        if (tarotEntry.author !== "") embed.setFooter(`素材提供：${tarotEntry.author}`)
+        return embed
+    },
     async execute(client, msg, args) {
         if (msg.author.id === config.dogeon.id) {
             switch (args[0]) {
@@ -72,20 +87,6 @@ module.exports = {
         } else client.tarot.limit.set(msg.author.id, 1)
 
         await client.tarot.update(false)
-        const tarot = client.tarot.random()
-        const embed = new Discord.MessageEmbed()
-            .setColor(client.tarot.tierColor[tarot.tier])
-            .setAuthor("昶羅牌")
-            .setTitle(tarot.phrase.format({
-                username: msg.member.displayName
-            }))
-            .setDescription(`*${tarot.desc}*`)
-            .setThumbnail(`https://raw.githubusercontent.com/Dogeon188/ctlobot/master/assets/tarot/tier${tarot.tier}.jpg`)
-            .addField("\u200b", "\u200b")
-            .addField("可能會發生的事情", "> " + tarot.forecast)
-            .addField("應對方式", "> " + tarot.response)
-        if (tarot.author !== "")
-            embed.setFooter(`素材提供：${tarot.author}`)
-        await msg.channel.send(embed)
+        await msg.channel.send(this.tarotEmbed(client, msg, client.tarot.random()))
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "ctlobot",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "CTLO Discord bot.",
   "main": "index.js",
   "scripts": {

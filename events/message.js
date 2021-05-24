@@ -34,6 +34,10 @@ module.exports = {
                     msg.channel.startTyping()
                     client.commands.get(cmdName).execute(client, msg, args)
                         .then(() => msg.channel.stopTyping(true))
+                        .catch(e => {
+                            msg.channel.stopTyping(true)
+                            throw e
+                        })
                 }
             } else if (/昶|林小姐|敦紀|淳華/.test(msg.content) && !config.isBeta) {
                 let ctloCmd
@@ -45,6 +49,10 @@ module.exports = {
                     msg.channel.startTyping()
                     client.commands.get(ctloCmd).execute(client, msg, [])
                         .then(() => msg.channel.stopTyping(true))
+                        .catch(e => {
+                            msg.channel.stopTyping(true)
+                            throw e
+                        })
                 }
             }
         } catch (e) {

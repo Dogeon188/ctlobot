@@ -14,5 +14,9 @@ module.exports = {
         })
         client.log("info", `Logged in as ${chalk.blue(client.user.tag)}!`)
         client.log("info", `Git hash: \`${chalk.blue(utils.getGitHeadHash())}\``)
+        await client.says.update(true)
+        await client.tarot.update(true)
+        await client.lack.update(true)
+        await client.greet.update(true)
     }
 }
