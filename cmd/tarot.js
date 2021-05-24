@@ -60,8 +60,6 @@ module.exports = {
             }
         }
 
-        msg.channel.startTyping()
-
         if (client.tarot.limit.has(msg.author.id)) {
             let count = client.tarot.limit.get(msg.author.id)
             if (client.tarot.useLimit !== -1 && count >= client.tarot.useLimit) return msg.channel.send(stripIndents`
@@ -89,6 +87,5 @@ module.exports = {
         if (tarot.author !== "")
             embed.setFooter(`素材提供：${tarot.author}`)
         await msg.channel.send(embed)
-        msg.channel.stopTyping()
     }
 }

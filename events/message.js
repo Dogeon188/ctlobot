@@ -30,12 +30,22 @@ module.exports = {
                         可用操作：\`${client.commands.keyArray().join(" ")}\`
                         使用 \`${config.prefix} help\` 以獲得更多訊息
                     `)
-                } else client.commands.get(cmdName).execute(client, msg, args)
+                } else {
+                    msg.channel.startTyping()
+                    client.commands.get(cmdName).execute(client, msg, args)
+                        .then(() => msg.channel.stopTyping(true))
+                }
             } else if (/昶|林小姐|敦紀|淳華/.test(msg.content) && !config.isBeta) {
-                if (/[早午晚]安/.test(msg.content)) client.commands.get("greet").execute(client, msg, [])
-                else if (/[占卜運勢預測塔羅]/.test(msg.content)) client.commands.get("tarot").execute(client, msg, [])
-                else if (/需要|缺乏/.test(msg.content)) client.commands.get("lack").execute(client, msg, [])
-                else if (/[說講話看想]|覺得/.test(msg.content)) client.commands.get("says").execute(client, msg, [])
+                let ctloCmd
+                if (/[早午晚]安/.test(msg.content)) ctloCmd = "greet"
+                else if (/[占卜運勢預測塔羅]/.test(msg.content)) ctloCmd = "tarot"
+                else if (/需要|缺乏/.test(msg.content)) ctloCmd = "lack"
+                else if (/[說講話看想]|覺得/.test(msg.content)) ctloCmd = "says"
+                if (ctloCmd !== undefined) {
+                    msg.channel.startTyping()
+                    client.commands.get(ctloCmd).execute(client, msg, [])
+                        .then(() => msg.channel.stopTyping(true))
+                }
             }
         } catch (e) {
             if (e instanceof utils.InvalidInputError) msg.channel.send(e.message)

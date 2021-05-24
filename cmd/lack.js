@@ -13,9 +13,7 @@ module.exports = {
         if (msg.author.id === config.dogeon.id && args[0] === "update")
             return client.lack.update(true).then(() =>
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.lack.entries.length}** 個條目）`))
-        msg.channel.startTyping()
         await client.lack.update(false)
         msg.channel.send(`你${Math.random() < 0.5 ? "缺乏" : "需要"}的是${client.lack.random().text}。`)
-        msg.channel.stopTyping()
     }
 }

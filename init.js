@@ -58,7 +58,7 @@ module.exports.initClient = client => {
             if (i > this.entries.length)
                 throw new utils.InvalidInputError(`昶語錄只有 **${this.entries.length}** 個條目而已，你輸入的 **${i}** 對我來說太大了啊啊啊`)
             i -= 1
-            if (i < 0) throw new utils.InvalidInputError(`不可以使用小於0的編號！`)
+            if (i < 0) throw new utils.InvalidInputError(`不可以使用小於1的編號！`)
             return this.entries[i]
         },
         async update(forceUpdate) {
