@@ -47,6 +47,7 @@ getGreetList = (client, page) => {
     return new MessageEmbed()
         .setTitle(`昶問候條目列表`)
         .setColor("#059a16")
+        .setDescription(`抽中機率 ${(entry.weight / client.greet.weightSum * 100).toFixed(2)} %`)
         .addField("早上", entry.morning, true)
         .addField("中午", entry.evening, true)
         .addField("晚上", entry.night, true)
