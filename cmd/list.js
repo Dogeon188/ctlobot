@@ -75,7 +75,7 @@ module.exports = {
             const sent = await msg.channel.send(getAllList(args[0], client, 0))
             sent.ctloPage = 0
             const filter = (r, u) => ["⬅️", "➡️"].includes(r.emoji.name) && !u.bot
-            const collector = sent.createReactionCollector(filter, { time: 15000, dispose: true })
+            const collector = sent.createReactionCollector(filter, { time: 30000, dispose: true })
             const listener = (r, u) => {
                 if (r.emoji.name === "⬅️") sent.ctloPage--
                 else if (r.emoji.name === "➡️") sent.ctloPage++
