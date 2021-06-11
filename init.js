@@ -1,5 +1,3 @@
-const config = require("./config.json")
-
 const {readdirSync} = require("fs")
 const {Collection} = require("discord.js")
 const winston = require("winston")
@@ -17,7 +15,7 @@ module.exports.initClient = client => {
     })
 
     client.log = (lvl, msg) => {
-        client.channels.fetch(config.consoleChannel).then(c => c.send(utils.stripAnsi(msg)))
+        client.channels.fetch(process.env.CONSOLE).then(c => c.send(utils.stripAnsi(msg)))
         client.logger.log(lvl, msg)
     }
 

@@ -1,4 +1,3 @@
-const config = require("../config.json")
 const utils = require("../utils")
 const chalk = require("chalk")
 
@@ -8,7 +7,7 @@ module.exports = {
     async execute(client) {
         await client.user.setPresence({
             activity: {
-                name: `${config.prefix} help`,
+                name: `${process.env.PREFIX} help`,
                 type: "LISTENING"
             }
         })

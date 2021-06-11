@@ -1,4 +1,3 @@
-const config = require("../config.json")
 const {stripIndents} = require("common-tags")
 const {MessageEmbed} = require("discord.js")
 
@@ -69,7 +68,7 @@ module.exports = {
         查看 **昶語錄** **昶羅牌** **昶昶缺** **昶問候** 的條目列表
     `,
     arg: true,
-    usage: `${config.prefix} list <says|tarot|lack|greet>`,
+    usage: `${process.env.PREFIX} list <says|tarot|lack|greet>`,
     async execute(client, msg, args) {
         if (["says", "tarot", "lack", "greet"].includes(args[0])) {
             const sent = await msg.channel.send(getAllList(args[0], client, 0))

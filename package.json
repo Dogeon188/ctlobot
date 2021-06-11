@@ -17,6 +17,7 @@
     "common-tags": "^1.8.0",
     "csv-parse": "^4.15.4",
     "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
     "winston": "^3.3.3"
   }
 }

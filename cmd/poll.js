@@ -1,4 +1,3 @@
-const config = require("../config.json")
 const utils = require("../utils")
 const {DiscordAPIError} = require("discord.js")
 
@@ -7,8 +6,8 @@ module.exports = {
     description: "一個簡單的投票功能\n投票類型後面加`?`就可以多一個 **不確定** 的選項",
     arg: true,
     usage: [
-        `${config.prefix} poll <bool|b>(?) <server_id> <poll_content>`,
-        `${config.prefix} poll <choice|c>(?) <server_id> <poll_content> <choices...>`
+        `${process.env.PREFIX} poll <bool|b>(?) <server_id> <poll_content>`,
+        `${process.env.PREFIX} poll <choice|c>(?) <server_id> <poll_content> <choices...>`
     ],
     async execute(client, msg, args) {
         // TODO: count vote, announce result

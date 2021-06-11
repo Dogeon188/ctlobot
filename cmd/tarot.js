@@ -1,5 +1,3 @@
-const config = require("../config.json")
-
 const Discord = require("discord.js")
 const chalk = require("chalk")
 const {stripIndents} = require("common-tags")
@@ -46,7 +44,7 @@ module.exports = {
         return s
     },
     arg: false,
-    usage: `${config.prefix} tarot`,
+    usage: `${process.env.PREFIX} tarot`,
     tarotEmbed(client, msg, tarotEntry) {
         const embed = new Discord.MessageEmbed()
             .setColor(client.tarot.tierColor[tarotEntry.tier])
@@ -63,7 +61,7 @@ module.exports = {
         return embed
     },
     async execute(client, msg, args) {
-        if (msg.author.id === config.dogeon.id) {
+        if (msg.author.id === process.env.DOGEON) {
             switch (args[0]) {
                 case "update":
                     return client.tarot.update(true).then(() =>

@@ -1,9 +1,8 @@
-const config = require("../config.json")
 const utils = require("../utils")
 const {stripIndents} = require("common-tags")
 
 parseArgs = (msg) => {
-    let args = msg.content.slice(config.prefix.length).trim()
+    let args = msg.content.slice(process.env.PREFIX.length).trim()
         .match(/((?<!\\)".*?(?<!\\)"|\S+)/g)
     if (args === null) throw new Error("No command provided!")
     args.forEach((t, i, a) => {
@@ -19,16 +18,16 @@ module.exports = {
     execute(client, msg) {
         try {
             if (msg.author.bot) return
-            if (msg.content.startsWith(config.prefix + " ")) {
+            if (msg.content.startsWith(process.env.PREFIX + " ")) {
                 const [cmdName, args] = parseArgs(msg)
-                if (msg.author.id === config.dogeon.id) {
+                if (msg.author.id === process.env.DOGEON) {
                     if (client.op.has(cmdName)) return client.op.get(cmdName).execute(client, msg, args)
                 }
                 if (!client.commands.has(cmdName)) {
                     msg.channel.send(stripIndents`
                         我不知道你想表達什麼喔
                         可用操作：\`${client.commands.keyArray().join(" ")}\`
-                        使用 \`${config.prefix} help\` 以獲得更多訊息
+                        使用 \`${process.env.PREFIX} help\` 以獲得更多訊息
                     `)
                 } else {
                     msg.channel.startTyping()
@@ -39,7 +38,7 @@ module.exports = {
                             throw e
                         })
                 }
-            } else if (/昶|林小姐|敦紀|淳華/.test(msg.content) && !config.isBeta) {
+            } else if (/昶|林小姐|敦紀|淳華/.test(msg.content) && !process.env.IS_BETA) {
                 let ctloCmd
                 if (/[早午晚]安/.test(msg.content)) ctloCmd = "greet"
                 else if (/[占卜運勢預測塔羅]/.test(msg.content)) ctloCmd = "tarot"

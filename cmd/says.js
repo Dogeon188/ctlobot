@@ -1,5 +1,3 @@
-const config = require("../config.json")
-
 const {stripIndents} = require("common-tags")
 const Discord = require("discord.js")
 const utils = require("../utils")
@@ -12,11 +10,11 @@ module.exports = {
     `,
     arg: true,
     usage: [
-        `${config.prefix} says`,
-        `${config.prefix} says <speech_id>`
+        `${process.env.PREFIX} says`,
+        `${process.env.PREFIX} says <speech_id>`
     ],
     async execute(client, msg, args) {
-        if (msg.author.id === config.dogeon.id && args[0] === "update")
+        if (msg.author.id === process.env.DOGEON && args[0] === "update")
             return client.says.update(true).then(() =>
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.says.entries.length}** 個條目）`))
         try {
