@@ -3,6 +3,7 @@ const chalk = require("chalk")
 
 require("dotenv").config()
 
+
 const client = new Client()
 require("./init").initClient(client)
 
@@ -11,7 +12,10 @@ process.on("uncaughtException", e => {
 })
 
 const app = require("express")()
-app.get("/", (req, res) => {res.send("I'm alive!")})
+app.all("*", (req, res) => {
+    client.log("info", `${chalk.cyan.bold("REQ")} Recieved keep-alive request from ${req.originalUrl}`)
+    res.send("I'm alive!")
+})
 app.listen(443, "0.0.0.0")
 
 client.login(process.env.TOKEN)
