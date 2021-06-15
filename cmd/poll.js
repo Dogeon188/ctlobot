@@ -49,7 +49,9 @@ module.exports = {
                 cnt += "**不確定**按❔"
                 emj.push("❔")
             }
-            const c = (pa.server === ".") ? msg.channel : await client.channels.fetch(pa.server)
+            const c = (pa.server === ".") ? msg.channel :
+                (/<#.+>/.test(pa.server)) ? await client.channels.fetch(pa.server.match(/(?<=<#).+(?=>)/)[0]) :
+                await client.channels.fetch(pa.server)
             if (!c.isText())
                 throw new utils.InvalidInputError(`你給的頻道ID \`${pa.server}\` 不是文字頻道欸`)
             if (!c.permissionsFor(client.user).has('SEND_MESSAGES'))
