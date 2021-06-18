@@ -23,6 +23,7 @@ module.exports = {
             let cnt = "", emj = []
             const embed = new MessageEmbed()
                 .setColor("#b4821e")
+                .setFooter(`由 ${msg.author.username} 發起的投票`)
                 .setTitle(pa.content)
             switch (pa.type) {
                 case "bool":
