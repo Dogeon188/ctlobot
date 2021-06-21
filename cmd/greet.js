@@ -13,7 +13,7 @@ module.exports = {
             return client.greet.update(true).then(() =>
                 msg.channel.send(`已更新昶語錄！（目前共有 **${client.greet.entries.length}** 個條目）`))
         await client.greet.update(false)
-        let t = new Date().getHours(), i
+        let t = (new Date().getHours() + 8) % 24, i
         if (t >= 18 || t < 4) i = "night"
         else if (t >= 11 && t < 18) i = "evening"
         else i = "morning"
