@@ -18,4 +18,7 @@ app.all("*", (req, res) => {
 })
 app.listen(443, "0.0.0.0")
 
+// client.on("debug", m => console.log(chalk.dim("DBG"), m))
+
 client.login(process.env.TOKEN)
+
