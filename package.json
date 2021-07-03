@@ -1,10 +1,9 @@
 {
   "name": "ctlobot",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "CTLO Discord bot.",
   "main": "index.js",
   "scripts": {
-    "run": "pm2 start index.js -n ctlobot --watch",
     "test": "node ."
   },
   "keywords": [],
