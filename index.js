@@ -11,6 +11,10 @@ process.on("uncaughtException", e => {
     client.log("error", `${e.message}\n${chalk.gray(e.stack)}`)
 })
 
+process.on("exit", () => {
+    client.log("I'm dead X(")
+})
+
 const app = require("express")()
 app.all("*", (req, res) => {
     client.log("info", `${chalk.cyan.bold("REQ")} Recieved keep-alive request from ${req.originalUrl}`)
