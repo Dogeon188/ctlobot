@@ -30,13 +30,8 @@ module.exports = {
                         使用 \`${process.env.PREFIX} help\` 以獲得更多訊息
                     `)
                 } else {
-                    msg.channel.startTyping()
+                    msg.channel.sendTyping()
                     client.commands.get(cmdName).execute(client, msg, args)
-                        .then(() => msg.channel.stopTyping(true))
-                        .catch(e => {
-                            msg.channel.stopTyping(true)
-                            throw e
-                        })
                 }
             } else if (/昶|林小姐|敦紀|淳華/.test(msg.content) && !process.env.IS_BETA) {
                 let ctloCmd
@@ -45,13 +40,8 @@ module.exports = {
                 else if (/需要|缺乏/.test(msg.content)) ctloCmd = "lack"
                 else if (/[說講話看想]|覺得/.test(msg.content)) ctloCmd = "says"
                 if (ctloCmd !== undefined) {
-                    msg.channel.startTyping()
+                    msg.channel.sendTyping()
                     client.commands.get(ctloCmd).execute(client, msg, [])
-                        .then(() => msg.channel.stopTyping(true))
-                        .catch(e => {
-                            msg.channel.stopTyping(true)
-                            throw e
-                        })
                 }
             }
         } catch (e) {

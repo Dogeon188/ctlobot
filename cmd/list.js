@@ -68,18 +68,18 @@ module.exports = {
         查看 **昶語錄** **昶羅牌** **昶昶缺** **昶問候** 的條目列表
     `,
     arg: true,
-    usage: `${process.env.PREFIX} list <says|tarot|lack|greet>`,
+    usage: [`${process.env.PREFIX} list <says|tarot|lack|greet>`],
     async execute(client, msg, args) {
         if (["says", "tarot", "lack", "greet"].includes(args[0])) {
-            const sent = await msg.channel.send(getAllList(args[0], client, 0))
-            sent.ctloPage = 0
+            const sent = await msg.channel.send({embeds: [getAllList(args[0], client, 0)]})
+            sent.page = 0
             const filter = (r, u) => ["⬅️", "➡️"].includes(r.emoji.name) && !u.bot
-            const collector = sent.createReactionCollector(filter, { time: 30000, dispose: true })
+            const collector = sent.createReactionCollector({ filter, time: 30000, dispose: true })
             const listener = (r, u) => {
-                if (r.emoji.name === "⬅️") sent.ctloPage--
-                else if (r.emoji.name === "➡️") sent.ctloPage++
+                if (r.emoji.name === "⬅️") sent.page--
+                else if (r.emoji.name === "➡️") sent.page++
                 collector.resetTimer()
-                collector.message.edit(getAllList(args[0], client, sent.ctloPage))
+                collector.message.edit({embeds: [getAllList(args[0], client, sent.page)]})
             }
             collector.on("collect", listener).on("remove", listener)
             sent.react("⬅️")

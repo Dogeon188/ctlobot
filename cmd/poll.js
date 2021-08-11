@@ -8,8 +8,8 @@ module.exports = {
     description: "一個簡單的投票功能\n投票類型後面加`?`就可以多一個 **不確定** 的選項\n投票類型後面加`i`就可以附圖片",
     arg: true,
     usage: [
-        `${process.env.PREFIX} poll <server_id|.> b(?)(i) <poll_content> <i?img_url>`,
-        `${process.env.PREFIX} poll <server_id|.> c(?)(i) <poll_content> <i?img_url> <choices...>`
+        `${process.env.PREFIX} poll <server_id|.> b(?)(d)(i) <poll_content> <d?desc> <i?img_url>`,
+        `${process.env.PREFIX} poll <server_id|.> c(?)(d)(i) <poll_content> <d?desc> <i?img_url> <choices...>`
     ],
     async execute(client, msg, args) {
         // TODO: count vote, announce result
@@ -19,11 +19,12 @@ module.exports = {
         }
 
         try {
-            let cnt = "", emj = []
+            let emj = []
             const embed = new MessageEmbed()
                 .setColor("#b4821e")
                 .setFooter(`由 ${msg.author.username} 發起的投票`)
                 .setTitle(pa.content)
+            if (pa.type.includes("d")) embed.setDescription(pa.choices.shift())
             if (pa.type.includes("i")) embed.setImage(pa.choices.shift())
             if (pa.type.startsWith("b")) {
                 emj = ["✅", "❌"]
@@ -39,8 +40,7 @@ module.exports = {
                 }
             } else throw new utils.InvalidInputError(`未知的投票類型：\`${pa.type[0]}\`\n目前支援的有：\`b\`是非題 \`c\`選擇題`)
             if (pa.type.includes("?")) {
-                embed.addField("❔**不確定**", "\u200b", true)
-                cnt += "**不確定**按❔"
+                embed.addField("\u200b", "❔**不確定**", true)
                 emj.push("❔")
             }
             const c = (pa.server === ".") ? msg.channel :
@@ -52,7 +52,7 @@ module.exports = {
                 throw new utils.InvalidInputError(`看來我不能在 **<#${c.id}>** 發言呢 :cry:`)
             if (!c.permissionsFor(msg.author).has('SEND_MESSAGES'))
                 throw new utils.InvalidInputError(`看來你不能在 **<#${c.id}>** 發言呢 可憐啊`)
-            c.send(embed).then(async m => {
+            c.send({embeds: [embed]}).then(async m => {
                 for (let e of emj) await m.react(e)
             })
         } catch (e) {

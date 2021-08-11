@@ -103,7 +103,7 @@ module.exports.initClient = client => {
         }
     }
 
-    client.on("message", msg => require("./events/message").execute(client, msg))
+    client.on("messageCreate", msg => require("./events/messageCreate").execute(client, msg))
     client.on("ready", () => require("./events/ready").execute(client))
 
     setInterval(() => {

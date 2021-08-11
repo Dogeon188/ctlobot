@@ -4,7 +4,7 @@ const chalk = require("chalk")
 require("dotenv").config()
 
 
-const client = new Client()
+const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"]})
 require("./init").initClient(client)
 
 process.on("uncaughtException", e => {

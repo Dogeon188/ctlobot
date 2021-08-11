@@ -44,7 +44,7 @@ module.exports = {
         return s
     },
     arg: false,
-    usage: `${process.env.PREFIX} tarot`,
+    usage: [`${process.env.PREFIX} tarot`],
     tarotEmbed(client, msg, tarotEntry) {
         const embed = new Discord.MessageEmbed()
             .setColor(client.tarot.tierColor[tarotEntry.tier])
@@ -85,6 +85,6 @@ module.exports = {
         } else client.tarot.limit.set(msg.author.id, 1)
 
         await client.tarot.update(false)
-        await msg.channel.send(this.tarotEmbed(client, msg, client.tarot.random()))
+        await msg.channel.send({embeds: [this.tarotEmbed(client, msg, client.tarot.random())]})
     }
 }

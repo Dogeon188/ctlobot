@@ -7,7 +7,7 @@ module.exports = {
         也可以透過同時包含 **昶** 和 **早安 午安 晚安** 兩組關鍵字來觸發喔喔
     `,
     arg: false,
-    usage: `${process.env.PREFIX} greet`,
+    usage: [`${process.env.PREFIX} greet`],
     async execute(client, msg, args) {
         if (msg.author.id === process.env.DOGEON && args[0] === "update")
             return client.greet.update(true).then(() =>

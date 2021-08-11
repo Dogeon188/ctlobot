@@ -20,12 +20,16 @@ module.exports = {
         try {
             await client.says.update(false)
             const s = client.says.random(msg, args[0])
-            await msg.channel.send(new Discord.MessageEmbed()
-                .setTitle(s.says.format({
-                    username: msg.member.displayName
-                }))
-                .setFooter(`——${s.author}，2021`)
-                .setColor("#007799"))
+            await msg.channel.send({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setTitle(s.says.format({
+                        username: msg.member.displayName
+                    }))
+                    .setFooter(`——${s.author}，2021`)
+                    .setColor("#007799")
+                ]
+            })
         } catch (e) {
             if (e instanceof utils.InvalidInputError) msg.channel.send(`${e.message}`)
             else throw e

@@ -7,7 +7,7 @@ module.exports = {
         也可以透過同時包含 **昶** 和 **需要 缺乏** 兩組關鍵字來觸發喔喔
     `,
     arg: false,
-    usage: `${process.env.PREFIX} lack`,
+    usage: [`${process.env.PREFIX} lack`],
     async execute(client, msg, args) {
         if (msg.author.id === process.env.DOGEON && args[0] === "update")
             return client.lack.update(true).then(() =>
