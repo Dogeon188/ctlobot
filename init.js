@@ -5,7 +5,6 @@ const utils = require("./utils")
 const chalk = require("chalk")
 
 module.exports = async client => {
-    winston.addColors({})
     client.logger = winston.createLogger({
         transports: new winston.transports.Console(),
         format: winston.format.printf(log => `${{

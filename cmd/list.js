@@ -1,4 +1,3 @@
-const {stripIndents} = require("common-tags")
 const {MessageEmbed} = require("discord.js")
 
 const entriesPerPage = 10
@@ -64,9 +63,7 @@ getAllList = (type, client, page) => {
 
 module.exports = {
     name: "list",
-    description: stripIndents`
-        查看 **昶語錄** **昶羅牌** **昶昶缺** **昶問候** 的條目列表
-    `,
+    description: "查看 **昶語錄** **昶羅牌** **昶昶缺** **昶問候** 的條目列表",
     usage: [`${process.env.PREFIX} list <says|tarot|lack|greet>`],
     async execute(client, msg, args) {
         if (["says", "tarot", "lack", "greet"].includes(args[0])) {
