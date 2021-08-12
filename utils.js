@@ -23,8 +23,7 @@ module.exports = {
         const p = parser({columns: true})
         p.write(await bent("string")(redirected))
         p.end()
-        let i
-        let arr = []
+        let arr = [], i
         while (i = p.read()) arr.push(i)
         p.destroy()
         return arr
