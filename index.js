@@ -5,7 +5,7 @@ require("dotenv").config()
 
 
 const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"]})
-require("./init").initClient(client)
+require("./init")(client)
 
 process.on("uncaughtException", e => {
     client.log("error", `${e.message}\n${chalk.gray(e.stack)}`)

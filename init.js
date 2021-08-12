@@ -1,10 +1,11 @@
 const {readdirSync} = require("fs")
-const {Collection} = require("discord.js")
+const {Collection, MessageEmbed} = require("discord.js")
 const winston = require("winston")
 const utils = require("./utils")
 const chalk = require("chalk")
 
-module.exports.initClient = client => {
+module.exports = async client => {
+    winston.addColors({})
     client.logger = winston.createLogger({
         transports: new winston.transports.Console(),
         format: winston.format.printf(log => `${{
@@ -20,22 +21,20 @@ module.exports.initClient = client => {
     }
 
     client.commands = new Collection()
+    client.op = new Collection()
     for (const file of readdirSync('./cmd').filter(f => f.endsWith('.js') && !f.startsWith("."))) {
-        const command = require(`./cmd/${file}`);
-        client.commands.set(command.name, command);
+        const command = require(`./cmd/${file}`)
+        if (command.op) client.op.set(command.name, command)
+        else client.commands.set(command.name, command)
     }
 
-    client.op = new Collection()
-    for (const file of readdirSync('./op').filter(f => f.endsWith('.js') && !f.startsWith("."))) {
-        const command = require(`./op/${file}`);
-        client.op.set(command.name, command);
-    }
+    client.helpEmbed = new MessageEmbed()
+        .setAuthor("昶昶機器人幫助文檔", "https://cdn.discordapp.com/avatars/779656199033454613/1c8964f1fc0cca1b719a7db056f9fb7c.png")
+        .addField("可用操作", "`" + Array.from(client.commands.keys()).join("`▫️`") + "`")
+        .addField("\u200b", `使用 \`${process.env.PREFIX} help <指令>\` 以獲得更多訊息`)
 
     client.tarot = {
-        limit: new Collection(),
-        refreshTime: new Date().getTime(),
-        useLimit: -1,
-        tierColor: ["#0772b4", "#0a9c35", "#88cb03", "#ffbf00", "#bb2705"],
+        tierColor: [0x0772b4, 0x0a9c35, 0x88cb03, 0xffbf00, 0xbb2705],
         updateInterval: 86400000, // 24hrs
         random() { return this.entries[Math.floor(Math.random() * this.entries.length)] },
         async update(forceUpdate) {

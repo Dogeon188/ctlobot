@@ -1,7 +1,8 @@
 const {InvalidInputError} = require("../utils")
 
 module.exports = {
-    name: "_chat",
+    name: "chat",
+    op: true,
     async execute(client, msg, args) {
         try {
             if (args.length < 1) throw new InvalidInputError("Didn't provide channel ID!")
