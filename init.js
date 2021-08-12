@@ -51,7 +51,7 @@ module.exports = async client => {
         random(msg, index) {
             if (index === undefined) return this.entries[Math.floor(Math.random() * this.entries.length)]
             let i = +index
-            if (isNaN(i)) throw new utils.InvalidInputError(`無法將 **${index}** 解析為昶語錄編號！`)
+            if (isNaN(i) || !Number.isInteger(i)) throw new utils.InvalidInputError(`無法將 **${index}** 解析為昶語錄編號！`)
             if (i > this.entries.length)
                 throw new utils.InvalidInputError(`昶語錄只有 **${this.entries.length}** 個條目而已，你輸入的 **${i}** 對我來說太大了啊啊啊`)
             i -= 1
@@ -104,12 +104,4 @@ module.exports = async client => {
 
     client.on("messageCreate", msg => require("./events/messageCreate").execute(client, msg))
     client.on("ready", () => require("./events/ready").execute(client))
-
-    setInterval(() => {
-        if (client.tarot.useLimit !== -1) {
-            client.tarot.limit = new Collection()
-            client.log("info", "Refreshed tarot use limit!")
-        }
-        client.tarot.refreshTime = new Date().getTime()
-    }, 3600000)
 }

@@ -67,7 +67,6 @@ module.exports = {
     description: stripIndents`
         查看 **昶語錄** **昶羅牌** **昶昶缺** **昶問候** 的條目列表
     `,
-    arg: true,
     usage: [`${process.env.PREFIX} list <says|tarot|lack|greet>`],
     async execute(client, msg, args) {
         if (["says", "tarot", "lack", "greet"].includes(args[0])) {

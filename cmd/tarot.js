@@ -25,8 +25,7 @@ module.exports = {
     async execute(client, msg, args) {
         if (msg.author.id === process.env.DOGEON) {
             if (args[0] === "update") {
-                return client.tarot.update(true).then(() =>
-                    msg.channel.send(`已更新昶羅牌！（目前共有 ${client.tarot.entries.length} 個條目）`))
+
             }
         }
 

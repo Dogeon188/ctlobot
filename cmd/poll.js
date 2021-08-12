@@ -6,7 +6,6 @@ const emojis = ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚪", "
 module.exports = {
     name: "poll",
     description: "一個簡單的投票功能\n投票類型後面加`?`就可以多一個 **不確定** 的選項\n投票類型後面加`i`就可以附圖片",
-    arg: true,
     usage: [
         `${process.env.PREFIX} poll <server_id|.> b(?)(d)(i) <poll_content> <d?desc> <i?img_url>`,
         `${process.env.PREFIX} poll <server_id|.> c(?)(d)(i) <poll_content> <d?desc> <i?img_url> <choices...>`
