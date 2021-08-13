@@ -67,11 +67,11 @@ const row = id => new MessageActionRow().addComponents(
         customId: `ctloList,${id},-10`
     }),
     new MessageButton({
-        label: "上一頁", emoji: "◀️", style: "SECONDARY",
+        emoji: "◀️", style: "SECONDARY",
         customId: `ctloList,${id},-1`
     }),
     new MessageButton({
-        label: "下一頁", emoji: "▶️", style: "SECONDARY",
+        emoji: "▶️", style: "SECONDARY",
         customId: `ctloList,${id},1`
     }),
     new MessageButton({
