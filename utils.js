@@ -1,6 +1,5 @@
 const parser = require("csv-parse")
 const bent = require("bent")
-const {readFileSync} = require("fs")
 
 const ansiRegex = /[\u001B\u009B][[\]()#;?]*(?:(?:(?:[a-zA-Z\d]*(?:;[-a-zA-Z\d\/#&.:=?%@~_]*)*)?\u0007)|(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-ntqry=><~]))/g
 
@@ -27,10 +26,5 @@ module.exports = {
         while (i = p.read()) arr.push(i)
         p.destroy()
         return arr
-    },
-    getGitHeadHash() {
-        const rev = readFileSync('.git/HEAD').toString().trim()
-        if (rev.indexOf(':') === -1) return rev
-        else return readFileSync('.git/' + rev.substring(5)).toString().trim()
     }
 }

@@ -1,9 +1,14 @@
-const {getGitHeadHash} = require("../utils")
 const chalk = require("chalk")
+const {readFileSync} = require("fs")
+
+getGitHeadHash = () => {
+    const rev = readFileSync('.git/HEAD').toString().trim()
+    if (rev.indexOf(':') === -1) return rev
+    else return readFileSync('.git/' + rev.substring(5)).toString().trim()
+}
 
 module.exports = {
     name: "message",
-    once: false,
     async execute(client) {
         await client.user.setPresence({
             activity: {

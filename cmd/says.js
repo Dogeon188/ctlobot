@@ -15,7 +15,7 @@ module.exports = {
     async execute(client, msg, args) {
         try {
             await client.says.update(false)
-            const s = client.says.random(msg, args[0])
+            const s = client.says.draw(msg, args[0])
             await msg.channel.send({embeds: [
                 new Discord.MessageEmbed()
                     .setTitle(s.says.format({username: msg.member.displayName}))

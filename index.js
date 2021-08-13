@@ -17,7 +17,7 @@ process.on("exit", () => {
 
 const app = require("express")()
 app.all("*", (req, res) => {
-    client.log("info", `${chalk.cyan.bold("REQ")} Recieved keep-alive request from ${req.originalUrl}`)
+    client.log("info", `${chalk.cyan.bold("REQ")} Received keep-alive request from ${req.originalUrl}`)
     res.send("I'm alive!")
 })
 app.listen(443, "0.0.0.0")

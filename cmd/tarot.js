@@ -1,6 +1,8 @@
 const {MessageEmbed} = require("discord.js")
 const {stripIndents} = require("common-tags")
 
+const tierColors = [0x0772b4, 0x0a9c35, 0x88cb03, 0xffbf00, 0xbb2705]
+
 module.exports = {
     name: "tarot",
     description: stripIndents`
@@ -9,7 +11,7 @@ module.exports = {
     usage: [`${process.env.PREFIX} tarot`],
     tarotEmbed(client, msg, tarotEntry) {
         const embed = new MessageEmbed()
-            .setColor(client.tarot.tierColor[tarotEntry.tier])
+            .setColor(tierColors[tarotEntry.tier])
             .setAuthor("昶羅牌")
             .setTitle(tarotEntry.phrase.format({
                 username: msg === null ? "{username}" : msg.member.displayName
@@ -22,14 +24,8 @@ module.exports = {
         if (tarotEntry.author !== "") embed.setFooter(`素材提供：${tarotEntry.author}`)
         return embed
     },
-    async execute(client, msg, args) {
-        if (msg.author.id === process.env.DOGEON) {
-            if (args[0] === "update") {
-
-            }
-        }
-
+    async execute(client, msg) {
         await client.tarot.update(false)
-        await msg.channel.send({embeds: [this.tarotEmbed(client, msg, client.tarot.random())]})
+        await msg.channel.send({embeds: [this.tarotEmbed(client, msg, client.tarot.draw())]})
     }
 }

@@ -32,75 +32,61 @@ module.exports = async client => {
         .addField("可用操作", "`" + Array.from(client.commands.keys()).join("`▫️`") + "`")
         .addField("\u200b", `使用 \`${process.env.PREFIX} help <指令>\` 以獲得更多訊息`)
 
-    client.tarot = {
-        tierColor: [0x0772b4, 0x0a9c35, 0x88cb03, 0xffbf00, 0xbb2705],
-        updateInterval: 86400000, // 24hrs
-        random() { return this.entries[Math.floor(Math.random() * this.entries.length)] },
-        async update(forceUpdate) {
-            if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
-            client.log("info", "Start updating ctlo tarot entries...")
-            this.entries = await utils.getSpreadsheetSource("1686809608")
+    class PoolContainer {
+        constructor(id, name, updateInterval, gid, drawer, updater) {
+            this.id = id
+            this.name = name
+            this.updateInterval = updateInterval * 3600000
+            this.gid = gid
+            this.draw = drawer || function () {
+                return this.entries[Math.floor(Math.random() * this.entries.length)]
+            }
+            this._updater = updater || (() => {})
+        }
+
+        async update(force) {
+            if (!force && new Date().getTime() - this.lastUpdated < this.updateInterval) return
+            client.log("info", `Start updating ctlo ${this.id} entries...`)
+            this.entries = await utils.getSpreadsheetSource(this.gid)
             this.lastUpdated = new Date().getTime()
-            client.log("info", `Updated ctlo tarot entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
+            this._updater()
+            client.log("info", `Updated ctlo ${this.id} entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
         }
     }
 
-    client.says = {
-        updateInterval: 10800000, // ,
-        random(msg, index) {
+    client.lack = new PoolContainer("lack", "昶昶缺", 24, "79624142")
+    client.tarot = new PoolContainer("tarot", "昶羅牌", 24, "1686809608")
+    client.says = new PoolContainer(
+        "says", "昶語錄", 3, "0",
+        function (msg, index) {
             if (index === undefined) return this.entries[Math.floor(Math.random() * this.entries.length)]
-            let i = +index
-            if (isNaN(i) || !Number.isInteger(i)) throw new utils.InvalidInputError(`無法將 **${index}** 解析為昶語錄編號！`)
+            let i = Math.round(+index)
+            if (isNaN(i)) throw new utils.InvalidInputError(`無法將 **${index}** 解析為昶語錄編號！`)
             if (i > this.entries.length)
-                throw new utils.InvalidInputError(`昶語錄只有 **${this.entries.length}** 個條目而已，你輸入的 **${i}** 對我來說太大了啊啊啊`)
+                throw new utils.InvalidInputError(`昶語錄只有 **${this.entries.length}** 個條目而已，你輸入的 **${i}** 太大了啊啊啊`)
             i -= 1
             if (i < 0) throw new utils.InvalidInputError(`不可以使用小於1的編號！`)
             return this.entries[i]
-        },
-        async update(forceUpdate) {
-            if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
-            client.log("info", "Start updating ctlo says entries...")
-            this.entries = await utils.getSpreadsheetSource("0")
-            this.lastUpdated = new Date().getTime()
-            client.log("info", `Updated ctlo says entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
         }
-    }
-
-    client.greet = {
-        updateInterval: 86400000, // 24hrs
-        random() {
+    )
+    client.greet = new PoolContainer(
+        "greet", "昶問候", 24, "663619317",
+        function () {
             let r = Math.random() * this.weightSum
             for (const e of this.entries) {
                 r -= e.weight
                 if (r < 0) return e
             }
         },
-        async update(forceUpdate) {
-            if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
-            client.log("info", "Start updating ctlo greet entries...")
-            this.entries = await utils.getSpreadsheetSource("663619317")
-            this.lastUpdated = new Date().getTime()
+        function () {
             this.weightSum = 0
             this.entries.forEach((e, i, a) => {
                 a[i].weight = +e.weight
                 this.weightSum += e.weight
             })
-            client.log("info", `Updated ctlo greet entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
         }
-    }
-
-    client.lack = {
-        updateInterval: 86400000, // 24hrs
-        random() { return this.entries[Math.floor(Math.random() * this.entries.length)] },
-        async update(forceUpdate) {
-            if (!forceUpdate && new Date().getTime() - this.lastUpdated < this.updateInterval) return
-            client.log("info", "Start updating ctlo lack entries...")
-            this.entries = await utils.getSpreadsheetSource("79624142")
-            this.lastUpdated = new Date().getTime()
-            client.log("info", `Updated ctlo lack entries! Now have ${chalk.blue.bold(this.entries.length)} entries.`)
-        }
-    }
+    )
 
     client.on("messageCreate", msg => require("./events/messageCreate").execute(client, msg))
-    client.on("ready", () => require("./events/ready").execute(client))
+    client.once("ready", () => require("./events/ready").execute(client))
 }

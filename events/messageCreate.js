@@ -13,8 +13,7 @@ parseArgs = (msg) => {
 }
 
 module.exports = {
-    name: "message",
-    once: false,
+    name: "messageCreate",
     execute(client, msg) {
         try {
             if (msg.author.bot) return
@@ -37,7 +36,7 @@ module.exports = {
                 else if (/[說講話看想]|覺得/.test(msg.content)) ctloCmd = "says"
                 if (ctloCmd !== undefined) {
                     msg.channel.sendTyping()
-                    client.commands.get(ctloCmd).execute(client, msg, [])
+                    client.commands.get(ctloCmd).execute(client, msg)
                 }
             }
         } catch (e) {
