@@ -7,15 +7,15 @@ module.exports = {
     name: "poll",
     description: "一個簡單(?)的投票功能\n指令後面flags的地方加`d`可以加入補充敘述\n加`i`可以附圖片\n加`?`就可以多一個 **不確定** 的選項",
     usage: [
-        `${process.env.PREFIX} poll <title> (channel) (type) (flags)`,
-        '# channel - 標註頻道 或是直接用 "." 來表示當前頻道 預設也是當前頻道',
-        '# type - 投票類型 可為 b(是非題) 或 c(選擇題) 沒輸入就當作是非題'
+        `${process.env.PREFIX} poll <title> (type) (channel) (flags)`,
+        '# type - 投票類型 可為 b(是非題) 或 c(選擇題) 沒輸入就當作是非題',
+        '# channel - 標註頻道 或是直接用 "." 來表示當前頻道 預設也是當前頻道'
     ],
     async execute(client, msg, args) {
         // TODO: count vote, announce result
         const pa = {
-            title: args[0], channel: args[1] || ".",
-            type: args[2] || "b", flags: args[3] || ""
+            title: args[0], type: args[1] || "b", channel: args[2] || ".",
+             flags: args[3] || ""
         }
 
         try {
