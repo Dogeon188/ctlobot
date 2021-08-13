@@ -1,4 +1,4 @@
-const {MessageEmbed} = require("discord.js")
+const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
 
 const entriesPerPage = 10
 
@@ -61,7 +61,23 @@ getList = (type, client, page) => {
     }
 }
 
-const arrows = ["⬅️", "➡️"]
+const row = id => new MessageActionRow().addComponents(
+    new MessageButton({
+        label: "10", emoji: "⏪", style: "SECONDARY",
+        customId: `ctloList,${id},-10`
+    }),
+    new MessageButton({
+        label: "上一頁", emoji: "◀️", style: "SECONDARY",
+        customId: `ctloList,${id},-1`
+    }),
+    new MessageButton({
+        label: "下一頁", emoji: "▶️", style: "SECONDARY",
+        customId: `ctloList,${id},1`
+    }),
+    new MessageButton({
+        label: "10", emoji: "⏩", style: "SECONDARY",
+        customId: `ctloList,${id},10`
+    }))
 
 module.exports = {
     name: "list",
@@ -69,18 +85,22 @@ module.exports = {
     usage: [`${process.env.PREFIX} list <says|tarot|lack|greet>`],
     async execute(client, msg, args) {
         if (["says", "tarot", "lack", "greet"].includes(args[0])) {
-            const sent = await msg.channel.send({embeds: [getList(args[0], client, 0)]})
+            const sent = await msg.channel.send({
+                embeds: [getList(args[0], client, 0)],
+                components: [row(msg.id)]
+            })
             sent.page = 0
-            const filter = (r, u) => arrows.includes(r.emoji.name) && !u.bot
-            const collector = sent.createReactionCollector({ filter, time: 30000, dispose: true })
-            const listener = (r, u) => {
-                if (r.emoji.name === arrows[0]) sent.page--
-                else if (r.emoji.name === arrows[1]) sent.page++
+            const collector = sent.createMessageComponentCollector({ message: sent, componentType: 'BUTTON', time: 30000 })
+            collector.on("collect", i => {
+                if (!i.customId.startsWith(`ctloList,${msg.id}`)) return
+                i.deferUpdate()
+                sent.page += +i.customId.split(",")[2]
                 collector.resetTimer()
-                collector.message.edit({embeds: [getList(args[0], client, sent.page)]})
-            }
-            collector.on("collect", listener).on("remove", listener)
-            arrows.forEach(e => sent.react(e))
+                sent.edit({embeds: [getList(args[0], client, sent.page)]})
+            }).on("end", () => {
+                sent.components[0].components.forEach(b => b.setDisabled(true))
+                sent.edit({components: sent.components})
+            })
         } else msg.channel.send("窩不知道你要找什麼")
     }
 }
