@@ -1,4 +1,4 @@
-const Discord = require("discord.js")
+const {MessageEmbed} = require("discord.js")
 const {stripIndents} = require("common-tags")
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
         也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測 塔 羅** 兩組關鍵字來觸發喔喔`,
     usage: [`${process.env.PREFIX} tarot`],
     tarotEmbed(client, msg, tarotEntry) {
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
             .setColor(client.tarot.tierColor[tarotEntry.tier])
             .setAuthor("昶羅牌")
             .setTitle(tarotEntry.phrase.format({

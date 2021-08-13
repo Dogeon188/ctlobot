@@ -1,4 +1,4 @@
-const utils = require("../utils")
+const {InvalidInputError} = require("../utils")
 const {stripIndents} = require("common-tags")
 
 parseArgs = (msg) => {
@@ -41,7 +41,7 @@ module.exports = {
                 }
             }
         } catch (e) {
-            if (e instanceof utils.InvalidInputError) msg.channel.send(e.message)
+            if (e instanceof InvalidInputError) msg.channel.send(e.message)
             else {
                 msg.channel.send(stripIndents`
                 哎呀，看來我這裡出了一點小問題

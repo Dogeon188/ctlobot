@@ -1,4 +1,4 @@
-const utils = require("../utils")
+const {getGitHeadHash} = require("../utils")
 const chalk = require("chalk")
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
             }
         })
         client.log("info", `Logged in as ${chalk.blue(client.user.tag)}!`)
-        client.log("info", `Git hash: \`${chalk.blue(utils.getGitHeadHash())}\``)
+        client.log("info", `Git hash: \`${chalk.blue(getGitHeadHash())}\``)
         await client.says.update(true)
         await client.tarot.update(true)
         await client.lack.update(true)
