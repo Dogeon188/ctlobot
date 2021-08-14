@@ -2,30 +2,17 @@ const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
 
 const entriesPerPage = 10
 
-getSaysList = (client, page) => {
+getSaysLackList = (client, page, type) => {
     let totalPages = Math.ceil(client.says.entries.length / entriesPerPage)
     page %= totalPages
     if (page < 0) page += totalPages
     return new MessageEmbed()
-        .setTitle(`昶語錄條目列表`)
-        .setColor("#c90000")
+        .setTitle(`${client[type].name}條目列表`)
+        .setColor(type === "says" ? "#c90000" : "#00abc9")
         .addField("\u200b",
             client.says.entries.slice(page * entriesPerPage, page * entriesPerPage + entriesPerPage)
                 .map((e, i) => `\`${page * entriesPerPage + i + 1}.\` ${e.says} _by ${e.author}_`).join("\n"))
         .setFooter(`第 ${page + 1} / ${totalPages} 頁（共${client.says.entries.length}條）`)
-}
-
-getLackList = (client, page) => {
-    let totalPages = Math.ceil(client.lack.entries.length / entriesPerPage)
-    page %= totalPages
-    if (page < 0) page += totalPages
-    return new MessageEmbed()
-        .setTitle(`昶缺乏條目列表`)
-        .setColor("#00abc9")
-        .addField("\u200b",
-            client.lack.entries.slice(page * entriesPerPage, page * entriesPerPage + entriesPerPage)
-                .map((e, i) => `\`${page * entriesPerPage + i + 1}.\` ${e.text}`).join("\n"))
-        .setFooter(`第 ${page + 1} / ${totalPages} 頁（共 ${client.lack.entries.length} 條）`)
 }
 
 getTarotList = (client, page) => {
@@ -54,9 +41,9 @@ getGreetList = (client, page) => {
 
 getList = (type, client, page) => {
     switch (type) {
-        case "says": return getSaysList(client, page)
+        case "says":
+        case "lack": return getSaysLackList(client, page, type)
         case "tarot": return getTarotList(client, page)
-        case "lack": return getLackList(client, page)
         case "greet": return getGreetList(client, page)
     }
 }
