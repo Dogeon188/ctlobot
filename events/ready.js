@@ -11,10 +11,10 @@ module.exports = {
     name: "message",
     async execute(client) {
         await client.user.setPresence({
-            activity: {
+            activities: [{
                 name: `${process.env.PREFIX} help`,
                 type: "LISTENING"
-            }
+            }]
         })
         client.log("info", `Logged in as ${chalk.blue(client.user.tag)}!`)
         client.log("info", `Git hash: \`${chalk.blue(getGitHeadHash())}\``)
