@@ -38,7 +38,9 @@ module.exports = {
                     break
                 case "c":
                     let choices
-                    msg.channel.send("是選擇題呢，請在60秒以內輸入你要的選項，用空格分割。")
+                    msg.channel.send("是選擇題呢，請在60秒以內輸入你要的選項，用空格分割。").then(m => {
+                        setTimeout(() => m.delete(), 5000)
+                    })
                     await msg.channel.awaitMessages(
                         {filter, max: 1, time: 60000, errors: ["time"]})
                         .then(collected => {
@@ -63,20 +65,28 @@ module.exports = {
             }
 
             if (pa.flags.includes("d")) {
-                msg.channel.send("想在投票當中加入敘述的話，請在30秒以內輸入文字敘述。")
+                msg.channel.send("想在投票當中加入敘述的話，請在30秒以內輸入文字敘述。").then(m => {
+                    setTimeout(() => m.delete(), 5000)
+                })
                 await msg.channel.awaitMessages(awaitOptions)
                     .then(collected => {
                         collected.first().react("<:approved:871686327249272842>")
                         embed.setDescription(collected.first().content)
-                    }).catch(() => msg.channel.send("你不說的話，我就當做沒問題囉。"))
+                    }).catch(() => msg.channel.send("你不說的話，我就當做沒問題囉。").then(m => {
+                        setTimeout(() => m.delete(), 5000)
+                    }))
             }
             if (pa.flags.includes("i")) {
-                msg.channel.send("想在投票當中加入圖片的話，請在30秒以內輸入圖片連結。")
+                msg.channel.send("想在投票當中加入圖片的話，請在30秒以內輸入圖片連結。").then(m => {
+                    setTimeout(() => m.delete(), 5000)
+                })
                 await msg.channel.awaitMessages(awaitOptions)
                     .then(collected => {
                         collected.first().react("<:approved:871686327249272842>")
                         embed.setImage(collected.first().content)
-                    }).catch(() => msg.channel.send("你不說的話，我就當做沒問題囉。"))
+                    }).catch(() => msg.channel.send("你不說的話，我就當做沒問題囉。").then(m => {
+                        setTimeout(() => m.delete(), 5000)
+                    }))
             }
 
             if (pa.flags.includes("?")) {
