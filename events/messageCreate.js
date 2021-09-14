@@ -1,4 +1,4 @@
-const {InvalidInputError} = require("../utils")
+const {InvalidInputError, isOp} = require("../utils")
 const {stripIndents} = require("common-tags")
 
 parseArgs = (msg) => {
@@ -19,7 +19,7 @@ module.exports = {
             if (msg.author.bot) return
             if (msg.content.startsWith(process.env.PREFIX + " ")) {
                 const [cmdName, args] = parseArgs(msg)
-                if (msg.author.id === process.env.DOGEON && client.op.has(cmdName)) {
+                if (isOp(msg.author.id) && client.op.has(cmdName)) {
                     msg.channel.sendTyping()
                     return client.op.get(cmdName).execute(client, msg, args)
                 } if (!client.commands.has(cmdName)) {

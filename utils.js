@@ -26,5 +26,9 @@ module.exports = {
         while (i = p.read()) arr.push(i)
         p.destroy()
         return arr
+    },
+    isOp(id) {
+        console.log(process.env.OP.split(","), id)
+        return process.env.OP.split(",").includes(id)
     }
 }
