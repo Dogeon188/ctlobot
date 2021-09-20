@@ -28,7 +28,6 @@ module.exports = {
         return arr
     },
     isOp(id) {
-        console.log(process.env.OP.split(","), id)
         return process.env.OP.split(",").includes(id)
     }
 }

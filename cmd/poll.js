@@ -28,8 +28,6 @@ module.exports = {
                 .setTitle(pa.title)
 
             const filter = m => m.author === msg.author
-            const awaitOptions = {filter, max: 1, time: 30000, errors: ["time"]}
-
             switch (pa.type) {
                 case "b":
                     emj = ["✅", "❌"]
@@ -41,8 +39,7 @@ module.exports = {
                     msg.channel.send("是選擇題呢，請在60秒以內輸入你要的選項，用空格分割。").then(m => {
                         setTimeout(() => m.delete(), 5000)
                     })
-                    await msg.channel.awaitMessages(
-                        {filter, max: 1, time: 60000, errors: ["time"]})
+                    await msg.channel.awaitMessages({filter, max: 1, time: 60000, errors: ["time"]})
                         .then(collected => {
                             collected.first().react("<:approved:871686327249272842>")
                             choices = collected.first().content
@@ -68,7 +65,7 @@ module.exports = {
                 msg.channel.send("想在投票當中加入敘述的話，請在30秒以內輸入文字敘述。").then(m => {
                     setTimeout(() => m.delete(), 5000)
                 })
-                await msg.channel.awaitMessages(awaitOptions)
+                await msg.channel.awaitMessages({filter, max: 1, time: 30000, errors: ["time"]})
                     .then(collected => {
                         collected.first().react("<:approved:871686327249272842>")
                         embed.setDescription(collected.first().content)
@@ -80,7 +77,7 @@ module.exports = {
                 msg.channel.send("想在投票當中加入圖片的話，請在30秒以內輸入圖片連結。").then(m => {
                     setTimeout(() => m.delete(), 5000)
                 })
-                await msg.channel.awaitMessages(awaitOptions)
+                await msg.channel.awaitMessages({filter, max: 1, time: 30000, errors: ["time"]})
                     .then(collected => {
                         collected.first().react("<:approved:871686327249272842>")
                         embed.setImage(collected.first().content)
