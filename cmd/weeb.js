@@ -31,6 +31,8 @@ generateWeeb = (s) => {
 
 module.exports = {
     name: "weeb",
+    description: "肥宅對話產生器 昶昶Ver.",
+    usage: [`${process.env.PREFIX} weeb`],
     async execute(client, msg, args) {
         const filter = m => m.author === msg.author
 
