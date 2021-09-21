@@ -1,0 +1,32 @@
+{
+  "env": {
+    "commonjs": true,
+    "node": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-undef": "warn",
+    "camelcase": "error",
+    "no-control-regex": "off",
+    "quotes": [
+      "warn",
+      "double"
+    ],
+    "indent": [
+      "error",
+      "tab",
+      {
+        "ignoredNodes": [
+          "TemplateLiteral"
+        ]
+      }
+    ]
+  }
+}
