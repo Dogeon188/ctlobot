@@ -37,7 +37,7 @@ module.exports = {
 				else if (/[說講話看想]|覺得/.test(msg.content)) ctloCmd = "says"
 				if (ctloCmd !== undefined) {
 					msg.channel.sendTyping()
-					client.commands.get(ctloCmd).execute(client, msg)
+					client.commands.get(ctloCmd).execute(client, msg, [])
 				}
 			}
 		} catch (e) {
