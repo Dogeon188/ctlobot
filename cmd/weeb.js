@@ -12,17 +12,17 @@ const postfixes = {
 const prefixes = ["嘛", "欸都", "唔姆..", "呀咧呀咧"]
 
 generateWeeb = (s) => {
-    if (s === '') return ''
-    let have_www = Math.random() < 0.5
+    let baseChance = (s === '') ? 0.5 : 0.2
+    let have_www = Math.random() < baseChance
     let www_number = (Math.floor(Math.random() * 5 ) + 2) * have_www
     let www = "w".repeat(www_number)
 
     let use_postfix = Math.random() < 0.1 ? 'dark' : 'normal'
-    let have_postfix = Math.random() < 0.7
+    let have_postfix = Math.random() < baseChance
     let postfix_index = Math.floor(Math.random() * postfixes[use_postfix].length)
     let postfix = have_postfix ? ('（' + postfixes[use_postfix][postfix_index]) : ''
 
-    let have_prefix = Math.random() < 0.7
+    let have_prefix = Math.random() < baseChance
     let prefix_index = Math.floor(Math.random() * prefixes.length)
     let prefix = have_prefix ? (prefixes[prefix_index] + ' ') : ''
 
