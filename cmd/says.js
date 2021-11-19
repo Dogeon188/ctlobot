@@ -18,7 +18,7 @@ module.exports = {
 			await client.says.update(false)
 			const s = client.says.draw(msg, args[0])
 			s.says = s.says.format({username: msg.member.displayName})
-			if (Math.random() < 1) {
+			if (Math.random() < 0.002) {
 				s.says = iconv.decode(Buffer.from(s.says), "Shift_JIS")
 				s.author = iconv.decode(Buffer.from(s.author), "Shift_JIS")
 			}
