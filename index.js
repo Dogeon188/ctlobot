@@ -1,3 +1,4 @@
+const { writeFileSync } = require("fs")
 const { Client } = require("discord.js")
 const chalk = require("chalk")
 
@@ -8,10 +9,6 @@ require("./init")(client)
 
 process.on("uncaughtException", e => {
 	client.log("error", `${e.message}\n${chalk.gray(e.stack)}`)
-})
-
-process.on("exit", () => {
-	client.log("I'm dead X(")
 })
 
 const app = require("express")()
