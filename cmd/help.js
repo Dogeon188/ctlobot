@@ -16,8 +16,8 @@ module.exports = {
 				msg.channel.send({
 					embeds: [
 						new MessageEmbed()
-							.setDescription(client.commands.get(args[0]).description)
 							.setAuthor(`${process.env.PREFIX} ${args[0]}`, "https://cdn.discordapp.com/avatars/779656199033454613/1c8964f1fc0cca1b719a7db056f9fb7c.png")
+							.addField("說明", client.commands.get(args[0]).description)
 							.addField("使用方式", "```" + client.commands.get(args[0]).usage.join("\n") + "```")
 							.setColor("#36ad3e")
 					]

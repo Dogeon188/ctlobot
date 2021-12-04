@@ -1,10 +1,9 @@
-const { writeFileSync } = require("fs")
-const { Client } = require("discord.js")
+const {Client} = require("discord.js")
 const chalk = require("chalk")
 
 require("dotenv").config()
 
-const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"] })
+const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"]})
 require("./init")(client)
 
 process.on("uncaughtException", e => {
