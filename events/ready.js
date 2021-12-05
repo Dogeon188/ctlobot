@@ -22,5 +22,6 @@ module.exports = {
 		await client.tarot.update(true)
 		await client.lack.update(true)
 		await client.greet.update(true)
+		await client.role.update(true)
 	}
 }

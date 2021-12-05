@@ -75,7 +75,6 @@ module.exports = {
 			})
 			sent.page = 0
 			const collector = sent.createMessageComponentCollector({
-				message: sent,
 				componentType: "BUTTON",
 				time: 30000
 			})
