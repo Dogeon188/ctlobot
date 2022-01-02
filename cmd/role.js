@@ -7,7 +7,7 @@ module.exports = {
 	因為藍色光頭最多只能夠用兩個身份組，特此弄一個指令來讓各位自行選擇要哪些。
 	本功能僅限310班群使用。
 	`,
-	usage: [`${process.env.PREFIX} roll`],
+	usage: [`${process.env.PREFIX} role`],
 	async execute(client, msg) {
 		if (msg.guild.id !== "762481400842027018") {
 			msg.channel.send("很抱歉，本伺服器不支援此功能！")
