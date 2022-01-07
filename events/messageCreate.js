@@ -32,7 +32,7 @@ module.exports = {
 			} else if (/昶|林小姐|敦紀|淳華|淑惠/.test(msg.content) && !process.env.IS_BETA) {
 				let ctloCmd
 				if (/[早午晚]安/.test(msg.content)) ctloCmd = "greet"
-				else if (/[占卜運勢預測塔羅]/.test(msg.content)) ctloCmd = "tarot"
+				else if (/[占卜運勢預測猜]/.test(msg.content)) ctloCmd = "tarot"
 				else if (/需要|缺乏/.test(msg.content)) ctloCmd = "lack"
 				else if (/[說講話看想]|覺得/.test(msg.content)) ctloCmd = "says"
 				if (ctloCmd !== undefined) {
