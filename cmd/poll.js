@@ -1,21 +1,29 @@
 const {InvalidInputError} = require("../utils")
 const {DiscordAPIError, MessageEmbed} = require("discord.js")
+const { stripIndent } = require("common-tags")
 
 const emojis = ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚪", "🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬜"]
 
 module.exports = {
 	name: "poll",
-	description: "一個簡單(?)的投票功能\n指令後面flags的地方加`d`可以加入補充敘述\n加`i`可以附圖片\n加`?`就可以多一個 **不確定** 的選項",
+	description: stripIndent`
+	一個簡單(?)的投票功能
+
+	channel - 標註頻道 或是直接用 \".\" 來表示當前頻道 預設也是當前頻道
+	options - 特殊選項，可用的有下列幾項：
+	> \`d\`可以加入補充敘述
+	> \`i\`可以附圖片（請使用鏈結）
+	> \`?\`可以多一個 **不確定**❔ 的選項`,
 	usage: [
-		`${process.env.PREFIX} poll <title> (type) (flags) (channel)`,
+		`${process.env.PREFIX} poll <title> (channel) (options)`,
 		"# type - 投票類型 可為 b(是非題) 或 c(選擇題) 沒輸入就當作是非題",
 		"# channel - 標註頻道 或是直接用 \".\" 來表示當前頻道 預設也是當前頻道"
 	],
 	async execute(client, msg, args) {
 		// TODO: count vote, announce result
 		const pa = {
-			title: args[0], type: args[1] ?? "b",
-			flags: args[2] ?? "", channel: args[3] ?? "."
+			title: args[0], channel: args[1] ?? ".",
+			options: args[2] ?? ""
 		}
 
 		try {
@@ -28,14 +36,7 @@ module.exports = {
 				.setTitle(pa.title)
 
 			const filter = m => m.author === msg.author
-			switch (pa.type) {
-			case "b": {
-				emj = ["✅", "❌"]
-				embed.addField("\u200b", "✅ **同意**", true)
-				embed.addField("\u200b", "❌ **不同意**", true)
-				break
-			}
-			case "c": {
+			if (pa.options.includes("c")) {
 				let choices
 				msg.channel.send("是選擇題呢，請在60秒以內輸入你要的選項，用空格分割。").then(m => {
 					setTimeout(() => m.delete(), 5000)
@@ -59,14 +60,13 @@ module.exports = {
 					embed.addField("\u200b", `${emojis[i]} **${choices[i]}**`, true)
 					emj.push(emojis[i])
 				}
-				break
-			}
-			default: {
-				throw new InvalidInputError(`未知的投票類型：\`${pa.type}\`\n目前支援的有：\`b\`是非題 \`c\`選擇題`)
-			}
+			} else {
+				emj = ["✅", "❌"]
+				embed.addField("\u200b", "✅ **同意**", true)
+				embed.addField("\u200b", "❌ **不同意**", true)
 			}
 
-			if (pa.flags.includes("d")) {
+			if (pa.options.includes("d")) {
 				msg.channel.send("想在投票當中加入敘述的話，請在30秒以內輸入文字敘述。").then(m => {
 					setTimeout(() => m.delete(), 5000)
 				})
@@ -78,7 +78,7 @@ module.exports = {
 						setTimeout(() => m.delete(), 5000)
 					}))
 			}
-			if (pa.flags.includes("i")) {
+			if (pa.options.includes("i")) {
 				msg.channel.send("想在投票當中加入圖片的話，請在30秒以內輸入圖片連結。").then(m => {
 					setTimeout(() => m.delete(), 5000)
 				})
@@ -91,7 +91,7 @@ module.exports = {
 					}))
 			}
 
-			if (pa.flags.includes("?")) {
+			if (pa.options.includes("?")) {
 				embed.addField("\u200b", "❔**不確定**", true)
 				emj.push("❔")
 			}
