@@ -14,7 +14,7 @@ module.exports = {
 	> \`d\`可以加入補充敘述
 	> \`i\`可以附圖片（請使用鏈結）
 	> \`?\`可以多一個 **不確定**❔ 的選項`,
-	usage: `${process.env.PREFIX} poll <title> (channel) (options)`,
+	usage: [`${process.env.PREFIX} poll <title> (channel) (options)`],
 	async execute(client, msg, args) {
 		// TODO: count vote, announce result
 		const pa = {
