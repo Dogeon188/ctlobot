@@ -26,7 +26,7 @@ module.exports = {
 			await msg.channel.send({embeds: [
 				new Discord.MessageEmbed()
 					.setTitle(title)
-					.setFooter(`——${aut}，2021`)
+					.setFooter(`——${aut}`)
 					.setColor("#007799")
 			]})
 		} catch (e) {
