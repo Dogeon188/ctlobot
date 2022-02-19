@@ -18,7 +18,7 @@ const getList = (type, page) => {
 				client.says.entries.slice(page * entriesPerPage, page * entriesPerPage + entriesPerPage)
 					.map((e, i) => `\`${page * entriesPerPage + i + 1}.\` ${e.says} _by ${e.author}_`)
 					.join("\n"))
-			.setFooter(`第 ${page + 1} / ${totalPages} 頁（共${client.says.entries.length}條）`)
+			.setFooter({text: `第 ${page + 1} / ${totalPages} 頁（共${client.says.entries.length}條）`})
 	}
 	case "tarot": {
 		page %= client.tarot.entries.length
@@ -26,7 +26,7 @@ const getList = (type, page) => {
 		const embed = client.commands.get("tarot").tarotEmbed(null, client.tarot.entries[page])
 		let footer = `第 ${page + 1} / ${client.tarot.entries.length} 項`
 		if (embed.footer !== null) footer += `・${embed.footer.text}`
-		embed.setFooter(footer).setAuthor("昶羅牌條目列表")
+		embed.setFooter({text: footer}).setAuthor({name: "昶羅牌條目列表"})
 		return embed
 	}
 	case "greet": {
@@ -40,7 +40,7 @@ const getList = (type, page) => {
 			.addField("早上", entry.morning, true)
 			.addField("中午", entry.evening, true)
 			.addField("晚上", entry.night, true)
-			.setFooter(`第 ${page + 1} / ${client.greet.entries.length} 條`)
+			.setFooter({text: `第 ${page + 1} / ${client.greet.entries.length} 條`})
 	}
 	}
 }

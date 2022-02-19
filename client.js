@@ -31,7 +31,10 @@ for (const file of readdirSync("./cmd").filter(f => f.endsWith(".js") && !f.star
 }
 
 client.helpEmbed = new MessageEmbed()
-    .setAuthor("昶昶機器人幫助文檔", "https://cdn.discordapp.com/avatars/779656199033454613/1c8964f1fc0cca1b719a7db056f9fb7c.png")
+    .setAuthor({
+        name: "昶昶機器人幫助文檔",
+        iconURL: "https://cdn.discordapp.com/avatars/779656199033454613/1c8964f1fc0cca1b719a7db056f9fb7c.png"
+    })
     .addField("可用操作", "`" + Array.from(client.commands.keys()).join("`▫️`") + "`")
     .addField("\u200b", `使用 \`${process.env.PREFIX} help <指令>\` 以獲得更多訊息`)
 

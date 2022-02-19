@@ -31,7 +31,7 @@ module.exports = {
 			let emj = []
 			const embed = new MessageEmbed()
 				.setColor("#b4821e")
-				.setFooter(`由 ${msg.author.username} 發起的投票`)
+				.setFooter({text: `由 ${msg.author.username} 發起的投票`})
 				.setTitle(pa.title)
 
 			const filter = m => m.author === msg.author

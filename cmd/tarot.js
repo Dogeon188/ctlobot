@@ -13,7 +13,7 @@ module.exports = {
 	tarotEmbed(msg, tarotEntry) {
 		const embed = new MessageEmbed()
 			.setColor(tierColors[tarotEntry.tier])
-			.setAuthor("昶羅牌")
+			.setAuthor({name: "昶羅牌"})
 			.setTitle(tarotEntry.phrase.format({
 				username: msg === null ? "{username}" : msg.member.displayName
 			}))
@@ -22,7 +22,7 @@ module.exports = {
 			.addField("\u200b", "\u200b")
 			.addField("可能會發生的事情", "> " + tarotEntry.forecast)
 			.addField("應對方式", "> " + tarotEntry.response)
-		if (tarotEntry.author !== "") embed.setFooter(`素材提供：${tarotEntry.author}`)
+		if (tarotEntry.author !== "") embed.setFooter({text: `素材提供：${tarotEntry.author}`})
 		return embed
 	},
 	async execute(msg) {
