@@ -8,12 +8,14 @@ module.exports = {
 	name: "poll",
 	description: stripIndent`
 	一個簡單(?)的投票功能
+	不過還是比較複雜，以下是各個參數的用法：
 
-	channel - 標註頻道 或是直接用 \".\" 來表示當前頻道 預設也是當前頻道
-	options - 特殊選項，可用的有下列幾項：
-	> \`d\`可以加入補充敘述
-	> \`i\`可以附圖片（請使用鏈結）
-	> \`?\`可以多一個 **不確定**❔ 的選項`,
+	\`channel\` 標註頻道，或是直接用 \`.\` 來表示當前頻道（預設也是當前頻道）
+	\`options\` 特殊選項，可用的有下列幾項：
+	🔹 \`c\` 啟用多個選項（預設為是非題）
+	🔹 \`d\` 加入補充敘述
+	🔹 \`i\` 附圖片（請使用鏈結）
+	🔹 \`?\` 多一個「**不確定**❔」的選項`,
 	usage: [`${process.env.PREFIX} poll <title> (channel) (options)`],
 	async execute(client, msg, args) {
 		// TODO: count vote, announce result

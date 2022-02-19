@@ -1,6 +1,5 @@
 const updatable = {
-	greet: "昶問候", lack: "昶缺乏",
-	says: "昶語錄", tarot: "昶羅牌",
+	greet: "昶問候", says: "昶語錄", tarot: "昶羅牌",
 	role: "310身份組管理"
 }
 

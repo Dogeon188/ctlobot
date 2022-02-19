@@ -2,12 +2,11 @@ const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
 
 const entriesPerPage = 10
 
-const available = ["says", "tarot", "lack", "greet"]
+const available = ["says", "tarot", "greet"]
 
 const getList = (type, client, page) => {
 	switch (type) {
-	case "says":
-	case "lack": {
+	case "says": {
 		let totalPages = Math.ceil(client.says.entries.length / entriesPerPage)
 		page %= totalPages
 		if (page < 0) page += totalPages
@@ -65,8 +64,8 @@ const row = id => new MessageActionRow().addComponents(
 
 module.exports = {
 	name: "list",
-	description: "查看 **昶語錄** **昶羅牌** **昶昶缺** **昶問候** 的條目列表",
-	usage: [`${process.env.PREFIX} list <says|tarot|lack|greet>`],
+	description: "查看 **昶語錄** **昶羅牌** **昶問候** 的條目列表",
+	usage: [`${process.env.PREFIX} list <says|tarot|greet>`],
 	async execute(client, msg, args) {
 		if (available.includes(args[0])) {
 			const sent = await msg.channel.send({

@@ -56,8 +56,6 @@ module.exports = async client => {
 	}
 
 	client.role = new PoolContainer("role", "310身份組管理", 240, "1774210288")
-
-	client.lack = new PoolContainer("lack", "昶昶缺", 24, "79624142")
 	client.tarot = new PoolContainer("tarot", "昶羅牌", 24, "1686809608")
 	client.says = new PoolContainer(
 		"says", "昶語錄", 3, "0",

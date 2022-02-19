@@ -20,7 +20,6 @@ module.exports = {
 		client.log("info", `Git hash: \`${chalk.blue(getGitHeadHash())}\``)
 		await client.says.update(true)
 		await client.tarot.update(true)
-		await client.lack.update(true)
 		await client.greet.update(true)
 		await client.role.update(true)
 	}
