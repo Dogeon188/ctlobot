@@ -1,5 +1,6 @@
 const {MessageEmbed} = require("discord.js")
 const {stripIndents} = require("common-tags")
+const client = require("../client")
 
 const tierColors = [0x0772b4, 0x0a9c35, 0x88cb03, 0xffbf00, 0xbb2705]
 
@@ -9,7 +10,7 @@ module.exports = {
         昶羅牌：讓昶昶告訴你今天的運勢
         也可以透過同時包含 **昶** 和 **占 卜 運 勢 預 測 猜** 兩組關鍵字來觸發喔喔`,
 	usage: [`${process.env.PREFIX} tarot`],
-	tarotEmbed(client, msg, tarotEntry) {
+	tarotEmbed(msg, tarotEntry) {
 		const embed = new MessageEmbed()
 			.setColor(tierColors[tarotEntry.tier])
 			.setAuthor("昶羅牌")
@@ -24,8 +25,8 @@ module.exports = {
 		if (tarotEntry.author !== "") embed.setFooter(`素材提供：${tarotEntry.author}`)
 		return embed
 	},
-	async execute(client, msg) {
+	async execute(msg) {
 		await client.tarot.update(false)
-		await msg.channel.send({embeds: [this.tarotEmbed(client, msg, client.tarot.draw())]})
+		await msg.channel.send({embeds: [this.tarotEmbed(msg, client.tarot.draw())]})
 	}
 }

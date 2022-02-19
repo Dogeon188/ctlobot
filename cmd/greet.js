@@ -1,4 +1,5 @@
 const {stripIndents} = require("common-tags")
+const client = require("../client")
 
 module.exports = {
 	name: "greet",
@@ -7,7 +8,7 @@ module.exports = {
         也可以透過同時包含 **昶** 和 **早安 午安 晚安** 兩組關鍵字來觸發喔喔
     `,
 	usage: [`${process.env.PREFIX} greet`],
-	async execute(client, msg) {
+	async execute(msg) {
 		await client.greet.update(false)
 		let t = (new Date().getHours() + 8) % 24, i
 		if (t >= 18 || t < 4) i = "night"

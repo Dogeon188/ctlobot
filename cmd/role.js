@@ -1,5 +1,6 @@
 const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
 const {stripIndent} = require("common-tags")
+const client = require("../client")
 
 module.exports = {
 	name: "role",
@@ -8,7 +9,7 @@ module.exports = {
 	本功能僅限310班群使用。
 	`,
 	usage: [`${process.env.PREFIX} role`],
-	async execute(client, msg) {
+	async execute(msg) {
 		if (msg.guild.id !== "762481400842027018") {
 			msg.channel.send("很抱歉，本伺服器不支援此功能！")
 			return

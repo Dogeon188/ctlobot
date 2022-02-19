@@ -1,5 +1,6 @@
 const {InvalidInputError, isOp} = require("../utils")
 const {stripIndents} = require("common-tags")
+const client = require("../client")
 
 const parseArgs = (msg) => {
 	let args = msg.content.slice(process.env.PREFIX.length).trim()
@@ -10,24 +11,24 @@ const parseArgs = (msg) => {
 		a[i] = a[i].replace("\\\"", "\"")
 	})
 	return [args.shift().toLowerCase(), args]
-}
+} 
 
 module.exports = {
 	name: "messageCreate",
-	execute(client, msg) {
+	execute(msg) {
 		try {
 			if (msg.author.bot) return
 			if (msg.content.startsWith(process.env.PREFIX + " ")) {
 				const [cmdName, args] = parseArgs(msg)
 				if (isOp(msg.author.id) && client.op.has(cmdName)) {
 					msg.channel.sendTyping()
-					return client.op.get(cmdName).execute(client, msg, args)
+					return client.op.get(cmdName).execute(msg, args)
 				}
 				if (!client.commands.has(cmdName)) {
 					msg.channel.send(`我不知道你想表達什麼喔 用\`${process.env.PREFIX} help\`來確定一下你要幹嘛吧`)
 				} else {
 					msg.channel.sendTyping()
-					client.commands.get(cmdName).execute(client, msg, args)
+					client.commands.get(cmdName).execute(msg, args)
 				}
 			} else if (/昶|林小姐|敦紀|淳華|淑惠/.test(msg.content) && !process.env.IS_BETA) {
 				let ctloCmd
@@ -36,7 +37,7 @@ module.exports = {
 				else if (/[說講話看想]|覺得/.test(msg.content)) ctloCmd = "says"
 				if (ctloCmd !== undefined) {
 					msg.channel.sendTyping()
-					client.commands.get(ctloCmd).execute(client, msg, [])
+					client.commands.get(ctloCmd).execute(msg, [])
 				}
 			}
 		} catch (e) {

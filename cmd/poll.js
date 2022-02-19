@@ -1,6 +1,7 @@
 const {InvalidInputError} = require("../utils")
 const {DiscordAPIError, MessageEmbed} = require("discord.js")
 const { stripIndent } = require("common-tags")
+const client = require("../client")
 
 const emojis = ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚪", "🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬜"]
 
@@ -17,7 +18,7 @@ module.exports = {
 	🔹 \`i\` 附圖片（請使用鏈結）
 	🔹 \`?\` 多一個「**不確定**❔」的選項`,
 	usage: [`${process.env.PREFIX} poll <title> (channel) (options)`],
-	async execute(client, msg, args) {
+	async execute(msg, args) {
 		// TODO: count vote, announce result
 		const pa = {
 			title: args[0], channel: args[1] ?? ".",

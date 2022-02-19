@@ -1,10 +1,11 @@
 const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
+const client = require("../client")
 
 const entriesPerPage = 10
 
 const available = ["says", "tarot", "greet"]
 
-const getList = (type, client, page) => {
+const getList = (type, page) => {
 	switch (type) {
 	case "says": {
 		let totalPages = Math.ceil(client.says.entries.length / entriesPerPage)
@@ -22,7 +23,7 @@ const getList = (type, client, page) => {
 	case "tarot": {
 		page %= client.tarot.entries.length
 		if (page < 0) page += client.tarot.entries.length
-		const embed = client.commands.get("tarot").tarotEmbed(client, null, client.tarot.entries[page])
+		const embed = client.commands.get("tarot").tarotEmbed(null, client.tarot.entries[page])
 		let footer = `第 ${page + 1} / ${client.tarot.entries.length} 項`
 		if (embed.footer !== null) footer += `・${embed.footer.text}`
 		embed.setFooter(footer).setAuthor("昶羅牌條目列表")
@@ -66,10 +67,10 @@ module.exports = {
 	name: "list",
 	description: "查看 **昶語錄** **昶羅牌** **昶問候** 的條目列表",
 	usage: [`${process.env.PREFIX} list <says|tarot|greet>`],
-	async execute(client, msg, args) {
+	async execute(msg, args) {
 		if (available.includes(args[0])) {
 			const sent = await msg.channel.send({
-				embeds: [getList(args[0], client, 0)],
+				embeds: [getList(args[0], 0)],
 				components: [row(msg.id)]
 			})
 			sent.page = 0
@@ -82,7 +83,7 @@ module.exports = {
 				i.deferUpdate()
 				sent.page += +i.customId.split(",")[2]
 				collector.resetTimer()
-				sent.edit({embeds: [getList(args[0], client, sent.page)]})
+				sent.edit({embeds: [getList(args[0], sent.page)]})
 			}).on("end", () => {
 				sent.components[0].components.forEach(b => b.setDisabled(true))
 				sent.edit({components: sent.components})

@@ -33,7 +33,7 @@ module.exports = {
 	name: "weeb",
 	description: "肥宅對話產生器 昶昶Ver.",
 	usage: [`${process.env.PREFIX} weeb`],
-	async execute(client, msg) {
+	async execute(msg) {
 		const filter = m => m.author === msg.author
 
 		msg.channel.send("欸都 請在60秒以內輸入你想要轉換的文章www（搔頭燦笑").then(m => {

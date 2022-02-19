@@ -2,6 +2,7 @@ const {stripIndents} = require("common-tags")
 const Discord = require("discord.js")
 const utils = require("../utils")
 const iconv = require("iconv-lite")
+const client = require("../client")
 
 module.exports = {
 	name: "says",
@@ -13,7 +14,7 @@ module.exports = {
         `${process.env.PREFIX} says`,
         `${process.env.PREFIX} says <speech_id>`
 	],
-	async execute(client, msg, args) {
+	async execute(msg, args) {
 		try {
 			await client.says.update(false)
 			const s = client.says.draw(msg, args[0])

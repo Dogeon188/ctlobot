@@ -1,10 +1,11 @@
 const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
+const client = require("../client")
 
 module.exports = {
 	name: "invite",
 	description: "昶昶具雞黍 邀我至田家 把我拉到更多的伺服器吧！",
 	usage: [`${process.env.PREFIX} invite`],
-	async execute(client, msg) {
+	async execute(msg) {
 		msg.channel.send({
 			embeds: [
 				new MessageEmbed()

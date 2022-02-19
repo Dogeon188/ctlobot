@@ -1,5 +1,6 @@
 const chalk = require("chalk")
 const {readFileSync} = require("fs")
+const client = require("../client")
 
 const getGitHeadHash = () => {
 	const rev = readFileSync(".git/HEAD").toString().trim()
@@ -9,7 +10,7 @@ const getGitHeadHash = () => {
 
 module.exports = {
 	name: "message",
-	async execute(client) {
+	async execute() {
 		await client.user.setPresence({
 			activities: [{
 				name: `${process.env.PREFIX} help`,

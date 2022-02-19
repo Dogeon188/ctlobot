@@ -1,10 +1,11 @@
 const { InvalidInputError } = require("../utils")
 const { DiscordAPIError } = require("discord.js")
+const client = require("../client")
 
 module.exports = {
 	name: "chat",
 	op: true,
-	async execute(client, msg, args) {
+	async execute(msg, args) {
 		try {
 			if (args.length < 1) throw new InvalidInputError("Didn't provide channel ID!")
 			const c = (args[0] === ".") ? msg.channel :

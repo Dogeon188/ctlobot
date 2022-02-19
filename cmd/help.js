@@ -1,4 +1,5 @@
 const {MessageEmbed} = require("discord.js")
+const client = require("../client")
 
 module.exports = {
 	name: "help",
@@ -7,7 +8,7 @@ module.exports = {
 		`${process.env.PREFIX} help`,
 		`${process.env.PREFIX} help <command>`
 	],
-	async execute(client, msg, args) {
+	async execute(msg, args) {
 		if (args.length === 0) msg.channel.send({embeds: [client.helpEmbed]})
 		else {
 			if (!client.commands.has(args[0]))
