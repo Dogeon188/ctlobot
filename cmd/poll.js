@@ -29,10 +29,11 @@ module.exports = {
 			if (pa.title === undefined) throw new InvalidInputError("沒有給投票標題我開不了投票欸")
 
 			let emj = []
-			const embed = new MessageEmbed()
-				.setColor("#b4821e")
-				.setFooter({text: `由 ${msg.author.username} 發起的投票`})
-				.setTitle(pa.title)
+			const embed = new MessageEmbed({
+				title: pa.title,
+				footer: {text: `由 ${msg.author.username} 發起的投票`},
+				color: "#b4821e"
+			})
 
 			const filter = m => m.author === msg.author
 			if (pa.options.includes("c")) {

@@ -12,10 +12,11 @@ module.exports = {
 			return
 		}
 		await client.role.update()
-		const embed = new MessageEmbed()
-			.setTitle("調整身份組")
-			.setDescription("按下面的按鈕來開關自己的身份組\n藍色代表你現在擁有這個身份組\n灰色代表你沒有這個身份組")
-			.setColor("#4bc722")
+		const embed = new MessageEmbed({
+			title: "調整身份組",
+			description: "按下面的按鈕來開關自己的身份組\n藍色代表你現在擁有這個身份組\n灰色代表你沒有這個身份組",
+			color: "#4bc722"
+		})
 		const rows = []
 		let i = 5, j = -1
 		for (let entry of client.role.entries) {

@@ -22,10 +22,11 @@ module.exports = {
 				aut = iconv.decode(Buffer.from(s.author), "Shift_JIS")
 			}
 			await msg.channel.send({embeds: [
-				new MessageEmbed()
-					.setTitle(title)
-					.setFooter({text: `——${aut}`})
-					.setColor("#007799")
+				new MessageEmbed({
+					title: title,
+					color: "#007799",
+					footer: {text: `——${aut}`}
+				})
 			]})
 		} catch (e) {
 			if (e instanceof utils.InvalidInputError) msg.channel.send(`${e.message}`)

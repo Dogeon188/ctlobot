@@ -40,7 +40,7 @@ for (let cmd of client.commands.keys()) {
 }
 client.helpEmbed.addField("\u200b", `使用 \`${process.env.PREFIX} help <指令>\` 以獲得更多訊息`)
 
-class PoolContainer {
+class UpdatablePool {
 	constructor(id, name, updateInterval, gid, drawer, updater) {
 		this.id = id
 		this.name = name
@@ -63,9 +63,9 @@ class PoolContainer {
 	}
 }
 
-client.role = new PoolContainer("role", "310身份組管理", 240, "1774210288")
-client.tarot = new PoolContainer("tarot", "昶羅牌", 24, "1686809608")
-client.says = new PoolContainer(
+client.role = new UpdatablePool("role", "310身份組管理", 240, "1774210288")
+client.tarot = new UpdatablePool("tarot", "昶羅牌", 24, "1686809608")
+client.says = new UpdatablePool(
 	"says", "昶語錄", 3, "0",
 	function (msg, index) {
 		if (index === undefined) return this.entries[Math.floor(Math.random() * this.entries.length)]
@@ -79,7 +79,7 @@ client.says = new PoolContainer(
 		return this.entries[i]
 	}
 )
-client.greet = new PoolContainer(
+client.greet = new UpdatablePool(
 	"greet", "昶問候", 24, "663619317",
 	function () {
 		let r = Math.random() * this.weightSum

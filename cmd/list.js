@@ -11,14 +11,17 @@ const getList = (type, page) => {
 		let totalPages = Math.ceil(client.says.entries.length / entriesPerPage)
 		page %= totalPages
 		if (page < 0) page += totalPages
-		return new MessageEmbed()
-			.setTitle(`${client[type].name}條目列表`)
-			.setColor(type === "says" ? "#c90000" : "#00abc9")
-			.addField("\u200b",
-				client.says.entries.slice(page * entriesPerPage, page * entriesPerPage + entriesPerPage)
-					.map((e, i) => `\`${page * entriesPerPage + i + 1}.\` ${e.says} _by ${e.author}_`)
-					.join("\n"))
-			.setFooter({text: `第 ${page + 1} / ${totalPages} 頁（共${client.says.entries.length}條）`})
+		return new MessageEmbed({
+			title: `${client[type].name}條目列表`,
+			color: "#c90000",
+			footer: {
+				text: `第 ${page + 1} / ${totalPages} 頁（共${client.says.entries.length}條）`
+			}
+		})
+		.addField("\u200b",
+			client.says.entries.slice(page * entriesPerPage, (page + 1) * entriesPerPage)
+				.map((e, i) => `\`${page * entriesPerPage + i + 1}.\` ${e.says.format({username: "`{username}`"})} _by ${e.author}_`)
+				.join("\n"))
 	}
 	case "tarot": {
 		page %= client.tarot.entries.length
@@ -33,14 +36,15 @@ const getList = (type, page) => {
 		page %= client.greet.entries.length
 		if (page < 0) page += client.greet.entries.length
 		const entry = client.greet.entries[page]
-		return new MessageEmbed()
-			.setTitle("昶問候條目列表")
-			.setColor("#059a16")
-			.setDescription(`抽中機率 ${(entry.weight / client.greet.weightSum * 100).toFixed(2)} %`)
-			.addField("早上", entry.morning, true)
-			.addField("中午", entry.evening, true)
-			.addField("晚上", entry.night, true)
-			.setFooter({text: `第 ${page + 1} / ${client.greet.entries.length} 條`})
+		return new MessageEmbed({
+			title: "昶問候條目列表",
+			color: "#059a16",
+			description: `抽中機率 ${(entry.weight / client.greet.weightSum * 100).toFixed(2)} %`,
+			footer: {text: `第 ${page + 1} / ${client.greet.entries.length} 條`}
+		})
+		.addField("早上", entry.morning, true)
+		.addField("中午", entry.evening, true)
+		.addField("晚上", entry.night, true)
 	}
 	}
 }

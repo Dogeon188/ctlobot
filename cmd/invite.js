@@ -8,11 +8,12 @@ module.exports = {
 	async execute(msg) {
 		msg.channel.send({
 			embeds: [
-				new MessageEmbed()
-					.setThumbnail(client.iconURL)
-					.setTitle("把我拉到更多的伺服器吧！")
-					.setDescription("想要把我拉到其他的伺服器嗎？\n去找吧，我把邀請連結都放在這裡！")
-					.setColor("#c72222")
+				new MessageEmbed({
+					title: "把我拉到更多的伺服器吧！",
+					description: "想要把我拉到其他的伺服器嗎？\n去找吧，我把邀請連結都放在這裡！",
+					color: "#c72222",
+					thumbnail: client.iconURL
+				})
 			],
 			components: [new MessageActionRow().addComponents(
 				new MessageButton({
