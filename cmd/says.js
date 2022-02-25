@@ -1,15 +1,12 @@
-const {stripIndents} = require("common-tags")
-const Discord = require("discord.js")
+const {MessageEmbed} = require("discord.js")
 const utils = require("../utils")
 const iconv = require("iconv-lite")
 const client = require("../client")
 
 module.exports = {
 	name: "says",
-	description: stripIndents`
-        昶語錄：傾聽昶昶的箴言
-        也可以透過同時包含 **昶** 和 **說 講 話 看 想 覺得** 兩組關鍵字來觸發喔喔
-    `,
+	description: "昶語錄：傾聽昶昶的箴言",
+	subdesciption: "也可以透過同時包含 **昶** 和 **說 講 話 看 想 覺得** 兩組關鍵字來觸發喔喔",
 	usage: [
         `${process.env.PREFIX} says`,
         `${process.env.PREFIX} says <speech_id>`
@@ -25,7 +22,7 @@ module.exports = {
 				aut = iconv.decode(Buffer.from(s.author), "Shift_JIS")
 			}
 			await msg.channel.send({embeds: [
-				new Discord.MessageEmbed()
+				new MessageEmbed()
 					.setTitle(title)
 					.setFooter({text: `——${aut}`})
 					.setColor("#007799")

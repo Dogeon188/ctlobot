@@ -1,14 +1,14 @@
 const {InvalidInputError} = require("../utils")
 const {DiscordAPIError, MessageEmbed} = require("discord.js")
-const { stripIndent } = require("common-tags")
+const {stripIndent} = require("common-tags")
 const client = require("../client")
 
 const emojis = ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚪", "🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬜"]
 
 module.exports = {
 	name: "poll",
-	description: stripIndent`
-	一個簡單(?)的投票功能
+	description: "一個簡單(?)的投票功能",
+	subdescription: stripIndent`
 	不過還是比較複雜，以下是各個參數的用法：
 
 	\`channel\` 標註頻道，或是直接用 \`.\` 來表示當前頻道（預設也是當前頻道）

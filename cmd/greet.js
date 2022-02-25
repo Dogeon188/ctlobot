@@ -1,12 +1,9 @@
-const {stripIndents} = require("common-tags")
 const client = require("../client")
 
 module.exports = {
 	name: "greet",
-	description: stripIndents`
-        被昶昶大聲問早。
-        也可以透過同時包含 **昶** 和 **早安 午安 晚安** 兩組關鍵字來觸發喔喔
-    `,
+	description: "被昶昶大聲問早。",
+	subdescription: "也可以透過同時包含 **昶** 和 **早安 午安 晚安** 兩組關鍵字來觸發喔喔",
 	usage: [`${process.env.PREFIX} greet`],
 	async execute(msg) {
 		await client.greet.update(false)

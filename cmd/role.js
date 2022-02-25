@@ -1,13 +1,10 @@
 const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
-const {stripIndent} = require("common-tags")
 const client = require("../client")
 
 module.exports = {
 	name: "role",
-	description: stripIndent`
-	因為藍色光頭最多只能夠用兩個身份組，特此弄一個指令來讓各位自行選擇要哪些。
-	本功能僅限310班群使用。
-	`,
+	description: "設定自選身份組（本功能僅限310班群使用）",
+	subdescription: "因為藍色光頭最多只能夠用兩個身份組，所以特別搞了這個來方便自選",
 	usage: [`${process.env.PREFIX} role`],
 	async execute(msg) {
 		if (msg.guild.id !== "762481400842027018") {

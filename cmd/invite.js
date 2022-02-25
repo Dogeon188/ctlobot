@@ -9,7 +9,7 @@ module.exports = {
 		msg.channel.send({
 			embeds: [
 				new MessageEmbed()
-					.setThumbnail("https://cdn.discordapp.com/avatars/779656199033454613/1c8964f1fc0cca1b719a7db056f9fb7c.png")
+					.setThumbnail(client.iconURL)
 					.setTitle("把我拉到更多的伺服器吧！")
 					.setDescription("想要把我拉到其他的伺服器嗎？\n去找吧，我把邀請連結都放在這裡！")
 					.setColor("#c72222")
