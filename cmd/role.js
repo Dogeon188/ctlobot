@@ -34,7 +34,7 @@ module.exports = {
 				style: (msg.member.roles.cache.has(entry.roleId) ? "PRIMARY" : "SECONDARY"),
 				customId: `ctloRole,${msg.id},${msg.author.id},${entry.roleId},${j},${i}`
 			}))
-			embed.addField(entry.emoji + " " + fetchedRole.name, entry.desc)
+			embed.addField(entry.emoji + " " + fetchedRole.name, entry.desc, true)
 			i++
 		}
 		const sent = await msg.channel.send({embeds: [embed], components: rows})

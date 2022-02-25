@@ -10,7 +10,7 @@ module.exports = {
 	usage: [`${process.env.PREFIX} greet`],
 	async execute(msg) {
 		await client.greet.update(false)
-		let t = (new Date().getHours() + 8) % 24, i
+		let t = (new Date().getHours()) % 24, i
 		if (t >= 18 || t < 4) i = "night"
 		else if (t >= 11 && t < 18) i = "evening"
 		else i = "morning"
