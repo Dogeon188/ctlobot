@@ -11,7 +11,7 @@ const getGitHeadHash = () => {
 module.exports = {
 	name: "message",
 	async execute() {
-		await client.user.setPresence({
+		client.user.setPresence({
 			activities: [{
 				name: `${process.env.PREFIX} help`,
 				type: "LISTENING"
@@ -19,9 +19,10 @@ module.exports = {
 		})
 		client.log("info", `Logged in as ${chalk.blue(client.user.tag)}!`)
 		client.log("info", `Git hash: \`${chalk.blue(getGitHeadHash())}\``)
-		await client.says.update(true)
-		await client.tarot.update(true)
-		await client.greet.update(true)
-		await client.role.update(true)
+		client.says.update(true)
+		client.tarot.update(true)
+		client.greet.update(true)
+		client.role.update(true)
+		client.timetable.update(true)
 	}
 }

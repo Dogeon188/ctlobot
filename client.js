@@ -1,5 +1,5 @@
 const {readdirSync} = require("fs")
-const {Client, Collection, MessageEmbed} = require("discord.js")
+const {Client, Collection, MessageEmbed, CommandInteractionOptionResolver} = require("discord.js")
 const winston = require("winston")
 const utils = require("./utils")
 const chalk = require("chalk")
@@ -67,7 +67,7 @@ client.role = new UpdatablePool("role", "310身份組管理", 240, "1774210288")
 client.tarot = new UpdatablePool("tarot", "昶羅牌", 24, "1686809608")
 client.says = new UpdatablePool(
 	"says", "昶語錄", 3, "0",
-	function (msg, index) {
+	function (index) {
 		if (index === undefined) return this.entries[Math.floor(Math.random() * this.entries.length)]
 		let i = Math.round(+index)
 		if (isNaN(i)) throw new utils.InvalidInputError(`無法將 **${index}** 解析為昶語錄編號！`)
@@ -94,6 +94,33 @@ client.greet = new UpdatablePool(
 			a[i].weight = +e.weight
 			this.weightSum += e.weight
 		})
+	}
+)
+client.timetable = new UpdatablePool(
+	"timetable", "翹課表", 240, "1236681904",
+	function (day, time) {
+		const times = [750, 900, 1000, 1100, 1200, 1350, 1450, 1600, 2500]
+
+		let ret = {now: undefined, next: undefined}
+		let date = new Date()
+		let _day = (day ?? date.getDay()) - 1
+		let period = -2, t = time ?? date.getHours() * 100 + date.getMinutes()
+
+		times.some(v => {return period++, v > t})
+
+		if (period !== -1) ret.now = this.entries[_day][period]
+		ret.next = this.entries[_day][++period] ??
+			this.entries[++_day % 7][0] ??
+			this.entries[0][0]
+
+		return ret
+	},
+	function () {
+		let tmp = [[],[],[],[],[],[],[]]
+		for (let entry of this.entries) {
+			tmp[entry.day - 1][entry.class - 1] = entry
+		}
+		this.entries = tmp
 	}
 )
 

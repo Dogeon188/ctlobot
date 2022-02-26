@@ -13,8 +13,8 @@ module.exports = {
 	],
 	async execute(msg, args) {
 		try {
-			await client.says.update(false)
-			const s = client.says.draw(msg, args[0])
+			await client.says.update()
+			const s = client.says.draw(args[0])
 			let title = s.says.format({username: msg.member.displayName})
 			let aut = s.author
 			if (Math.random() < 0.002) {

@@ -25,7 +25,7 @@ module.exports = {
 		return embed
 	},
 	async execute(msg) {
-		await client.tarot.update(false)
+		await client.tarot.update()
 		await msg.channel.send({embeds: [this.tarotEmbed(msg, client.tarot.draw())]})
 	}
 }

@@ -2,7 +2,7 @@ const client = require("../client")
 
 const updatable = {
 	greet: "昶問候", says: "昶語錄", tarot: "昶羅牌",
-	role: "310身份組管理"
+	role: "310身份組管理", timetable: "曠課表"
 }
 
 module.exports = {
