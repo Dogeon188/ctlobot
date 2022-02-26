@@ -50,7 +50,7 @@ module.exports = {
 	],
 	async execute(msg, args) {
 		await client.timetable.update()
-		if (isNaN(+args[0]) || isNaN(+args[1]) ||
+		if (args === [] || isNaN(+args[0]) || isNaN(+args[1]) ||
             +args[0] < 1 || +args[0] > 7 ||
             +args[1] < 0|| +args[1] > 2400) {
 			msg.channel.send("輸入時間不符合規範！已自動轉換為當前時間……").then(m => {
