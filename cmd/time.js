@@ -14,7 +14,9 @@ function timetableEmbed (ctx, type) {
 		author: {name: type + "節課程", iconURL: client.iconURL},
 		title: ctx.name, color: (type === "當") ? "#2288cc" : "#cc8822",
 		footer: {
-			text: `星期${".一二三四五六七"[ctx.day]}・第${".一二三四五六日"[ctx.class]}節`
+			text: `星期${".一二三四五六日"[ctx.day]}・第${".一二三四五六七"[ctx.class]}節 ${
+                ["", "08:10~09:00", "09:10~10:00", "10:10~11:00","11:10~12:00", "13:00~13:50", "14:00~14:50", "15:10~16:00"][ctx.class]
+            }`
 		},
 	}).addField(skipStatus[ctx.skip], "\u200b", true)
     
