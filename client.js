@@ -1,5 +1,5 @@
 const {readdirSync} = require("fs")
-const {Client, Collection, MessageEmbed, CommandInteractionOptionResolver} = require("discord.js")
+const {Client, Collection, MessageEmbed} = require("discord.js")
 const winston = require("winston")
 const utils = require("./utils")
 const chalk = require("chalk")

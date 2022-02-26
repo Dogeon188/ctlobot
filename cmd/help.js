@@ -24,8 +24,8 @@ module.exports = {
 				},
 				color: "#36ad3e"
 			})
-			.addField("說明", cmd.description + "\n" + (cmd.subdescription ?? ""))
-			.addField("使用方式", "```" + cmd.usage.join("\n") + "```")
+				.addField("說明", cmd.description + "\n" + (cmd.subdescription ?? ""))
+				.addField("使用方式", "```" + cmd.usage.join("\n") + "```")
 		]})
 	}
 }
