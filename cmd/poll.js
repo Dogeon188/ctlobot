@@ -1,9 +1,9 @@
-const {InvalidInputError} = require("../utils")
-const {DiscordAPIError, MessageEmbed} = require("discord.js")
-const {stripIndent} = require("common-tags")
+const { InvalidInputError } = require("../utils")
+const { DiscordAPIError, MessageEmbed } = require("discord.js")
+const { stripIndent } = require("common-tags")
 const client = require("../client")
 
-const emojis = ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚪", "🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬜"]
+const emojis = [ "🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚪", "🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬜" ]
 
 module.exports = {
 	name: "poll",
@@ -17,7 +17,7 @@ module.exports = {
 	🔹 \`d\` 加入補充敘述
 	🔹 \`i\` 附圖片（請使用鏈結）
 	🔹 \`?\` 多一個「**不確定**❔」的選項`,
-	usage: [`${process.env.PREFIX} poll <title> (channel) (options)`],
+	usage: [ `${process.env.PREFIX} poll <title> (channel) (options)` ],
 	async execute(msg, args) {
 		// TODO: count vote, announce result
 		const pa = {
@@ -31,7 +31,7 @@ module.exports = {
 			let emj = []
 			const embed = new MessageEmbed({
 				title: pa.title,
-				footer: {text: `由 ${msg.author.username} 發起的投票`},
+				footer: { text: `由 ${msg.author.username} 發起的投票` },
 				color: "#b4821e"
 			})
 
@@ -41,7 +41,7 @@ module.exports = {
 				msg.channel.send("是選擇題呢，請在60秒以內輸入你要的選項，用空格分割。").then(m => {
 					setTimeout(() => m.delete(), 5000)
 				})
-				await msg.channel.awaitMessages({filter, max: 1, time: 60000, errors: ["time"]})
+				await msg.channel.awaitMessages({ filter, max: 1, time: 60000, errors: [ "time" ] })
 					.then(collected => {
 						collected.first().react("<:approved:871686327249272842>")
 						choices = collected.first().content
@@ -61,7 +61,7 @@ module.exports = {
 					emj.push(emojis[i])
 				}
 			} else {
-				emj = ["✅", "❌"]
+				emj = [ "✅", "❌" ]
 				embed.addField("\u200b", "✅ **同意**", true)
 				embed.addField("\u200b", "❌ **不同意**", true)
 			}
@@ -70,7 +70,7 @@ module.exports = {
 				msg.channel.send("想在投票當中加入敘述的話，請在30秒以內輸入文字敘述。").then(m => {
 					setTimeout(() => m.delete(), 5000)
 				})
-				await msg.channel.awaitMessages({filter, max: 1, time: 30000, errors: ["time"]})
+				await msg.channel.awaitMessages({ filter, max: 1, time: 30000, errors: [ "time" ] })
 					.then(collected => {
 						collected.first().react("<:approved:871686327249272842>")
 						embed.setDescription(collected.first().content)
@@ -82,7 +82,7 @@ module.exports = {
 				msg.channel.send("想在投票當中加入圖片的話，請在30秒以內輸入圖片連結。").then(m => {
 					setTimeout(() => m.delete(), 5000)
 				})
-				await msg.channel.awaitMessages({filter, max: 1, time: 30000, errors: ["time"]})
+				await msg.channel.awaitMessages({ filter, max: 1, time: 30000, errors: [ "time" ] })
 					.then(collected => {
 						collected.first().react("<:approved:871686327249272842>")
 						embed.setImage(collected.first().content)
@@ -104,7 +104,7 @@ module.exports = {
 				throw new InvalidInputError(`看來我不能在 **<#${c.id}>** 發言呢 :cry:`)
 			if (!c.permissionsFor(msg.author).has("SEND_MESSAGES"))
 				throw new InvalidInputError(`看來你不能在 **<#${c.id}>** 發言呢 可憐啊`)
-			c.send({embeds: [embed]}).then(async m => {
+			c.send({ embeds: [ embed ] }).then(async m => {
 				for (let e of emj) await m.react(e)
 			})
 		} catch (e) {

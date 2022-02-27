@@ -1,10 +1,10 @@
-const {readdirSync} = require("fs")
-const {Client, Collection, MessageEmbed} = require("discord.js")
+const { readdirSync } = require("fs")
+const { Client, Collection, MessageEmbed } = require("discord.js")
 const winston = require("winston")
 const utils = require("./utils")
 const chalk = require("chalk")
 
-const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"]})
+const client = new Client({ intents: [ "GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS" ] })
 
 module.exports = client
 
@@ -32,7 +32,7 @@ for (const file of readdirSync("./cmd").filter(f => f.endsWith(".js") && !f.star
 
 client.iconURL = "https://cdn.discordapp.com/avatars/779656199033454613/1c8964f1fc0cca1b719a7db056f9fb7c.png"
 client.helpEmbed = new MessageEmbed({
-	author: {name: "昶昶機器人幫助文檔", iconURL: client.iconURL},
+	author: { name: "昶昶機器人幫助文檔", iconURL: client.iconURL },
 	title: "可用操作"
 })
 for (let cmd of client.commands.keys()) {
@@ -99,14 +99,15 @@ client.greet = new UpdatablePool(
 client.timetable = new UpdatablePool(
 	"timetable", "翹課表", 240, "1236681904",
 	function (day, time) {
-		const times = [750, 900, 1000, 1100, 1200, 1350, 1450, 1600, 2500]
+		const times = [ 750, 900, 1000, 1100, 1200, 1350, 1450, 1600, 2500 ]
 
-		let ret = {now: undefined, next: undefined}
+		let ret = { now: undefined, next: undefined }
 		let date = new Date()
 		let _day = (day ?? date.getDay()) - 1
 		let period = -2, t = time ?? date.getHours() * 100 + date.getMinutes()
 
 		times.some(v => {return period++, v > t})
+		console.log(_day, period)
 
 		if (period !== -1) ret.now = this.entries[_day][period]
 		ret.next = this.entries[_day][++period] ??
@@ -116,7 +117,7 @@ client.timetable = new UpdatablePool(
 		return ret
 	},
 	function () {
-		let tmp = [[],[],[],[],[],[],[]]
+		let tmp = [ [],[],[],[],[],[],[] ]
 		for (let entry of this.entries) {
 			tmp[entry.day - 1][entry.class - 1] = entry
 		}

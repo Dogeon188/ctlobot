@@ -1,5 +1,5 @@
-const {InvalidInputError, isOp} = require("../utils")
-const {stripIndents} = require("common-tags")
+const { InvalidInputError, isOp } = require("../utils")
+const { stripIndents } = require("common-tags")
 const client = require("../client")
 
 const parseArgs = (msg) => {
@@ -10,7 +10,7 @@ const parseArgs = (msg) => {
 		if (t[0] === "\"") a[i] = t.slice(1, -1)
 		a[i] = a[i].replace("\\\"", "\"")
 	})
-	return [args.shift().toLowerCase(), args]
+	return [ args.shift().toLowerCase(), args ]
 } 
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
 		try {
 			if (msg.author.bot) return
 			if (msg.content.startsWith(process.env.PREFIX + " ")) {
-				const [cmdName, args] = parseArgs(msg)
+				const [ cmdName, args ] = parseArgs(msg)
 				if (isOp(msg.author.id) && client.op.has(cmdName)) {
 					msg.channel.sendTyping()
 					return client.op.get(cmdName).execute(msg, args)
