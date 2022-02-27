@@ -103,7 +103,7 @@ client.timetable = new UpdatablePool(
 
 		let ret = { now: undefined, next: undefined }
 		let date = new Date()
-		let _day = (day ?? date.getDay()) - 1
+		let _day = (day ?? date.getDay())
 		let period = -2, t = time ?? date.getHours() * 100 + date.getMinutes()
 
 		times.some(v => {return period++, v > t})
@@ -111,14 +111,14 @@ client.timetable = new UpdatablePool(
 		if (period !== -1) ret.now = this.entries[_day][period]
 		ret.next = this.entries[_day][++period] ??
 			this.entries[++_day % 7][0] ??
-			this.entries[0][0]
+			this.entries[1][0]
 
 		return ret
 	},
 	function () {
 		let tmp = [ [],[],[],[],[],[],[] ]
 		for (let entry of this.entries) {
-			tmp[entry.day - 1][entry.class - 1] = entry
+			tmp[entry.day][entry.class - 1] = entry
 		}
 		this.entries = tmp
 	}

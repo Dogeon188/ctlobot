@@ -14,7 +14,7 @@ function timetableEmbed (ctx, type) {
 		author: { name: type + "節課程", iconURL: client.iconURL },
 		title: ctx.name, color: (type === "當") ? "#2288cc" : "#cc8822",
 		footer: {
-			text: `星期${".一二三四五六日"[ctx.day]}・第${".一二三四五六七"[ctx.class]}節 ${
+			text: `星期${"日一二三四五六"[ctx.day]}・第${".一二三四五六七"[ctx.class]}節 ${
                 [ "", "08:10~09:00", "09:10~10:00", "10:10~11:00","11:10~12:00", "13:00~13:50", "14:00~14:50", "15:10~16:00" ][ctx.class]
             }`
 		},
@@ -45,6 +45,7 @@ module.exports = {
         也可以輸入你要的時間
         例如「週四 下午1:30」可輸入\`${process.env.PREFIX} time 4 1330\`
         輸入時間不正確則默認為當前時間
+		||因為JS的神祕機制，禮拜日請使用\`0\`而非\`7\`來代表||
     `,
 	usage: [
         `${process.env.PREFIX} time`,
@@ -52,9 +53,9 @@ module.exports = {
 	],
 	async execute(msg, args) {
 		await client.timetable.update()
-		if (args === [] || isNaN(+args[0]) || isNaN(+args[1]) ||
-            +args[0] < 1 || +args[0] > 7 ||
-            +args[1] < 0|| +args[1] > 2400) {
+		if (args.length > 0 && (isNaN(+args[0]) || isNaN(+args[1]) ||
+            +args[0] < 0 || +args[0] > 6 ||
+            +args[1] < 0|| +args[1] > 2400)) {
 			msg.channel.send("輸入時間不符合規範！已自動轉換為當前時間……").then(m => {
 				setTimeout(() => m.delete(), 3000)
 			})
