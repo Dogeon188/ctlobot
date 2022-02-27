@@ -1,9 +1,9 @@
-const {MessageEmbed, MessageActionRow, MessageButton} = require("discord.js")
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 const client = require("../client")
 
 const entriesPerPage = 10
 
-const available = ["says", "tarot", "greet"]
+const available = [ "says", "tarot", "greet" ]
 
 const getList = (type, page) => {
 	switch (type) {
@@ -20,7 +20,7 @@ const getList = (type, page) => {
 		})
 			.addField("\u200b",
 				client.says.entries.slice(page * entriesPerPage, (page + 1) * entriesPerPage)
-					.map((e, i) => `\`${page * entriesPerPage + i + 1}.\` ${e.says.format({username: "`{username}`"})} _by ${e.author}_`)
+					.map((e, i) => `\`${page * entriesPerPage + i + 1}.\` ${e.says.format({ username: "`{username}`" })} _by ${e.author}_`)
 					.join("\n"))
 	}
 	case "tarot": {
@@ -29,7 +29,7 @@ const getList = (type, page) => {
 		const embed = client.commands.get("tarot").tarotEmbed(null, client.tarot.entries[page])
 		let footer = `第 ${page + 1} / ${client.tarot.entries.length} 項`
 		if (embed.footer !== null) footer += `・${embed.footer.text}`
-		embed.setFooter({text: footer}).setAuthor({name: "昶羅牌條目列表"})
+		embed.setFooter({ text: footer }).setAuthor({ name: "昶羅牌條目列表" })
 		return embed
 	}
 	case "greet": {
@@ -40,7 +40,7 @@ const getList = (type, page) => {
 			title: "昶問候條目列表",
 			color: "#059a16",
 			description: `抽中機率 ${(entry.weight / client.greet.weightSum * 100).toFixed(2)} %`,
-			footer: {text: `第 ${page + 1} / ${client.greet.entries.length} 條`}
+			footer: { text: `第 ${page + 1} / ${client.greet.entries.length} 條` }
 		})
 			.addField("早上", entry.morning, true)
 			.addField("中午", entry.evening, true)
@@ -70,12 +70,12 @@ const row = id => new MessageActionRow().addComponents(
 module.exports = {
 	name: "list",
 	description: "查看 **昶語錄** **昶羅牌** **昶問候** 的條目列表",
-	usage: [`${process.env.PREFIX} list <says|tarot|greet>`],
+	usage: [ `${process.env.PREFIX} list <says|tarot|greet>` ],
 	async execute(msg, args) {
 		if (available.includes(args[0])) {
 			const sent = await msg.channel.send({
-				embeds: [getList(args[0], 0)],
-				components: [row(msg.id)]
+				embeds: [ getList(args[0], 0) ],
+				components: [ row(msg.id) ]
 			})
 			sent.page = 0
 			const collector = sent.createMessageComponentCollector({
@@ -87,10 +87,10 @@ module.exports = {
 				i.deferUpdate()
 				sent.page += +i.customId.split(",")[2]
 				collector.resetTimer()
-				sent.edit({embeds: [getList(args[0], sent.page)]})
+				sent.edit({ embeds: [ getList(args[0], sent.page) ] })
 			}).on("end", () => {
 				sent.components[0].components.forEach(b => b.setDisabled(true))
-				sent.edit({components: sent.components})
+				sent.edit({ components: sent.components })
 			})
 		} else msg.channel.send(`窩不知道你要找什麼\n可用：\`${available.join("`▫️`")}\``)
 	}

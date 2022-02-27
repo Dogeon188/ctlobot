@@ -19,6 +19,14 @@
       "warn",
       "double"
     ],
+    "array-bracket-spacing": [
+      "warn",
+      "always"
+    ],
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
     "indent": [
       "error",
       "tab",
