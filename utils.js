@@ -20,7 +20,7 @@ module.exports = {
 		const ret = []
 		const url = `/spreadsheets/d/e/2PACX-1vS2TzmX0blE38OLXfUP1Par35qq0D-_bhWpOaAv6fAmGmiap_RKGGMNGyO9dY7oSwFnJ7dGV3OXEacG/pub?gid=${gid}&single=true&output=csv`
 		const redirected = (await bent("https://docs.google.com", "HEAD", 307)(url)).headers.location
-		const p = parser({ columns: true })
+		const p = parser({columns: true})
 		p.write(await bent("string")(redirected))
 		p.end()
 		let i
