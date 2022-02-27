@@ -47,10 +47,7 @@ module.exports = {
         輸入時間不正確則默認為當前時間
 		||因為JS的神祕機制，禮拜日請使用\`0\`而非\`7\`來代表||
     `,
-	usage: [
-        `${process.env.PREFIX} time`,
-        `${process.env.PREFIX} time <day> <time>`
-	],
+	usage: [`${process.env.PREFIX} time [<day> <time>]`],
 	async execute(msg, args) {
 		await client.timetable.update()
 		if (args.length > 0 && (isNaN(+args[0]) || isNaN(+args[1]) ||

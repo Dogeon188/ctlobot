@@ -4,10 +4,7 @@ const client = require("../client")
 module.exports = {
 	name: "help",
 	description: "昶昶機器人幫助文檔。",
-	usage: [
-		`${process.env.PREFIX} help`,
-		`${process.env.PREFIX} help <command>`
-	],
+	usage: [`${process.env.PREFIX} help [<command>]`],
 	async execute(msg, args) {
 		if (args.length === 0) return msg.channel.send({ embeds: [ client.helpEmbed ] })
 		if (!client.commands.has(args[0]))
@@ -25,7 +22,7 @@ module.exports = {
 				color: "#36ad3e"
 			})
 				.addField("說明", cmd.description + "\n" + (cmd.subdescription ?? ""))
-				.addField("使用方式", "```" + cmd.usage.join("\n") + "```")
+				.addField("使用方式", "```md\n" + cmd.usage.join("\n") + "```")
 		] })
 	}
 }

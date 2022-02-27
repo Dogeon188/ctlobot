@@ -70,7 +70,7 @@ const row = id => new MessageActionRow().addComponents(
 module.exports = {
 	name: "list",
 	description: "查看 **昶語錄** **昶羅牌** **昶問候** 的條目列表",
-	usage: [ `${process.env.PREFIX} list <says|tarot|greet>` ],
+	usage: [ `${process.env.PREFIX} list <says | tarot | greet>` ],
 	async execute(msg, args) {
 		if (available.includes(args[0])) {
 			const sent = await msg.channel.send({
