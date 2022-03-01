@@ -42,10 +42,16 @@ function timetableDayEmbed (day) {
 	})
 	for (let entry of client.timetable.entries[day]) {
 		ret.addField(
-			entry.class + "️⃣ " + entry.name,
-			skipStatus[entry.skip].slice(0, 3) + (entry.skip === "invalid" ?
-				skipStatus[entry.skipAlt].slice(0, 3) + " " + entry.nameAlt :
-				entry.teacher + " 老師")
+			`${entry.class}\uFE0F\u20E3 ${entry.name}`,
+			`${
+				skipStatus[entry.skip].slice(0, 2)
+			} ${
+				entry.skip === "invalid" ?
+					skipStatus[entry.skipAlt].slice(0, 3) + " " + entry.nameAlt :
+					entry.teacher + " 老師"
+			} ${
+				entry.note !== undefined ? "⭐" : ""
+			}`
 		)
 	}
 	return ret
@@ -71,9 +77,13 @@ module.exports = {
 		await client.timetable.update()
 		if (args[0] === "day") {
 			if ( args.length > 1 && (isNaN(+args[1]) || +args[1] < 0 || +args[1] > 6) ) {
-				msg.channel.send("輸入時間不符合規範！已自動轉換為當前時間……")
+				msg.channel.send("輸入時間不符合規範！已自動轉換為當前時間……").then(m => {
+					setTimeout(() => m.delete(), 3000)
+				})
 			}
-			args[1] = args[1] ?? new Date().getDay()
+			let date = new Date()
+			args[1] = args[1] ?? date.getDay()
+			if (date.getHours() >= 16) args[1]++
 
 			msg.channel.send({ embeds: [ timetableDayEmbed(args[1]) ] })
 		} else {
@@ -87,9 +97,7 @@ module.exports = {
 			}
 			const timetable = client.timetable.draw(args[0], args[1])
 			let embeds = []
-			if (timetable.now !== undefined) {
-				embeds.push(timetableEmbed(timetable.now, "當"))
-			}
+			if (timetable.now !== undefined) embeds.push(timetableEmbed(timetable.now, "當"))
 			embeds.push(timetableEmbed(timetable.next, "次"))
 			await msg.channel.send({ embeds: embeds })
 		}
