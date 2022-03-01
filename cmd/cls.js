@@ -14,7 +14,7 @@ module.exports = {
 					await client.channels.fetch(args[0])
 			if (!channel.isText())
 				throw new InvalidInputError(`Provided channel ID \`${args[0]}\` is not a text channel!`)
-			channel.messages.fetch({limit: 100}).then(async msgs => {
+			channel.messages.fetch({ limit: 100 }).then(async msgs => {
 				let deleted = msgs.filter(
 					m => m.author.id === client.user.id ||
 						m.content.startsWith(process.env.PREFIX + " "))

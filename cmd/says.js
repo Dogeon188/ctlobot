@@ -7,7 +7,7 @@ module.exports = {
 	name: "says",
 	description: "昶語錄：傾聽昶昶的箴言",
 	subdesciption: "也可以透過同時包含 **昶** 和 **說 講 話 看 想 覺得** 兩組關鍵字來觸發喔喔",
-	usage: [`${process.env.PREFIX} says [<saysId>]`],
+	usage: [ `${process.env.PREFIX} says [<saysId>]` ],
 	async execute(msg, args) {
 		try {
 			await client.says.update()

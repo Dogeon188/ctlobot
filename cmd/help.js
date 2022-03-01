@@ -4,7 +4,7 @@ const client = require("../client")
 module.exports = {
 	name: "help",
 	description: "昶昶機器人幫助文檔。",
-	usage: [`${process.env.PREFIX} help [<command>]`],
+	usage: [ `${process.env.PREFIX} help [<command>]` ],
 	async execute(msg, args) {
 		if (args.length === 0) return msg.channel.send({ embeds: [ client.helpEmbed ] })
 		if (!client.commands.has(args[0]))
