@@ -81,11 +81,10 @@ module.exports = {
 					setTimeout(() => m.delete(), 3000)
 				})
 			}
-			let date = new Date()
-			args[1] = args[1] ?? date.getDay()
-			if (date.getHours() >= 16) args[1]++
+			let date = new Date(), day = args[1] ?? date.getDay()
+			if (!args[1] && date.getHours() >= 16) day++
 
-			msg.channel.send({ embeds: [ timetableDayEmbed(args[1]) ] })
+			msg.channel.send({ embeds: [ timetableDayEmbed(day) ] })
 		} else {
 			if (args.length > 0 && (isNaN(+args[0]) || isNaN(+args[1]) ||
 				+args[0] < 0 || +args[0] > 6 ||
