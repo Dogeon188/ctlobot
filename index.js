@@ -9,7 +9,7 @@ process.on("uncaughtException", e => {
 
 const app = require("express")()
 app.all("*", (req, res) => {
-	client.log("info", `${chalk.cyan.bold("REQ")} Received keep-alive request from ${req.originalUrl}`)
+	console.log(`Received request from ${req.originalUrl}`)
 	res.send("I'm alive!")
 })
 app.listen(443, "0.0.0.0")
