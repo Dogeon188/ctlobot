@@ -61,9 +61,9 @@ module.exports = {
 					emj.push(emojis[i])
 				}
 			} else {
-				emj = [ "✅", "❌" ]
-				embed.addField("\u200b", "✅ **同意**", true)
-				embed.addField("\u200b", "❌ **不同意**", true)
+				emj = [ "<:upvote:968782921714499604>", "<:downvote:968782921328627713>" ]
+				embed.addField("\u200b", "<:upvote:968782921714499604> **同意**", true)
+				embed.addField("\u200b", "<:downvote:968782921328627713> **不同意**", true)
 			}
 
 			if (pa.options.includes("d")) {
